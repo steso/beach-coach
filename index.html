@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10302E">
+<title>Beach Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:#EEE3CB; --surface:#FFFFFF; --surface-2:#FBF6EA;
+    --ink:#10302E; --ink-soft:#3D5754;
+    --teal:#14746B; --marigold:#E1930B; --coral:#E4572E;
+    --line:rgba(16,48,46,.14); --line-strong:rgba(16,48,46,.28);
+    --disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+    --body:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-bottom:90px}
+  .wrap{max-width:680px;margin:0 auto;padding:0 14px}
+  button{font-family:inherit}
+  input,select,textarea{font-family:inherit;font-size:15px}
+
+  header{background:var(--ink);color:#F3EAD6;padding:14px 0 12px;border-bottom:3px solid var(--marigold)}
+  .eyebrow{font-family:var(--disp);letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:var(--marigold);font-weight:600;margin:0}
+  h1{font-family:var(--disp);font-weight:700;font-size:27px;line-height:.98;margin:1px 0 0}
+  .sub-h{font-size:12.5px;color:#CBBFA6;margin-top:3px}
+
+  /* tab bar */
+  .tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--ink);border-top:1px solid rgba(243,234,214,.16);display:flex;padding:6px max(14px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom))}
+  .tab{flex:1;background:none;border:0;color:#9FB0AD;padding:9px 4px 7px;cursor:pointer;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .tab .ico{font-size:19px;line-height:1}
+  .tab .tl{font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .tab.active{color:#F3EAD6;background:rgba(243,234,214,.08)}
+  .tab.active .tl{color:var(--marigold)}
+  .tab:focus-visible{outline:3px solid var(--coral);outline-offset:-2px}
+
+  .view{display:none}
+  body[data-view="plan"] #v-plan{display:block}
+  body[data-view="library"] #v-library{display:block}
+  body[data-view="run"] #v-run{display:block}
+
+  .section-title{font-family:var(--disp);font-weight:700;font-size:22px;margin:16px 0 2px;letter-spacing:.01em}
+  .muted{color:var(--ink-soft);font-size:13.5px}
+
+  /* generic card */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:11px 0;overflow:hidden}
+  .phase-head{font-family:var(--disp);font-weight:600;letter-spacing:.09em;text-transform:uppercase;font-size:13px;color:var(--teal);margin:18px 0 4px}
+
+  .ex{display:flex;gap:11px;padding:12px 13px;align-items:flex-start}
+  .ex .pill{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--teal);border-radius:7px;padding:3px 7px;flex:0 0 auto;margin-top:2px}
+  .ex .pill.warm{background:var(--marigold)} .ex .pill.tech{background:var(--teal)} .ex .pill.comp{background:var(--coral)} .ex .pill.cool{background:var(--ink-soft)}
+  .ex .body{flex:1;min-width:0}
+  .ex h3{font-family:var(--disp);font-weight:700;font-size:18px;margin:0 0 2px;line-height:1.05}
+  .ex .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+  .ex .tag{font-size:11px;color:var(--ink-soft);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+  .ex .acts{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+
+  .mini{border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;padding:6px 10px;font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+  .mini.solid{background:var(--teal);border-color:var(--teal);color:#fff}
+  .mini.warn{color:var(--coral);border-color:rgba(228,87,46,.4)}
+  .mini:active{transform:translateY(1px)}
+  .mini:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+  .btn{font-family:var(--disp);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:15px;border:0;border-radius:11px;padding:12px;cursor:pointer;color:var(--ink);background:#E7DBC1;min-height:46px}
+  .btn.solid{background:var(--teal);color:#fff}
+  .btn.big{width:100%;font-size:17px;background:var(--marigold)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+
+  /* filters */
+  .filters{display:flex;gap:7px;overflow-x:auto;padding:10px 0 2px}
+  .filters::-webkit-scrollbar{display:none}
+  .fchip{flex:0 0 auto;border:1px solid var(--line-strong);background:var(--surface);border-radius:99px;padding:7px 13px;font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.03em;color:var(--ink-soft);cursor:pointer;white-space:nowrap}
+  .fchip.active{background:var(--teal);border-color:var(--teal);color:#fff}
+
+  /* plan blocks */
+  .plan-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
+  .plan-name{font-family:var(--disp);font-weight:700;font-size:20px;border:0;border-bottom:2px dashed var(--line-strong);background:none;color:var(--ink);padding:2px 0;min-width:60px;flex:1}
+  .plan-name:focus{outline:0;border-bottom-color:var(--teal)}
+  .total{font-family:var(--disp);font-weight:700;font-size:17px;color:var(--teal);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:5px 10px;white-space:nowrap}
+  .blk{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .blk:last-child{border-bottom:0}
+  .blk .grab{color:var(--ink-soft);font-size:13px;display:flex;flex-direction:column;gap:2px}
+  .blk .grab button{border:0;background:none;cursor:pointer;color:var(--ink-soft);font-size:14px;padding:0 2px;line-height:1}
+  .blk .nm{flex:1;min-width:0}
+  .blk .nm b{font-family:var(--disp);font-weight:600;font-size:16px;display:block;line-height:1.1}
+  .blk .nm span{font-size:12px;color:var(--ink-soft)}
+  .blk .min{width:56px;text-align:center;border:1px solid var(--line-strong);border-radius:8px;padding:6px 4px;font-family:var(--disp);font-weight:700}
+  .blk .min:focus{outline:2px solid var(--teal)}
+  .blk .x{border:0;background:none;color:var(--coral);font-size:18px;cursor:pointer;padding:2px 4px}
+  .empty{color:var(--ink-soft);text-align:center;padding:22px 10px;border:1px dashed var(--line-strong);border-radius:12px;margin:12px 0}
+
+  /* editor form */
+  .form label{display:block;font-family:var(--disp);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:12px;color:var(--teal);margin:12px 0 3px}
+  .form input,.form select,.form textarea{width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:9px 11px;background:var(--surface)}
+  .form textarea{min-height:88px;resize:vertical;line-height:1.45}
+  .form .hint{font-size:12px;color:var(--ink-soft);margin-top:3px}
+
+  /* ---- run / timer ---- */
+  .timer{position:sticky;top:0;z-index:20;background:var(--ink);color:#F3EAD6;box-shadow:0 6px 18px rgba(16,48,46,.22);margin:0 -14px}
+  .timer-inner{max-width:680px;margin:0 auto;padding:12px 14px}
+  .timer-row{display:flex;align-items:center;gap:12px}
+  .clock{font-family:var(--disp);font-weight:700;font-size:52px;line-height:.9;font-variant-numeric:tabular-nums;letter-spacing:.02em;min-width:132px}
+  .now{flex:1;min-width:0}
+  .now .lbl{font-family:var(--disp);letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--marigold);font-weight:600}
+  .now .blk2{font-family:var(--disp);font-weight:600;font-size:19px;line-height:1.05;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .now .idx{font-size:12px;color:#CBBFA6}
+  .bar{height:6px;background:rgba(243,234,214,.16);border-radius:99px;margin-top:9px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:var(--marigold);border-radius:99px;transition:width .4s linear}
+  .ctrls{display:flex;gap:8px;margin-top:10px}
+  .tbtn{font-family:var(--disp);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:15px;border:0;border-radius:11px;padding:11px 10px;cursor:pointer;color:var(--ink);background:#E7DBC1;flex:1;min-height:46px}
+  .tbtn.play{background:var(--marigold);flex:1.6}
+  .tbtn.play.on{background:var(--teal);color:#F3EAD6}
+  .tbtn.ghost{background:transparent;color:#E7DBC1;border:1px solid rgba(231,219,193,.4);flex:.8}
+  .tbtn:active{transform:translateY(1px)}
+  .tbtn:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+  .detail{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:14px 0;padding:15px 16px}
+  .detail .setup-line{font-size:14px;background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:9px;padding:9px 12px;margin:0 0 13px}
+  svg.court{width:100%;max-width:220px;height:auto;display:block;margin:0 auto;border-radius:12px}
+  .legend{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;margin-top:7px;font-size:11.5px;color:var(--ink-soft)}
+  .legend .k{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:-1px;margin-right:4px}
+  h4.sub{font-family:var(--disp);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;color:var(--teal);margin:15px 0 5px}
+  ol.play{margin:0;padding-left:19px} ol.play li{margin:4px 0;font-size:15px}
+  .cue{display:flex;gap:9px;align-items:flex-start;margin-top:13px;background:#FBF1DC;border:1px solid #F0D9A6;border-radius:11px;padding:10px 12px}
+  .cue .ic{font-family:var(--disp);font-weight:700;color:var(--marigold);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:1px}
+  .cue p{margin:0;font-size:14px}
+  .upnext{font-size:13px;color:var(--ink-soft);text-align:center;margin:10px 0 4px}
+
+  .toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:var(--ink);color:#F3EAD6;padding:10px 16px;border-radius:99px;font-size:14px;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}
+  .toast.show{opacity:1}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body data-view="plan">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ball" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E4572E"/></marker>
+  <marker id="serve" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#14746B"/></marker>
+  <marker id="move" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#10302E"/></marker>
+</defs></svg>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Beach · solo coach · 2 courts</p>
+    <h1 id="hTitle">Beach Trainer</h1>
+    <div class="sub-h" id="hSub">Build a session from your library, then run it hands-free.</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== PLAN ===== -->
+  <div class="view" id="v-plan">
+    <div class="plan-meta">
+      <input class="plan-name" id="planName" aria-label="Session name" value="Session">
+      <span class="total" id="planTotal">0 min</span>
+    </div>
+    <div class="row" style="margin:4px 0 2px">
+      <select id="planSwitch" class="min" style="width:auto;flex:1;text-align:left;padding:8px 10px"></select>
+      <button class="mini" id="newPlan">＋ New</button>
+      <button class="mini warn" id="delPlan">Delete</button>
+    </div>
+
+    <div id="planBlocks"></div>
+
+    <button class="btn big" id="startBtn" style="margin-top:14px">▶ Start session</button>
+    <p class="muted" style="text-align:center;margin-top:8px">Add exercises from the <b>Library</b> tab. Reorder with ▲▼, set minutes per block.</p>
+  </div>
+
+  <!-- ===== LIBRARY ===== -->
+  <div class="view" id="v-library">
+    <div class="section-title">Exercise library</div>
+    <p class="muted" id="libCount">—</p>
+    <div class="filters" id="libFilters"></div>
+    <div class="row" style="margin:8px 0">
+      <button class="mini solid" id="newEx">＋ New exercise</button>
+      <button class="mini" id="exportBtn">Export JSON</button>
+      <button class="mini" id="importBtn">Import JSON</button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+    <div id="libList"></div>
+
+    <!-- editor -->
+    <div class="card" id="editor" style="display:none;padding:15px 16px">
+      <div class="section-title" id="edTitle" style="margin-top:0">New exercise</div>
+      <div class="form">
+        <label>Name</label><input id="edName" placeholder="e.g. Deep-corner serve targets">
+        <label>Phase</label>
+        <select id="edPhase"><option>Warm-up</option><option>Technical</option><option>Competitive</option><option>Cool-down</option></select>
+        <label>Skills (comma-separated)</label><input id="edSkills" placeholder="serve, passing, shot selection">
+        <label>Default minutes</label><input id="edMin" type="number" min="1" max="60" value="12">
+        <label>Court setup (one line)</label><input id="edSetup" placeholder="Court A: 4 teams · Court B: 3 teams">
+        <label>Steps (one per line)</label><textarea id="edSteps" placeholder="Server aims a named zone.&#10;Passer calls the ball early.&#10;Swap roles every minute."></textarea>
+        <label>Coach cue (one line)</label><input id="edCue" placeholder="Every serve has a target — no aimless reps.">
+        <label>Diagram</label>
+        <select id="edDiagram">
+          <option value="court">Plain court</option>
+          <option value="warmup">Pepper / warm-up</option>
+          <option value="serve">Serve lanes to target</option>
+          <option value="sideout">Side-out zones</option>
+          <option value="servevs">Serve vs side-out corridor</option>
+          <option value="kotc">King of the Court</option>
+          <option value="cool">Cool-down</option>
+        </select>
+        <div class="hint">Diagrams are presets — pick the closest match.</div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn solid" id="edSave" style="flex:2">Save exercise</button>
+          <button class="btn" id="edCancel" style="flex:1">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RUN ===== -->
+  <div class="view" id="v-run">
+    <div class="timer">
+      <div class="timer-inner">
+        <div class="timer-row">
+          <div class="clock" id="clock">0:00</div>
+          <div class="now">
+            <div class="lbl">Now running</div>
+            <div class="blk2" id="nowBlock">—</div>
+            <div class="idx" id="nowIdx">—</div>
+          </div>
+        </div>
+        <div class="bar"><i id="progress"></i></div>
+        <div class="ctrls">
+          <button class="tbtn play" id="playBtn">Start</button>
+          <button class="tbtn" id="skipBtn">Next ›</button>
+          <button class="tbtn ghost" id="prevBtn" title="Previous">‹</button>
+          <button class="tbtn ghost" id="resetBtn" title="Reset">↺</button>
+          <button class="tbtn ghost" id="soundBtn" aria-pressed="true" title="Sound">🔊</button>
+        </div>
+      </div>
+    </div>
+    <div id="runDetail"></div>
+  </div>
+
+</main>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-tab="plan" role="tab"><span class="ico">📋</span><span class="tl">Plan</span></button>
+  <button class="tab" data-tab="library" role="tab"><span class="ico">🗂️</span><span class="tl">Library</span></button>
+  <button class="tab" data-tab="run" role="tab"><span class="ico">⏱️</span><span class="tl">Run</span></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ storage (graceful: localStorage on a real host, memory in sandbox) ============ */
+const mem={};
+const store={
+  get(k){ try{const v=localStorage.getItem(k);return v==null?null:JSON.parse(v);}catch(e){return k in mem?mem[k]:null;} },
+  set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){mem[k]=v;} }
+};
+const uid=()=>Math.random().toString(36).slice(2,9);
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1600);}
+
+/* ============ seed library (replace/extend with your own notes) ============ */
+const SEED_LIB=[
+  {id:'wm1',name:'Movement ladder',phase:'Warm-up',skills:['activation','footwork'],min:5,diagram:'warmup',
+   setup:'All pairs spread across both courts. No teams yet.',
+   steps:['Baseline to net and back, 4–5 mid-tempo runs.','Each player calls one movement for the next length: skips, side-steps, split-steps, drop-steps.','Build intensity up, then ease back into mobility.'],
+   cue:'Quiet feet, early to the ball. One reminder only.'},
+  {id:'wm2',name:'Pepper progression',phase:'Warm-up',skills:['ball control'],min:6,diagram:'warmup',
+   setup:'In pairs on half a court.',
+   steps:['Dig → set → controlled hit, keep it alive.','2nd and 3rd contact stay controlled — chase long rallies.','Last 2 min: allow harder controlled hits.'],
+   cue:'Reward rallies that stay alive, not winners.'},
+  {id:'tc1',name:'Serve targets + first contact',phase:'Technical',skills:['serve','passing'],min:12,diagram:'serve',
+   setup:'Serve straight to your partner in lanes: 4 on Court A, 3 on Court B — nobody waits.',
+   steps:['Server names a zone before serving: deep seam, deep corner, or short.','Passer calls the ball early — “short / deep / wind” — and passes to a target by the net.','Swap server/passer every minute; count clean passes as a pair.'],
+   cue:'Every serve has a named target. A serve with no plan is a wasted rep.'},
+  {id:'tc2',name:'Two-touch attack, imperfect pass',phase:'Technical',skills:['attack','shot selection'],min:10,diagram:'servevs',
+   setup:'2v2 full court. One tough serve at a receiver.',
+   steps:['Receiver passes high off a hard serve.','Attacker plays the 2nd ball to the open side — hard hit if on, else shot / poke / free.','Rally must finish within two contacts.'],
+   cue:'Good decisions from bad passes — that is the whole beach game.'},
+  {id:'tc3',name:'Lateral set reps',phase:'Technical',skills:['setting'],min:8,diagram:'court',
+   setup:'Pairs, one feeder near the net.',
+   steps:['Feeder simulates a reception near the net.','Setter runs in and delivers a lateral set to the pin.','Focus: body square to target, high contact, full extension.'],
+   cue:'Hands high, set the line — no rushing the feet.'},
+  {id:'cp1',name:'Perfect side-out — zones',phase:'Competitive',skills:['side-out','shot selection'],min:18,diagram:'sideout',
+   setup:'Court A: 4 teams (2 on, rotate). Court B: 3 teams (2 on, 1 waits to serve).',
+   steps:['You only score by landing an attack in a marked zone: deep corners + short.','First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.','Everything else is a wash — next team rotates in after each finished attack.'],
+   cue:'Tempts the high deep line shot. Reward smart shot selection over power.'},
+  {id:'cp2',name:'Serve vs side-out game',phase:'Competitive',skills:['serve','attack','pressure'],min:15,diagram:'servevs',
+   setup:'Winner stays, loser out, next team serves in (mini King of the Court).',
+   steps:['Serving team scores +2 for an ace.','Receiving team must attack into the corridor 1 m inside each sideline: +1 in, −1 out.','First to 8 wins the round, then swap who serves; winner holds court.'],
+   cue:'Risk management: when is the aggressive serve or line shot worth it?'},
+  {id:'cp3',name:'1-2-3 Wash',phase:'Competitive',skills:['side-out','transition'],min:15,diagram:'kotc',
+   setup:'2v2, one serving side. Extra teams queue to enter.',
+   steps:['Serve, play it out. First-ball side-out win = a big point.','Side-out but not first-ball → win a follow-up free-ball rally to earn the point.','Serving team wins → receivers must win two follow-ups. Play 15 balls, then switch.'],
+   cue:'Rewards clean first-ball side-out. Track big points out loud.'},
+  {id:'cp4',name:'King of the Court',phase:'Competitive',skills:['everything','game sense'],min:25,diagram:'kotc',
+   setup:'Each court runs its own KotC. Court A: 4 teams. Court B: 3 teams.',
+   steps:['King side scores by winning; challenger side wins to move up. Loser out, next in serves.','Beach rules: no open-hand tips, no sideways hand-set over.','Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side.'],
+   cue:'Say almost nothing. Tempo surfaces every weak pass — note them.'},
+  {id:'cd1',name:'Cool-down & debrief',phase:'Cool-down',skills:['mobility'],min:5,diagram:'cool',
+   setup:'Stay in pairs, on court.',
+   steps:['Light mobility & stretch: calves, shoulders, hips, wrists.','30 s pair debrief: one thing that worked, one to fix.'],
+   cue:'One collective takeaway. Keep it short — end on energy.'}
+];
+const SEED_PLAN=[
+  {id:'p1',name:'Standard 90',blocks:[
+    {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'cp1',min:18},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:5}
+  ]}
+];
+
+/* ============ state ============ */
+let LIB = store.get('bvt.lib') || SEED_LIB.map(x=>({...x}));
+let PLANS = store.get('bvt.plans') || SEED_PLAN.map(p=>({...p,blocks:p.blocks.map(b=>({...b}))}));
+let activePlan = store.get('bvt.active') || PLANS[0].id;
+let libFilter = 'All';
+let editingId = null;
+const saveLib=()=>store.set('bvt.lib',LIB);
+const savePlans=()=>{store.set('bvt.plans',PLANS);store.set('bvt.active',activePlan);};
+const exById=id=>LIB.find(e=>e.id===id);
+const plan=()=>PLANS.find(p=>p.id===activePlan)||PLANS[0];
+const PHASE_CLASS={'Warm-up':'warm','Technical':'tech','Competitive':'comp','Cool-down':'cool'};
+
+/* ============ diagrams ============ */
+function courtSVG(inner){return `<svg class="court" viewBox="0 0 220 360" role="img"><rect x="0" y="0" width="220" height="360" rx="12" fill="#E7D6B0"/><rect x="40" y="40" width="140" height="280" fill="none" stroke="#fff" stroke-width="3"/><line x1="40" y1="180" x2="180" y2="180" stroke="#10302E" stroke-width="2.5" stroke-dasharray="7 6"/>${inner}</svg>`;}
+function dot(x,y,l,c){const f=c==='b'?'#E1930B':'#14746B';return `<circle cx="${x}" cy="${y}" r="12" fill="${f}" stroke="#fff" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="13" fill="#fff">${l}</text>`;}
+function arrow(x1,y1,x2,y2,t){const s=t==='serve'?'#14746B':t==='move'?'#10302E':'#E4572E';const d=t==='move'?'stroke-dasharray="2 5"':t==='ball'?'stroke-dasharray="7 5"':'';return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${s}" stroke-width="2.6" ${d} marker-end="url(#${t})"/>`;}
+function zone(x,y,w,h){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(228,87,46,.16)" stroke="#E4572E" stroke-width="1.6" stroke-dasharray="4 3"/>`;}
+const DIAGRAMS={
+  court: courtSVG(dot(78,250,'A','a')+dot(150,250,'A','a')+dot(78,110,'B','b')+dot(150,110,'B','b')),
+  warmup: courtSVG(dot(80,300,'A','a')+dot(140,300,'A','a')+dot(80,60,'B','b')+dot(140,60,'B','b')+arrow(80,285,80,150,'ball')+arrow(140,150,140,285,'ball')),
+  serve: courtSVG(dot(70,312,'S','a')+dot(150,312,'S','a')+dot(70,70,'P','b')+dot(150,70,'P','b')+arrow(70,300,70,92,'serve')+arrow(150,300,150,92,'serve')+zone(52,52,36,30)+zone(132,52,36,30)),
+  sideout: courtSVG(zone(44,286,34,30)+zone(142,286,34,30)+zone(90,196,40,22)+zone(44,44,34,30)+zone(142,44,34,30)+zone(90,142,40,22)+dot(78,250,'A','a')+dot(150,250,'A','a')+dot(78,110,'B','b')+dot(150,110,'B','b')+arrow(150,238,60,300,'ball')),
+  servevs: courtSVG(zone(40,180,10,140)+zone(170,180,10,140)+dot(110,312,'S','a')+dot(78,110,'R','b')+dot(150,110,'R','b')+arrow(110,300,90,150,'serve')+arrow(90,150,55,300,'ball')),
+  kotc: courtSVG(`<rect x="40" y="180" width="140" height="140" fill="rgba(20,116,107,.14)"/><text x="110" y="205" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="15" fill="#0d5a52">KING SIDE</text>`+dot(78,250,'K','a')+dot(150,250,'K','a')+dot(78,110,'C','b')+dot(150,110,'C','b')+arrow(150,110,150,60,'move')+arrow(60,300,110,150,'serve')),
+  cool: courtSVG(dot(90,200,'A','a')+dot(130,200,'A','a'))
+};
+const LEGEND=`<div class="legend"><span><i class="k" style="background:#14746B"></i>Team A</span><span><i class="k" style="background:#E1930B"></i>Team B</span><span><i class="k" style="background:#14746B"></i>serve</span><span><i class="k" style="background:#E4572E"></i>ball / zone</span></div>`;
+
+/* ============ LIBRARY render ============ */
+const PHASES=['All','Warm-up','Technical','Competitive','Cool-down'];
+function renderFilters(){
+  const f=document.getElementById('libFilters');
+  f.innerHTML=PHASES.map(p=>`<button class="fchip${p===libFilter?' active':''}" data-f="${p}">${p}</button>`).join('');
+  f.querySelectorAll('.fchip').forEach(c=>c.onclick=()=>{libFilter=c.dataset.f;renderFilters();renderLib();});
+}
+function renderLib(){
+  document.getElementById('libCount').textContent=`${LIB.length} exercises · tap ＋ to add one to your session`;
+  const list=document.getElementById('libList');
+  const items=LIB.filter(e=>libFilter==='All'||e.phase===libFilter);
+  if(!items.length){list.innerHTML=`<div class="empty">No exercises here yet.</div>`;return;}
+  list.innerHTML=items.map(e=>`
+    <div class="card"><div class="ex">
+      <span class="pill ${PHASE_CLASS[e.phase]}">${e.phase.slice(0,4)}</span>
+      <div class="body">
+        <h3>${esc(e.name)}</h3>
+        <div class="tags"><span class="tag">${e.min} min</span>${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
+        <div class="acts">
+          <button class="mini solid" data-add="${e.id}">＋ Add to session</button>
+          <button class="mini" data-edit="${e.id}">Edit</button>
+          <button class="mini warn" data-del="${e.id}">Delete</button>
+        </div>
+      </div>
+    </div></div>`).join('');
+  list.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addToPlan(b.dataset.add));
+  list.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEditor(b.dataset.edit));
+  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(confirm('Delete this exercise?')){LIB=LIB.filter(x=>x.id!==b.dataset.del);saveLib();renderLib();}});
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* ============ editor ============ */
+function openEditor(id){
+  editingId=id||null;
+  const e=id?exById(id):{name:'',phase:'Technical',skills:[],min:12,setup:'',steps:[],cue:'',diagram:'court'};
+  document.getElementById('edTitle').textContent=id?'Edit exercise':'New exercise';
+  edName.value=e.name; edPhase.value=e.phase; edSkills.value=(e.skills||[]).join(', ');
+  edMin.value=e.min; edSetup.value=e.setup||''; edSteps.value=(e.steps||[]).join('\n');
+  edCue.value=e.cue||''; edDiagram.value=e.diagram||'court';
+  document.getElementById('editor').style.display='block';
+  document.getElementById('editor').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeEditor(){document.getElementById('editor').style.display='none';editingId=null;}
+document.getElementById('newEx').onclick=()=>openEditor(null);
+document.getElementById('edCancel').onclick=closeEditor;
+document.getElementById('edSave').onclick=()=>{
+  const obj={
+    id:editingId||uid(), name:edName.value.trim()||'Untitled', phase:edPhase.value,
+    skills:edSkills.value.split(',').map(s=>s.trim()).filter(Boolean),
+    min:Math.max(1,parseInt(edMin.value)||10), setup:edSetup.value.trim(),
+    steps:edSteps.value.split('\n').map(s=>s.trim()).filter(Boolean),
+    cue:edCue.value.trim(), diagram:edDiagram.value
+  };
+  if(editingId){const i=LIB.findIndex(x=>x.id===editingId);LIB[i]=obj;} else LIB.push(obj);
+  saveLib(); closeEditor(); renderLib(); toast('Saved');
+};
+
+/* ============ import / export ============ */
+document.getElementById('exportBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify({library:LIB,plans:PLANS},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='beach-trainer.json';a.click();
+};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=ev=>{
+  const file=ev.target.files[0];if(!file)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);
+    if(Array.isArray(d.library))LIB=d.library;
+    if(Array.isArray(d.plans)&&d.plans.length){PLANS=d.plans;activePlan=PLANS[0].id;}
+    saveLib();savePlans();renderAll();toast('Imported');
+  }catch(e){toast('Could not read that file');}};
+  r.readAsText(file);
+};
+
+/* ============ PLAN render ============ */
+function renderPlanSwitch(){
+  const s=document.getElementById('planSwitch');
+  s.innerHTML=PLANS.map(p=>`<option value="${p.id}"${p.id===activePlan?' selected':''}>${esc(p.name)}</option>`).join('');
+}
+function renderPlan(){
+  renderPlanSwitch();
+  const p=plan();
+  document.getElementById('planName').value=p.name;
+  const host=document.getElementById('planBlocks');
+  if(!p.blocks.length){host.innerHTML=`<div class="empty">No blocks yet.<br>Go to <b>Library</b> and tap ＋ Add.</div>`;}
+  else{
+    host.innerHTML=`<div class="card">`+p.blocks.map((b,i)=>{
+      const e=exById(b.exId); if(!e)return'';
+      return `<div class="blk">
+        <div class="grab"><button data-up="${i}" ${i===0?'disabled style=opacity:.25':''}>▲</button><button data-down="${i}" ${i===p.blocks.length-1?'disabled style=opacity:.25':''}>▼</button></div>
+        <div class="nm"><b>${esc(e.name)}</b><span>${e.phase}</span></div>
+        <input class="min" type="number" min="1" max="60" value="${b.min}" data-min="${i}" aria-label="minutes">
+        <button class="x" data-rm="${i}" aria-label="remove">✕</button>
+      </div>`;
+    }).join('')+`</div>`;
+    host.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>{const i=+x.dataset.up;[p.blocks[i-1],p.blocks[i]]=[p.blocks[i],p.blocks[i-1]];savePlans();renderPlan();});
+    host.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>{const i=+x.dataset.down;[p.blocks[i+1],p.blocks[i]]=[p.blocks[i],p.blocks[i+1]];savePlans();renderPlan();});
+    host.querySelectorAll('[data-rm]').forEach(x=>x.onclick=()=>{p.blocks.splice(+x.dataset.rm,1);savePlans();renderPlan();});
+    host.querySelectorAll('[data-min]').forEach(x=>x.onchange=()=>{p.blocks[+x.dataset.min].min=Math.max(1,parseInt(x.value)||1);savePlans();renderPlan();});
+  }
+  const total=p.blocks.reduce((s,b)=>s+(+b.min||0),0);
+  document.getElementById('planTotal').textContent=total+' min';
+}
+document.getElementById('planName').oninput=e=>{plan().name=e.target.value;savePlans();renderPlanSwitch();};
+document.getElementById('planSwitch').onchange=e=>{activePlan=e.target.value;savePlans();renderPlan();};
+document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
+document.getElementById('delPlan').onclick=()=>{if(PLANS.length<2){toast('Keep at least one plan');return;}if(confirm('Delete this plan?')){PLANS=PLANS.filter(p=>p.id!==activePlan);activePlan=PLANS[0].id;savePlans();renderPlan();}};
+function addToPlan(exId){const e=exById(exId);plan().blocks.push({exId,min:e.min});savePlans();renderPlan();toast(e.name+' added');}
+
+/* ============ RUN / timer ============ */
+let runBlocks=[],idx=0,remaining=0,running=false,tick=null,sound=true,actx=null;
+function buildRun(){runBlocks=plan().blocks.map(b=>({ex:exById(b.exId),min:b.min})).filter(b=>b.ex);}
+function beep(f,d,w){if(!sound)return;try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime+(w||0);const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.02);}catch(e){}}
+function chime(){beep(660,.16,0);beep(660,.16,.22);beep(990,.28,.44);}
+const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function renderDetail(){
+  const host=document.getElementById('runDetail');
+  if(!runBlocks.length){host.innerHTML=`<div class="empty" style="margin-top:20px">This plan has no blocks. Add some in Plan / Library.</div>`;return;}
+  const e=runBlocks[idx].ex;
+  const nx=runBlocks[idx+1]?`Up next · ${esc(runBlocks[idx+1].ex.name)}`:'Last block';
+  host.innerHTML=`<div class="detail">
+    ${e.setup?`<div class="setup-line">${esc(e.setup)}</div>`:''}
+    ${DIAGRAMS[e.diagram]||DIAGRAMS.court}${LEGEND}
+    <h4 class="sub">How it runs</h4>
+    <ol class="play">${e.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+    ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+  </div><div class="upnext">${nx}</div>`;
+}
+function paint(){
+  if(!runBlocks.length)return;
+  document.getElementById('clock').textContent=fmt(remaining);
+  document.getElementById('nowBlock').textContent=runBlocks[idx].ex.name;
+  document.getElementById('nowIdx').textContent='Block '+(idx+1)+' of '+runBlocks.length;
+  const total=runBlocks[idx].min*60;
+  document.getElementById('progress').style.width=((total-remaining)/total*100)+'%';
+}
+function goTo(i){if(!runBlocks.length)return;idx=Math.max(0,Math.min(runBlocks.length-1,i));remaining=runBlocks[idx].min*60;renderDetail();paint();}
+function step(){remaining--;if(remaining===10)beep(880,.18,0);if(remaining<=0){chime();if(idx<runBlocks.length-1){idx++;remaining=runBlocks[idx].min*60;renderDetail();}else{pause();remaining=0;}}paint();}
+function play(){if(!runBlocks.length)return;running=true;const b=document.getElementById('playBtn');b.textContent='Pause';b.classList.add('on');if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();tick=setInterval(step,1000);}
+function pause(){running=false;const b=document.getElementById('playBtn');b.textContent='Resume';b.classList.remove('on');clearInterval(tick);}
+document.getElementById('playBtn').onclick=()=>running?pause():play();
+document.getElementById('skipBtn').onclick=()=>goTo(idx+1);
+document.getElementById('prevBtn').onclick=()=>goTo(idx-1);
+document.getElementById('resetBtn').onclick=()=>{pause();document.getElementById('playBtn').textContent='Start';goTo(0);};
+document.getElementById('soundBtn').onclick=()=>{sound=!sound;const b=document.getElementById('soundBtn');b.textContent=sound?'🔊':'🔈';b.setAttribute('aria-pressed',sound);};
+document.getElementById('startBtn').onclick=()=>{buildRun();if(!runBlocks.length){toast('Add exercises first');return;}pause();document.getElementById('playBtn').textContent='Start';idx=0;remaining=runBlocks[0].min*60;renderDetail();paint();switchTab('run');};
+
+/* ============ tabs ============ */
+function switchTab(t){document.body.dataset.view=t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
+document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>switchTab(x.dataset.tab));
+
+/* ============ init ============ */
+function renderAll(){renderFilters();renderLib();renderPlan();}
+renderAll();
+</script>
+</body>
+</html>
