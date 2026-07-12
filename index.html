@@ -62,6 +62,8 @@
   .mini{border:1px solid var(--line-strong);background:var(--surface);border-radius:9px;padding:6px 10px;font-family:var(--disp);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);cursor:pointer}
   .mini.solid{background:var(--teal);border-color:var(--teal);color:#fff}
   .mini.warn{color:var(--coral);border-color:rgba(228,87,46,.4)}
+  .mini.fav{color:var(--ink-soft);padding:6px 9px}
+  .mini.fav.on{color:#fff;background:var(--marigold);border-color:var(--marigold)}
   .mini:active{transform:translateY(1px)}
   .mini:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 
@@ -83,6 +85,14 @@
   .plan-name{font-family:var(--disp);font-weight:700;font-size:20px;border:0;border-bottom:2px dashed var(--line-strong);background:none;color:var(--ink);padding:2px 0;min-width:60px;flex:1}
   .plan-name:focus{outline:0;border-bottom-color:var(--teal)}
   .total{font-family:var(--disp);font-weight:700;font-size:17px;color:var(--teal);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:5px 10px;white-space:nowrap}
+  .squad{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:9px 0 0}
+  .squad .fld{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;padding:5px 11px}
+  .squad .fld label{font-family:var(--disp);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:12px;color:var(--teal)}
+  .squad .fld input{width:46px;border:0;background:none;font-family:var(--disp);font-weight:700;font-size:18px;text-align:center;color:var(--ink);-moz-appearance:textfield}
+  .squad .fld input:focus{outline:2px solid var(--teal);border-radius:5px}
+  .dist{font-size:13.5px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--marigold);border-radius:9px;padding:9px 12px;margin:9px 0 2px}
+  .dist b{color:var(--teal)}
+  .dist .hint{display:block;color:var(--ink-soft);font-size:12px;margin-top:4px;line-height:1.4}
   .blk{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
   .blk:last-child{border-bottom:0}
   .blk .grab{color:var(--ink-soft);font-size:13px;display:flex;flex-direction:column;gap:2px}
@@ -161,9 +171,15 @@
       <input class="plan-name" id="planName" aria-label="Session name" value="Session">
       <span class="total" id="planTotal">0 min</span>
     </div>
-    <div class="row" style="margin:4px 0 2px">
+    <div class="squad">
+      <div class="fld"><label for="cfgPlayers">Players</label><input id="cfgPlayers" type="number" min="2" max="40" value="14"></div>
+      <div class="fld"><label for="cfgCourts">Courts</label><input id="cfgCourts" type="number" min="1" max="6" value="2"></div>
+    </div>
+    <div class="dist" id="distLine"></div>
+    <div class="row" style="margin:8px 0 2px">
       <select id="planSwitch" class="min" style="width:auto;flex:1;text-align:left;padding:8px 10px"></select>
       <button class="mini" id="newPlan">＋ New</button>
+      <button class="mini" id="dupPlan">Duplicate</button>
       <button class="mini warn" id="delPlan">Delete</button>
     </div>
 
@@ -239,6 +255,7 @@
         </div>
       </div>
     </div>
+    <div id="runSquad"></div>
     <div id="runDetail"></div>
   </div>
 
@@ -273,7 +290,7 @@ const SEED_LIB=[
    steps:['Dig → set → controlled hit, keep it alive.','2nd and 3rd contact stay controlled — chase long rallies.','Last 2 min: allow harder controlled hits.'],
    cue:'Reward rallies that stay alive, not winners.'},
   {id:'tc1',name:'Serve targets + first contact',phase:'Technical',skills:['serve','passing'],min:12,diagram:'serve',
-   setup:'Serve straight to your partner in lanes: 4 on Court A, 3 on Court B — nobody waits.',
+   setup:'Serve straight to your partner in lanes — as many lanes per court as fit, so nobody waits.',
    steps:['Server names a zone before serving: deep seam, deep corner, or short.','Passer calls the ball early — “short / deep / wind” — and passes to a target by the net.','Swap server/passer every minute; count clean passes as a pair.'],
    cue:'Every serve has a named target. A serve with no plan is a wasted rep.'},
   {id:'tc2',name:'Two-touch attack, imperfect pass',phase:'Technical',skills:['attack','shot selection'],min:10,diagram:'servevs',
@@ -285,7 +302,7 @@ const SEED_LIB=[
    steps:['Feeder simulates a reception near the net.','Setter runs in and delivers a lateral set to the pin.','Focus: body square to target, high contact, full extension.'],
    cue:'Hands high, set the line — no rushing the feet.'},
   {id:'cp1',name:'Perfect side-out — zones',phase:'Competitive',skills:['side-out','shot selection'],min:18,diagram:'sideout',
-   setup:'Court A: 4 teams (2 on, rotate). Court B: 3 teams (2 on, 1 waits to serve).',
+   setup:'Per court: 2 teams on, the rest rotate in after each finished attack.',
    steps:['You only score by landing an attack in a marked zone: deep corners + short.','First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.','Everything else is a wash — next team rotates in after each finished attack.'],
    cue:'Tempts the high deep line shot. Reward smart shot selection over power.'},
   {id:'cp2',name:'Serve vs side-out game',phase:'Competitive',skills:['serve','attack','pressure'],min:15,diagram:'servevs',
@@ -297,7 +314,7 @@ const SEED_LIB=[
    steps:['Serve, play it out. First-ball side-out win = a big point.','Side-out but not first-ball → win a follow-up free-ball rally to earn the point.','Serving team wins → receivers must win two follow-ups. Play 15 balls, then switch.'],
    cue:'Rewards clean first-ball side-out. Track big points out loud.'},
   {id:'cp4',name:'King of the Court',phase:'Competitive',skills:['everything','game sense'],min:25,diagram:'kotc',
-   setup:'Each court runs its own KotC. Court A: 4 teams. Court B: 3 teams.',
+   setup:'Each court runs its own King of the Court with the teams on it.',
    steps:['King side scores by winning; challenger side wins to move up. Loser out, next in serves.','Beach rules: no open-hand tips, no sideways hand-set over.','Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side.'],
    cue:'Say almost nothing. Tempo surfaces every weak pass — note them.'},
   {id:'cd1',name:'Cool-down & debrief',phase:'Cool-down',skills:['mobility'],min:5,diagram:'cool',
@@ -306,8 +323,11 @@ const SEED_LIB=[
    cue:'One collective takeaway. Keep it short — end on energy.'}
 ];
 const SEED_PLAN=[
-  {id:'p1',name:'Standard 90',blocks:[
-    {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'cp1',min:18},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:5}
+  {id:'p1',name:'Standard 90 (1.5h)',players:14,courts:2,blocks:[
+    {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'tc3',min:8},{exId:'cp1',min:14},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:5}
+  ]},
+  {id:'p2',name:'Extended 120 (2h)',players:14,courts:2,blocks:[
+    {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'tc3',min:8},{exId:'tc2',min:10},{exId:'cp1',min:18},{exId:'cp3',min:15},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:6}
   ]}
 ];
 
@@ -322,6 +342,32 @@ const savePlans=()=>{store.set('bvt.plans',PLANS);store.set('bvt.active',activeP
 const exById=id=>LIB.find(e=>e.id===id);
 const plan=()=>PLANS.find(p=>p.id===activePlan)||PLANS[0];
 const PHASE_CLASS={'Warm-up':'warm','Technical':'tech','Competitive':'comp','Cool-down':'cool'};
+
+/* migrate older saved plans that predate players/courts */
+PLANS.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;});
+
+/* ============ squad / court split ============ */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const courtLabel=i=>String.fromCharCode(65+i);
+function distribute(players,courts){
+  players=clamp(players|0,0,60); courts=clamp(courts|0,1,6);
+  const pairs=Math.floor(players/2), odd=players%2;
+  const base=Math.floor(pairs/courts); let rem=pairs%courts;
+  const per=[]; for(let i=0;i<courts;i++){per.push(base+(rem>0?1:0)); if(rem>0)rem--;}
+  return {pairs,odd,per};
+}
+function distText(players,courts){
+  const d=distribute(players,courts);
+  if(d.pairs<1) return 'Add players to see the court split.';
+  const parts=d.per.map((t,i)=>`Court ${courtLabel(i)}: <b>${t}</b> team${t!==1?'s':''} (${t*2})`);
+  let s=`<b>${players}</b> players → <b>${d.pairs}</b> pairs · ${parts.join(' · ')}`;
+  const hints=[];
+  if(d.odd) hints.push('1 player left over — make one trio, or rotate that player in each round.');
+  if(Math.min(...d.per)<3) hints.push('Courts with under 3 teams: run 2v2 winner-stays instead of King of the Court.');
+  if(hints.length) s+=`<span class="hint">${hints.join('<br>')}</span>`;
+  return s;
+}
+function renderRunSquad(){const p=plan();document.getElementById('runSquad').innerHTML=`<div class="dist" style="margin-top:14px">${distText(p.players,p.courts)}</div>`;}
 
 /* ============ diagrams ============ */
 function courtSVG(inner){return `<svg class="court" viewBox="0 0 220 360" role="img"><rect x="0" y="0" width="220" height="360" rx="12" fill="#E7D6B0"/><rect x="40" y="40" width="140" height="280" fill="none" stroke="#fff" stroke-width="3"/><line x1="40" y1="180" x2="180" y2="180" stroke="#10302E" stroke-width="2.5" stroke-dasharray="7 6"/>${inner}</svg>`;}
@@ -338,32 +384,60 @@ const DIAGRAMS={
   cool: courtSVG(dot(90,200,'A','a')+dot(130,200,'A','a'))
 };
 const LEGEND=`<div class="legend"><span><i class="k" style="background:#14746B"></i>Team A</span><span><i class="k" style="background:#E1930B"></i>Team B</span><span><i class="k" style="background:#14746B"></i>serve</span><span><i class="k" style="background:#E4572E"></i>ball / zone</span></div>`;
+// A diagram is only shown when the drill opts into a real, matching preset.
+// 'court' is the generic filler, so it (and anything unknown/missing) is auto-hidden until we generate proper per-drill diagrams.
+const GENERIC_DIAGRAMS=['court',''];
+function diagramFor(e){
+  const key=e&&e.diagram;
+  if(!key || GENERIC_DIAGRAMS.includes(key) || !DIAGRAMS[key] || key==='court') return '';
+  return DIAGRAMS[key];
+}
 
 /* ============ LIBRARY render ============ */
-const PHASES=['All','Warm-up','Technical','Competitive','Cool-down'];
+const PHASES=['All','★','Warm-up','Technical','Competitive','Cool-down'];
 function renderFilters(){
   const f=document.getElementById('libFilters');
   f.innerHTML=PHASES.map(p=>`<button class="fchip${p===libFilter?' active':''}" data-f="${p}">${p}</button>`).join('');
   f.querySelectorAll('.fchip').forEach(c=>c.onclick=()=>{libFilter=c.dataset.f;renderFilters();renderLib();});
 }
+let libOpenId=null;
+function toggleFav(id){const e=exById(id);if(!e)return;e.fav=!e.fav;saveLib();renderLib();}
 function renderLib(){
-  document.getElementById('libCount').textContent=`${LIB.length} exercises · tap ＋ to add one to your session`;
+  const favCount=LIB.filter(e=>e.fav).length;
+  document.getElementById('libCount').textContent=`${LIB.length} exercises · ${favCount} favourite${favCount!==1?'s':''} · tap a name for details`;
   const list=document.getElementById('libList');
-  const items=LIB.filter(e=>libFilter==='All'||e.phase===libFilter);
-  if(!items.length){list.innerHTML=`<div class="empty">No exercises here yet.</div>`;return;}
-  list.innerHTML=items.map(e=>`
+  let items=LIB.filter(e=> libFilter==='All' ? true : libFilter==='★' ? e.fav : e.phase===libFilter);
+  // favourites first, then keep existing order
+  items=items.map((e,i)=>({e,i})).sort((a,b)=>(b.e.fav?1:0)-(a.e.fav?1:0)||a.i-b.i).map(x=>x.e);
+  if(!items.length){list.innerHTML=`<div class="empty">${libFilter==='★'?'No favourites yet — tap the ☆ on any exercise.':'No exercises here yet.'}</div>`;return;}
+  list.innerHTML=items.map(e=>{
+    const open=libOpenId===e.id;
+    const dia=diagramFor(e);
+    return `
     <div class="card"><div class="ex">
       <span class="pill ${PHASE_CLASS[e.phase]}">${e.phase.slice(0,4)}</span>
       <div class="body">
-        <h3>${esc(e.name)}</h3>
+        <h3 data-toggle="${e.id}" style="cursor:pointer">${esc(e.name)} <span style="color:var(--ink-soft);font-size:13px">${open?'▲':'▼'}</span></h3>
         <div class="tags"><span class="tag">${e.min} min</span>${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
+        ${open?`
+        <div style="margin-top:11px">
+          ${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
+          ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
+          <h4 class="sub" style="margin-top:0">Steps</h4>
+          <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+          ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+        </div>`:''}
         <div class="acts">
+          <button class="mini ${e.fav?'fav on':'fav'}" data-fav="${e.id}" aria-pressed="${!!e.fav}" title="Favourite">${e.fav?'★':'☆'}</button>
           <button class="mini solid" data-add="${e.id}">＋ Add to session</button>
           <button class="mini" data-edit="${e.id}">Edit</button>
           <button class="mini warn" data-del="${e.id}">Delete</button>
         </div>
       </div>
-    </div></div>`).join('');
+    </div></div>`;
+  }).join('');
+  list.querySelectorAll('[data-toggle]').forEach(h=>h.onclick=()=>{libOpenId=libOpenId===h.dataset.toggle?null:h.dataset.toggle;renderLib();});
+  list.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>toggleFav(b.dataset.fav));
   list.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addToPlan(b.dataset.add));
   list.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEditor(b.dataset.edit));
   list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(confirm('Delete this exercise?')){LIB=LIB.filter(x=>x.id!==b.dataset.del);saveLib();renderLib();}});
@@ -392,7 +466,7 @@ document.getElementById('edSave').onclick=()=>{
     steps:edSteps.value.split('\n').map(s=>s.trim()).filter(Boolean),
     cue:edCue.value.trim(), diagram:edDiagram.value
   };
-  if(editingId){const i=LIB.findIndex(x=>x.id===editingId);LIB[i]=obj;} else LIB.push(obj);
+  if(editingId){const i=LIB.findIndex(x=>x.id===editingId);obj.fav=LIB[i].fav||false;LIB[i]=obj;} else LIB.push(obj);
   saveLib(); closeEditor(); renderLib(); toast('Saved');
 };
 
@@ -405,10 +479,24 @@ document.getElementById('importBtn').onclick=()=>document.getElementById('import
 document.getElementById('importFile').onchange=ev=>{
   const file=ev.target.files[0];if(!file)return;const r=new FileReader();
   r.onload=()=>{try{const d=JSON.parse(r.result);
-    if(Array.isArray(d.library))LIB=d.library;
-    if(Array.isArray(d.plans)&&d.plans.length){PLANS=d.plans;activePlan=PLANS[0].id;}
-    saveLib();savePlans();renderAll();toast('Imported');
-  }catch(e){toast('Could not read that file');}};
+    const incoming=Array.isArray(d.library)?d.library:[];
+    const incomingPlans=Array.isArray(d.plans)?d.plans:[];
+    const merge=incoming.length && LIB.length ? confirm('OK = MERGE these into your current library.\nCancel = REPLACE your whole library.') : false;
+    if(merge){const by={};LIB.forEach(e=>by[e.id]=e);incoming.forEach(e=>by[e.id]=e);LIB=Object.values(by);}
+    else if(incoming.length){LIB=incoming;}
+    if(incomingPlans.length){
+      const byP={};PLANS.forEach(p=>byP[p.id]=p);
+      incomingPlans.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;byP[p.id]=p;});
+      PLANS=Object.values(byP);
+      activePlan=incomingPlans[incomingPlans.length-1].id; // jump to the last plan brought in, so it's visible immediately
+    }
+    saveLib();savePlans();renderAll();
+    const bits=[];
+    if(incoming.length) bits.push((merge?'merged ':'loaded ')+incoming.length+' exercise'+(incoming.length!==1?'s':''));
+    if(incomingPlans.length) bits.push('added '+incomingPlans.length+' session'+(incomingPlans.length!==1?'s':'')+': '+incomingPlans.map(p=>p.name).join(', '));
+    toast(bits.length?bits.join(' · '):'Nothing to import — check the file');
+  }catch(e){toast('Could not read that file');}
+  ev.target.value='';};
   r.readAsText(file);
 };
 
@@ -440,10 +528,16 @@ function renderPlan(){
   }
   const total=p.blocks.reduce((s,b)=>s+(+b.min||0),0);
   document.getElementById('planTotal').textContent=total+' min';
+  document.getElementById('cfgPlayers').value=p.players;
+  document.getElementById('cfgCourts').value=p.courts;
+  document.getElementById('distLine').innerHTML=distText(p.players,p.courts);
 }
 document.getElementById('planName').oninput=e=>{plan().name=e.target.value;savePlans();renderPlanSwitch();};
 document.getElementById('planSwitch').onchange=e=>{activePlan=e.target.value;savePlans();renderPlan();};
-document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
+document.getElementById('cfgPlayers').oninput=e=>{plan().players=clamp(parseInt(e.target.value)||0,0,60);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
+document.getElementById('cfgCourts').oninput=e=>{plan().courts=clamp(parseInt(e.target.value)||1,1,6);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
+document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',players:14,courts:2,blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
+document.getElementById('dupPlan').onclick=()=>{const s=plan();const p={id:uid(),name:s.name+' copy',players:s.players,courts:s.courts,blocks:s.blocks.map(b=>({...b}))};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();toast('Duplicated');};
 document.getElementById('delPlan').onclick=()=>{if(PLANS.length<2){toast('Keep at least one plan');return;}if(confirm('Delete this plan?')){PLANS=PLANS.filter(p=>p.id!==activePlan);activePlan=PLANS[0].id;savePlans();renderPlan();}};
 function addToPlan(exId){const e=exById(exId);plan().blocks.push({exId,min:e.min});savePlans();renderPlan();toast(e.name+' added');}
 
@@ -457,10 +551,11 @@ function renderDetail(){
   const host=document.getElementById('runDetail');
   if(!runBlocks.length){host.innerHTML=`<div class="empty" style="margin-top:20px">This plan has no blocks. Add some in Plan / Library.</div>`;return;}
   const e=runBlocks[idx].ex;
+  const dia=diagramFor(e);
   const nx=runBlocks[idx+1]?`Up next · ${esc(runBlocks[idx+1].ex.name)}`:'Last block';
   host.innerHTML=`<div class="detail">
     ${e.setup?`<div class="setup-line">${esc(e.setup)}</div>`:''}
-    ${DIAGRAMS[e.diagram]||DIAGRAMS.court}${LEGEND}
+    ${dia?dia+LEGEND:''}
     <h4 class="sub">How it runs</h4>
     <ol class="play">${e.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
     ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
@@ -483,10 +578,10 @@ document.getElementById('skipBtn').onclick=()=>goTo(idx+1);
 document.getElementById('prevBtn').onclick=()=>goTo(idx-1);
 document.getElementById('resetBtn').onclick=()=>{pause();document.getElementById('playBtn').textContent='Start';goTo(0);};
 document.getElementById('soundBtn').onclick=()=>{sound=!sound;const b=document.getElementById('soundBtn');b.textContent=sound?'🔊':'🔈';b.setAttribute('aria-pressed',sound);};
-document.getElementById('startBtn').onclick=()=>{buildRun();if(!runBlocks.length){toast('Add exercises first');return;}pause();document.getElementById('playBtn').textContent='Start';idx=0;remaining=runBlocks[0].min*60;renderDetail();paint();switchTab('run');};
+document.getElementById('startBtn').onclick=()=>{buildRun();if(!runBlocks.length){toast('Add exercises first');return;}pause();document.getElementById('playBtn').textContent='Start';idx=0;remaining=runBlocks[0].min*60;renderRunSquad();renderDetail();paint();switchTab('run');};
 
 /* ============ tabs ============ */
-function switchTab(t){document.body.dataset.view=t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
+function switchTab(t){document.body.dataset.view=t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));if(t==='run')renderRunSquad();window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
 document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>switchTab(x.dataset.tab));
 
 /* ============ init ============ */

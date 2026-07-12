@@ -1,0 +1,1085 @@
+{
+ "library": [
+  {
+   "id": "wm1",
+   "name": "Movement ladder",
+   "phase": "Warm-up",
+   "skills": [
+    "activation",
+    "footwork"
+   ],
+   "min": 5,
+   "diagram": "warmup",
+   "setup": "All pairs spread across both courts. No teams yet.",
+   "steps": [
+    "Baseline to net and back, 4-5 mid-tempo runs.",
+    "Each player calls one movement for the next length: skips, side-steps, split-steps, drop-steps.",
+    "Build intensity up, then ease back into mobility."
+   ],
+   "cue": "Quiet feet, early to the ball. One reminder only."
+  },
+  {
+   "id": "wm2",
+   "name": "Pepper progression",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "In pairs on half a court.",
+   "steps": [
+    "Dig -> set -> controlled hit, keep it alive.",
+    "2nd and 3rd contact stay controlled - chase long rallies.",
+    "Last 2 min: allow harder controlled hits."
+   ],
+   "cue": "Reward rallies that stay alive, not winners."
+  },
+  {
+   "id": "tc1",
+   "name": "Serve targets + first contact",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "passing"
+   ],
+   "min": 12,
+   "diagram": "serve",
+   "setup": "Serve straight to your partner in lanes - as many lanes per court as fit, so nobody waits.",
+   "steps": [
+    "Server names a zone before serving: deep seam, deep corner, or short.",
+    "Passer calls the ball early - short / deep / wind - and passes to a target by the net.",
+    "Swap server/passer every minute; count clean passes as a pair."
+   ],
+   "cue": "Every serve has a named target. A serve with no plan is a wasted rep."
+  },
+  {
+   "id": "tc2",
+   "name": "Two-touch attack, imperfect pass",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot selection"
+   ],
+   "min": 10,
+   "diagram": "servevs",
+   "setup": "2v2 full court. One tough serve at a receiver.",
+   "steps": [
+    "Receiver passes high off a hard serve.",
+    "Attacker plays the 2nd ball to the open side - hard hit if on, else shot / poke / free.",
+    "Rally must finish within two contacts."
+   ],
+   "cue": "Good decisions from bad passes - that is the whole beach game."
+  },
+  {
+   "id": "tc3",
+   "name": "Lateral set reps",
+   "phase": "Technical",
+   "skills": [
+    "setting"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Pairs, one feeder near the net.",
+   "steps": [
+    "Feeder simulates a reception near the net.",
+    "Setter runs in and delivers a lateral set to the pin.",
+    "Focus: body square to target, high contact, full extension."
+   ],
+   "cue": "Hands high, set the line - no rushing the feet."
+  },
+  {
+   "id": "cp1",
+   "name": "Perfect side-out - zones",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "shot selection"
+   ],
+   "min": 18,
+   "diagram": "sideout",
+   "setup": "Per court: 2 teams on, the rest rotate in after each finished attack.",
+   "steps": [
+    "You only score by landing an attack in a marked zone: deep corners + short.",
+    "First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.",
+    "Everything else is a wash - next team rotates in after each finished attack."
+   ],
+   "cue": "Tempts the high deep line shot. Reward smart shot selection over power."
+  },
+  {
+   "id": "cp2",
+   "name": "Serve vs side-out game",
+   "phase": "Competitive",
+   "skills": [
+    "serve",
+    "attack",
+    "pressure"
+   ],
+   "min": 15,
+   "diagram": "servevs",
+   "setup": "Winner stays, loser out, next team serves in (mini King of the Court).",
+   "steps": [
+    "Serving team scores +2 for an ace.",
+    "Receiving team must attack into the corridor 1 m inside each sideline: +1 in, -1 out.",
+    "First to 8 wins the round, then swap who serves; winner holds court."
+   ],
+   "cue": "Risk management: when is the aggressive serve or line shot worth it?"
+  },
+  {
+   "id": "cp3",
+   "name": "1-2-3 Wash",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "transition"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "2v2, one serving side. Extra teams queue to enter.",
+   "steps": [
+    "Serve, play it out. First-ball side-out win = a big point.",
+    "Side-out but not first-ball -> win a follow-up free-ball rally to earn the point.",
+    "Serving team wins -> receivers must win two follow-ups. Play 15 balls, then switch."
+   ],
+   "cue": "Rewards clean first-ball side-out. Track big points out loud."
+  },
+  {
+   "id": "cp4",
+   "name": "King of the Court",
+   "phase": "Competitive",
+   "skills": [
+    "everything",
+    "game sense"
+   ],
+   "min": 25,
+   "diagram": "kotc",
+   "setup": "Each court runs its own King of the Court with the teams on it.",
+   "steps": [
+    "King side scores by winning; challenger side wins to move up. Loser out, next in serves.",
+    "Beach rules: no open-hand tips, no sideways hand-set over.",
+    "Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side."
+   ],
+   "cue": "Say almost nothing. Tempo surfaces every weak pass - note them."
+  },
+  {
+   "id": "cd1",
+   "name": "Cool-down & debrief",
+   "phase": "Cool-down",
+   "skills": [
+    "mobility"
+   ],
+   "min": 5,
+   "diagram": "cool",
+   "setup": "Stay in pairs, on court.",
+   "steps": [
+    "Light mobility & stretch: calves, shoulders, hips, wrists.",
+    "30 s pair debrief: one thing that worked, one to fix."
+   ],
+   "cue": "One collective takeaway. Keep it short - end on energy."
+  },
+  {
+   "id": "bab1",
+   "name": "Partner Passing",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "technique"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs ~5 m apart. (Better at Beach #1)",
+   "steps": [
+    "Toss, pass, catch, repeat; give lots of feedback.",
+    "Progress: pass back and forth continuously.",
+    "Harder: toss to 8 and 4 o'clock, then one arm only, then juggle two balls."
+   ],
+   "cue": "Slowest, most technical drill of the day - fix platform angles here."
+  },
+  {
+   "id": "bab2",
+   "name": "Overhead Passing (line of 3)",
+   "phase": "Technical",
+   "skills": [
+    "setting",
+    "passing"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "Three in a straight line. (Better at Beach #2)",
+   "steps": [
+    "P1 tosses to P2, who overhead-passes over their head to P3; P2 turns to face P3 and repeats back.",
+    "15 passes, then rotate.",
+    "Harder: continuous, or two balls with P3 passing a long ball so P2 never turns."
+   ],
+   "cue": "Square the hips before the ball arrives - no passing on the turn."
+  },
+  {
+   "id": "bab3",
+   "name": "Triangle / Square Passing",
+   "phase": "Warm-up",
+   "skills": [
+    "passing",
+    "ball control"
+   ],
+   "min": 5,
+   "diagram": "court",
+   "setup": "3 in a triangle (4 = square). (Better at Beach #3)",
+   "steps": [
+    "Toss right, pass right, catch, repeat; once smooth, go left.",
+    "Progress: continuous passing.",
+    "Harder: two or more balls at once."
+   ],
+   "cue": "Feet to the ball, deliver to the next station - not just up."
+  },
+  {
+   "id": "bab4",
+   "name": "Passing Groups",
+   "phase": "Technical",
+   "skills": [
+    "serve receive",
+    "passing"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "P1 baseline, P2 receives, P3 target near net (add P4 at the pin if you have one). (Better at Beach #4)",
+   "steps": [
+    "P1 sends 10 balls to P2, who passes to the target; target catches and feeds P1.",
+    "Use 2-3 balls; rotate after 10. Aim under 20 s for 10 good passes at this level.",
+    "Progress: serve instead of throw, move back to full court, then jump serve; work float or topspin."
+   ],
+   "cue": "Target quality over speed - a pass the setter can use."
+  },
+  {
+   "id": "bab5",
+   "name": "Butterfly",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "serve",
+    "movement"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "Passing Groups but with constant rotation - follow your ball. (Better at Beach #5)",
+   "steps": [
+    "P1 serves/throws to a passer, who passes to the target; target catches.",
+    "After each action, rotate to the next spot (follow the ball).",
+    "Progress: serve instead of throw; keep it continuous."
+   ],
+   "cue": "Move through the drill under control - reps stay clean at speed."
+  },
+  {
+   "id": "bab6",
+   "name": "Partners Short-Deep",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs across the net. (Better at Beach #6)",
+   "steps": [
+    "P1 tosses a short ball (~2 m off net); P2 passes it back; then P1 tosses deep (~7 m).",
+    "5 short + 5 deep, then switch. Tosses must rise above net height.",
+    "Harder: P1 sets to self first; then pokey the short and hit a soft deep ball."
+   ],
+   "cue": "Read short vs deep early and get the platform there first."
+  },
+  {
+   "id": "bab7",
+   "name": "Over-the-Net Pepper w/ Switching",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control"
+   ],
+   "min": 8,
+   "diagram": "warmup",
+   "setup": "Three touches each side over the net; extra players rotate out after sending it over. With 7-8, split the court into two. (Better at Beach #7)",
+   "steps": [
+    "Progress the third contact: pass-pass-pass, then pass-set-tomahawk, -pokey, -hit, -jump hit.",
+    "If more than two on a side, the player who sends it over rotates out.",
+    "Harder: back-sets - P1 goes around P2, who sets behind to P1 to send over."
+   ],
+   "cue": "Stay at a progression you can sustain - don't chase the hardest version."
+  },
+  {
+   "id": "bab8",
+   "name": "Server vs Passer (scored)",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "passing",
+    "competitive"
+   ],
+   "min": 10,
+   "diagram": "serve",
+   "setup": "Half court. P1 serves 10 at P2 (passing to P3, the judge). (Better at Beach #8)",
+   "steps": [
+    "Score the passer: perfect pass or missed serve = 3, OK = 2, bad = 1, ace = 0.",
+    "Judge counts out loud; only the passer scores. Rotate through the group.",
+    "Re-seed by score for a second round so like plays like."
+   ],
+   "cue": "Passer wins by never getting aced and rarely giving a bad ball."
+  },
+  {
+   "id": "bab9",
+   "name": "Two-Ball Rhythm Control",
+   "phase": "Technical",
+   "skills": [
+    "ball control",
+    "setting"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "3 v 3, a full-time setter each side. Adjust one side if fewer. (Better at Beach #9)",
+   "steps": [
+    "Two balls start at once: P1 throws over to one side while P5 throws to the other.",
+    "Three-touch volleyball, middle player sets every second touch; hitters hit line only.",
+    "If one ball dies, keep the other alive and re-enter a ball in rhythm. Rotate every 2-3 min; later hit cross."
+   ],
+   "cue": "Keep both balls alive - this is a control drill, not a kill drill."
+  },
+  {
+   "id": "bab10",
+   "name": "Hot Potato",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "communication"
+   ],
+   "min": 8,
+   "diagram": "warmup",
+   "setup": "Pairs; one holds a spare 'potato' ball. (Better at Beach #10)",
+   "steps": [
+    "P1 tosses the play ball; P2 throws the potato up, sets the play ball back, catches the potato. 10x, switch.",
+    "Progress: forearm pass instead of set; then both players hold a potato.",
+    "Team version: 2v2, each team has a potato they must toss to a partner before playing - 3 touches, never drop it."
+   ],
+   "cue": "Forces early, decisive movement - no standing and reaching."
+  },
+  {
+   "id": "bab11",
+   "name": "6-Touch Pepper",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "emergency"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Across from a partner. (Better at Beach #11)",
+   "steps": [
+    "Six contacts before sending it over: pass-tomahawk-fist-fist-set-control spike (or pokey-pokey variant).",
+    "Never catch - even out of order, keep it up with real volleyball touches.",
+    "Fist = contact above the head with palms/closed fingers, not a punch."
+   ],
+   "cue": "Trains the emergency touches players skip - keep it airborne."
+  },
+  {
+   "id": "bab12",
+   "name": "Fun Touch Pepper",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs; coach names a 3-touch sequence. (Better at Beach #12)",
+   "steps": [
+    "Alternate touches while holding the order, e.g. open hand-backhand-fist, or pokey-head-chicken wing.",
+    "Be creative and keep it challenging.",
+    "Goal: keep the ball alive and keep the sequence correct."
+   ],
+   "cue": "Widen the emergency-touch range - laughter allowed."
+  },
+  {
+   "id": "bab13",
+   "name": "Agility Passing",
+   "phase": "Warm-up",
+   "skills": [
+    "movement",
+    "passing"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "4x4 m box of cones each side; feeder feeds 4 balls, one per cone. (Better at Beach #13)",
+   "steps": [
+    "Pass each ball to a target while moving the pattern with correct footwork, chest to the net.",
+    "Pattern 1: figure-8, all forward running.",
+    "Pattern 2: figure-8 with diagonal sprints + backpedals. Pattern 3: shuffle-sprint-shuffle, finish with a dive."
+   ],
+   "cue": "Fast, balanced, and still a clean platform - movement under control."
+  },
+  {
+   "id": "bab14",
+   "name": "Step-Back Partner Serving",
+   "phase": "Technical",
+   "skills": [
+    "serve"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "Partners across the net at ~half court. (Better at Beach #14)",
+   "steps": [
+    "Serve so your partner catches with no more than one step; they serve back the same way.",
+    "Two clean catches in a row -> both step back and repeat.",
+    "Progress: jump-float and jump-spike serves."
+   ],
+   "cue": "Add power only when accuracy holds - one step, no more."
+  },
+  {
+   "id": "bab15",
+   "name": "Around the World Serving",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "accuracy"
+   ],
+   "min": 10,
+   "diagram": "serve",
+   "setup": "Split each side into 6 zones (3 back, 3 front). (Better at Beach #15)",
+   "steps": [
+    "Serve the zones in order; only advance once you hit the current zone.",
+    "Chase your own ball and return to the line quickly. Complete all 6 to finish.",
+    "Harder: jump serves; net/out = back a zone (or restart from zone 1)."
+   ],
+   "cue": "Cold, deliberate accuracy - pick the zone, then execute."
+  },
+  {
+   "id": "bab16",
+   "name": "Servers vs Runners",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "accuracy"
+   ],
+   "min": 10,
+   "diagram": "serve",
+   "setup": "Runner starts opposite the server and may move only at contact. (Better at Beach #16)",
+   "steps": [
+    "Server tries to land it in the court untouched; runner tries to get a hand on it.",
+    "Aim a specific zone (e.g. short) and set the runner's start to match.",
+    "Harder: runner must make a volleyball touch AND catch to score."
+   ],
+   "cue": "Fast, flat, accurate serves that beat a moving defender."
+  },
+  {
+   "id": "bab17",
+   "name": "Deep Rainbow Serves",
+   "phase": "Technical",
+   "skills": [
+    "serve"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "Chairs (or players) ~3 m from the baseline across the court. (Better at Beach #17)",
+   "steps": [
+    "Land the serve behind the chairs, in the court, without touching them.",
+    "No chairs? Draw a line 3-4 m from the baseline; a defender inside it tries to touch the serve.",
+    "Server keeps the ball out of the defender's reach."
+   ],
+   "cue": "High, heavy, deep - the serve that pins passers to the line."
+  },
+  {
+   "id": "bab18",
+   "name": "Zig-Zag Approach",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "footwork"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Players in a zig-zag down the beach, each with a ball except P1. (Better at Beach #18)",
+   "steps": [
+    "Wait on the power foot facing forward; the next player tosses a ball straight up in front.",
+    "Use the power step to the ball and jump straight up-and-down to touch or pokey it.",
+    "Work down the line, then the next player leads."
+   ],
+   "cue": "Feet to the ball, then vertical - check the footprints for straight take-offs."
+  },
+  {
+   "id": "bab19",
+   "name": "Hitting Lines",
+   "phase": "Technical",
+   "skills": [
+    "attack"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Coach or partner feeds consistent balls to an attacker. (Better at Beach #19)",
+   "steps": [
+    "Attack with rhythm: work sharp cross, middle, and line.",
+    "Progress: attacker tosses to a setter for a simple up-and-down set.",
+    "Harder: toss to setter, setter returns a playable ball, then sets - attacker finishes."
+   ],
+   "cue": "Groove the approach and arm swing before adding decisions."
+  },
+  {
+   "id": "bab20",
+   "name": "Short-Deep Decision Vision",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot selection",
+    "vision"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Partners across the net. (Better at Beach #20)",
+   "steps": [
+    "P1 sets a high ball to self; as it goes up P2 moves to the net or deep.",
+    "P1 reads P2 and hits to the open space; P2 catches; switch.",
+    "Harder: keep it alive by digging and setting to yourself instead of catching."
+   ],
+   "cue": "Eyes up on the set - hit where the defender isn't."
+  },
+  {
+   "id": "bab21",
+   "name": "Pokey-Spike Decision Vision",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot selection",
+    "vision"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Partners across the net. (Better at Beach #21)",
+   "steps": [
+    "P1 sets high to self; as it rises P2 raises hands (block) or leaves them down.",
+    "Hands up -> pokey over; hands down -> spike. P2 catches; switch.",
+    "Harder: keep it alive without catching."
+   ],
+   "cue": "Read the block late and commit to the right shot."
+  },
+  {
+   "id": "bab22",
+   "name": "Listen for Your Partner",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "communication"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Set up like Hitting Lines; setter calls the shot. (Better at Beach #22)",
+   "steps": [
+    "P1 jumps to attack hard every ball.",
+    "P2 calls during/after the jump: silence = spike hard.",
+    "A 'cut' or 'high line' call = execute that shot instead."
+   ],
+   "cue": "Trust the caller - late information, correct execution."
+  },
+  {
+   "id": "bab23",
+   "name": "Can't Touch This",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Coach tosses a high ball mid-court to P1; P2 defends the other side. (Better at Beach #23)",
+   "steps": [
+    "P1 attacks so P2 can't touch it.",
+    "Play 1v1, or team-vs-one where the defender stays and attackers rotate through.",
+    "Score touches vs clean kills to keep it competitive."
+   ],
+   "cue": "Attack off the net into space - make the defender wrong."
+  },
+  {
+   "id": "bab24",
+   "name": "Outside the Box",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot selection"
+   ],
+   "min": 10,
+   "diagram": "sideout",
+   "setup": "Cone a box 1-2 m off the net and lines; one setter, a line of attackers on the other side. (Better at Beach #24)",
+   "steps": [
+    "Coach feeds easy balls; pass-set-hit anywhere OUTSIDE the box.",
+    "New setter after every attacker.",
+    "Harder: setter calls the shot on/after the jump; add a blocker/defender to force decisions."
+   ],
+   "cue": "Corners and seams, not the middle - place it outside the box."
+  },
+  {
+   "id": "bab25",
+   "name": "Stable Attack vs Defense",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "Attacker on a box 2 m off net / 2 m in from antenna; the cross-court cut is out. (Better at Beach #25)",
+   "steps": [
+    "Attacker tosses high to self and attacks for a point (not into the cut zone).",
+    "Defenders may hide their formation until the set; higher levels should.",
+    "Defense scores on any error or a 3-touch return; attacker scores otherwise. Mini-games to 7."
+   ],
+   "cue": "Stable set, real read - beat a set defense without the easy cut."
+  },
+  {
+   "id": "bab26",
+   "name": "Open Net Power Game",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "sideout",
+   "setup": "Split a half into short/deep; 3 defenders deep, no block; short half is out. (Better at Beach #26)",
+   "steps": [
+    "Attacking side gets free balls, pass-set and hit HARD into the deep court; rotate every point.",
+    "Defense scores on hitting errors or a dig that a teammate then catches.",
+    "Offense scores when defense can't dig-and-catch. Games to 7."
+   ],
+   "cue": "Commit to the hard swing into the deep box."
+  },
+  {
+   "id": "bab27",
+   "name": "Open Net Short Game",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "sideout",
+   "setup": "Split a half into short/deep; 1 defender short; deep half is out. (Better at Beach #27)",
+   "steps": [
+    "Attacking side gets free balls, pass-set and hit into the SHORT court; rotate every point.",
+    "Defender scores on hitting errors or a dig they then catch.",
+    "Offense scored as a team; games to 7, rotate defenders."
+   ],
+   "cue": "Disguise and place the short attack - touch, not power."
+  },
+  {
+   "id": "bab28",
+   "name": "Plus / Minus",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "conditioning"
+   ],
+   "min": 12,
+   "diagram": "sideout",
+   "setup": "Offense opposite the coach; two defensive teams swap every 3 points to stay fresh. (Better at Beach #28)",
+   "steps": [
+    "Coach feeds fast free balls to the offense; next feed within 8 s of the last.",
+    "Win a rally = +1, lose = -1.",
+    "Offense wins the round at +3, loses at -3."
+   ],
+   "cue": "Physical side-out grind - hold quality as the legs tire."
+  },
+  {
+   "id": "bab29",
+   "name": "U.S.A.",
+   "phase": "Competitive",
+   "skills": [
+    "game sense",
+    "transition"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "A team each side, others waiting to rotate in. (Better at Beach #29)",
+   "steps": [
+    "Coach throws a joust/near-net ball. Win it = 'U' and receive a free ball; win that = 'US'.",
+    "'US' team gets a two-touch ball; win it = 'USA' and then receive serve for the point.",
+    "Win the serve-receive = 1 point; either way losers rotate off. Lose an earlier ball = restart at the joust. Play to 3 with a time cap."
+   ],
+   "cue": "Chain skills under fatigue - each stage is a different pressure."
+  },
+  {
+   "id": "bab30",
+   "name": "1-2-3 Drill",
+   "phase": "Competitive",
+   "skills": [
+    "touch discipline",
+    "game sense"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "Two teams on, others waiting. Coach feeds the team with fewer points. (Better at Beach #30)",
+   "steps": [
+    "First time you play the ball = 1 touch only; second time = exactly 2; third and after = 3.",
+    "Win having used only 1 touch = 3 pts, only 2 touches = 2 pts, otherwise 1 pt. Wrong touch count ends the point. (Blocks don't count against the sequence.)",
+    "Mini-games to 7; first to 5 games wins."
+   ],
+   "cue": "Score big by killing early - discipline the touch count."
+  },
+  {
+   "id": "bab31",
+   "name": "On 2",
+   "phase": "Competitive",
+   "skills": [
+    "attack on 2",
+    "transition"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "Coach feeds a free ball; teams try to attack on 2. (Better at Beach #31)",
+   "steps": [
+    "Goal is a second-ball attack (jump attack at the top level).",
+    "The court must produce three dug 'on-2' attacks (not killed) before scoring turns on.",
+    "In the scoring phase: on-2 kill = 3 pts, anything else = 1; losing team rotates. First to 7."
+   ],
+   "cue": "Attack on 2 when it's there; keep it alive when it isn't."
+  },
+  {
+   "id": "bab32",
+   "name": "Virus",
+   "phase": "Technical",
+   "skills": [
+    "setting",
+    "attack off net",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "Split both sides in half; P1 mid-court with ball, P2 chases, P3 defends opposite half. (Better at Beach #32)",
+   "steps": [
+    "P1 throws a hard-but-playable deep ball; P2 chases and puts up a hittable set.",
+    "P1 attacks (into their half only); P3 tries to dig-and-catch.",
+    "7 balls per position. Setter+attacker score: kill 3, jump-attack dug-and-caught 2, other dug 1, error 0."
+   ],
+   "cue": "Trains the ugliest ball in beach - the set that runs off the net."
+  },
+  {
+   "id": "bab33",
+   "name": "End Game",
+   "phase": "Competitive",
+   "skills": [
+    "pressure",
+    "game sense"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "Two teams on, others waiting. (Better at Beach #33)",
+   "steps": [
+    "Start 12-12, game to 15 win-by-2.",
+    "Sudden death: a service error, attack error, ball-handling error, or stuff block ends it.",
+    "Loser swaps with the waiting team; first to 5 wins overall."
+   ],
+   "cue": "Simulate closing a tight set - clean, brave, no cheap errors."
+  },
+  {
+   "id": "bab34",
+   "name": "3-Man Cross Court",
+   "phase": "Technical",
+   "skills": [
+    "defense",
+    "digging"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "P1 and P2 at the antennas one side; P3 defends diagonally. (Better at Beach #34)",
+   "steps": [
+    "P1 hits cross to P3, who digs to mid-court then slides to the other diagonal.",
+    "P1 runs in to set P2, returns to the antenna; P2 hits cross to P3; repeat.",
+    "Run 2 minutes or 20 digs; if hits are wild, tomahawk/set/pass to the digger instead."
+   ],
+   "cue": "Read the diagonal, dig to the middle, reset fast."
+  },
+  {
+   "id": "bab35",
+   "name": "6-Ball Block Defense",
+   "phase": "Technical",
+   "skills": [
+    "defense",
+    "blocking",
+    "transition"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "Coach attacks from a box; two players in blocker-defender positions, reset each ball. (Better at Beach #35)",
+   "steps": [
+    "1: hard line into the block. 2: playable cut or high line. 3: the shot not hit on ball 2.",
+    "4: ball at the defender, return on two. 5: short ball over the block, return on two.",
+    "6: blocker backs off and takes a ball to the face/body. Transition each for a kill."
+   ],
+   "cue": "Block, pull, and convert - a full defensive sequence every round."
+  },
+  {
+   "id": "bab36",
+   "name": "Dog House",
+   "phase": "Competitive",
+   "skills": [
+    "side-out"
+   ],
+   "min": 18,
+   "diagram": "kotc",
+   "setup": "Paradise-style side-out game to 21. One side is the 'Dog House' (can't score); other side scores. (Better at Beach #36)",
+   "steps": [
+    "Coach serves/free-balls the scoring side. Scoring side wins first ball = 1 point, rotate off.",
+    "Scoring side loses first ball -> Dog House gets a free ball; win it and swap sides.",
+    "You must win two in a row to climb out of the Dog House."
+   ],
+   "cue": "Earn your way out - two straight, no shortcuts."
+  },
+  {
+   "id": "bab37",
+   "name": "The Pit",
+   "phase": "Competitive",
+   "skills": [
+    "defense",
+    "hustle"
+   ],
+   "min": 12,
+   "diagram": "kotc",
+   "setup": "One team defends 'The Pit' for 3 minutes; others feed free balls opposite and rotate every point. (Better at Beach #37)",
+   "steps": [
+    "Only the Pit scores: any dig (2 touches, even a fingernail) = a point.",
+    "Won rallies and errors by the offense score; a stuff block = 2.",
+    "After 3 min, the next team takes the Pit; compare final scores."
+   ],
+   "cue": "Reward hustle - every touch is a point, chase everything."
+  },
+  {
+   "id": "fv66",
+   "name": "Retreat & Play the Ball",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "defense",
+    "footwork"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Blocker starts at the net, then drops off to defend. (FIVB 6.6)",
+   "steps": [
+    "On the attacker's slap, the blocker retreats off the net (karaoke footwork, eyes on the net) and plays the driven ball.",
+    "Vary the attack: short, deep over the head, hard at the face/body, either side.",
+    "Partner sets up or catches the dig; practise dropping off both line and angle."
+   ],
+   "cue": "Face the net, be stopped and balanced at contact - then dig."
+  },
+  {
+   "id": "fv67",
+   "name": "Block & Transition Set",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "setting",
+    "transition"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "Blocker at net, defender behind; ball driven past the block. (FIVB 6.7)",
+   "steps": [
+    "Blocker jumps, then turns on the way down and hustles around the dug ball to set the partner.",
+    "Defender digs the hard ball high enough to give the blocker time.",
+    "With a team each side it becomes continuous angle attacks; get 'around' the ball, shoulders to target."
+   ],
+   "cue": "Turn in the air, get around the ball - don't set on the run."
+  },
+  {
+   "id": "fv68",
+   "name": "Retreat Decision Drill",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "reading"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Blocker lines up on the attacker; a feeder sets tight or off the net. (FIVB 6.8)",
+   "steps": [
+    "Blocker reads the set and decides: stay and block, or pull off.",
+    "Attacker hits into the block or down the line at the retreated blocker.",
+    "Add a back defender to play out digs; blocker randomly drops line or angle to train the read."
+   ],
+   "cue": "Wind, set trajectory, hitter tendency - decide early, commit."
+  },
+  {
+   "id": "fv69",
+   "name": "Jousting",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "net play"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Ball placed on top of the net for two blockers to fight over. (FIVB 6.9)",
+   "steps": [
+    "Two players joust; lock the arm shoulder-to-wrist to bring bodyweight, not just the elbow.",
+    "Time the jump so you get the last push; one hand gives more reach.",
+    "With a third player, a setter over-sets to create the joust. Work all areas of the net."
+   ],
+   "cue": "Aggressive but no net fault - win the top of the net."
+  },
+  {
+   "id": "fv610",
+   "name": "Turn & Get the Shot",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "defense"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Blocker goes up with the attacker who plays a 'baby line' shot over the hands. (FIVB 6.10)",
+   "steps": [
+    "Blocker turns coming down and plays the ball up before it lands.",
+    "Land with bent knees; get arms under the ball rather than swinging sideways.",
+    "A back player sets the dug ball or plays it over on 2."
+   ],
+   "cue": "Don't quit on the shot over the block - turn and dig it up."
+  },
+  {
+   "id": "fv86",
+   "name": "Old School - No Blocking",
+   "phase": "Competitive",
+   "skills": [
+    "defense",
+    "anticipation"
+   ],
+   "min": 15,
+   "diagram": "court",
+   "setup": "Normal game, both defenders back, no block. Draw an 8 ft line. (FIVB 8.6)",
+   "steps": [
+    "Attacker must leave the ground behind the 8 ft line to attack.",
+    "Defenders start low and read the attacker's shoulder, approach and the wind.",
+    "Harder: move the line to 6 ft, make it two-touch, or drop to the sand each time the ball crosses. Works as a King/Queen format with 6-8."
+   ],
+   "cue": "Pure reading and court coverage - anticipate, don't react."
+  },
+  {
+   "id": "fv87",
+   "name": "Serve / Dig / Joust",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "defense",
+    "blocking",
+    "conditioning"
+   ],
+   "min": 15,
+   "diagram": "court",
+   "setup": "Serve and a normal rally, then two coach-fed balls. (FIVB 8.7)",
+   "steps": [
+    "After the rally the coach drives a ball at the receiving team's defender - play it out.",
+    "Then the coach tosses a ball between the blockers to joust - play it out.",
+    "Swap servers and repeat; score a point for winning all 3 of 3 (or 2 each with 5 balls)."
+   ],
+   "cue": "Side-out, then defend, then joust - stay disciplined when tired."
+  },
+  {
+   "id": "fv88",
+   "name": "Monarch of the Court",
+   "phase": "Competitive",
+   "skills": [
+    "game sense",
+    "side-out"
+   ],
+   "min": 20,
+   "diagram": "kotc",
+   "setup": "Points side vs challenger side; 3+ teams. (FIVB 8.8)",
+   "steps": [
+    "Challengers serve; win the rally to cross to the points side.",
+    "Points side wins the rally = a point and stays.",
+    "Choose your rules: missed serves score or not; moving up scores or not; points side allowed 2 errors before out."
+   ],
+   "cue": "A cleaner King-of-the-Court - set the serving rule and let it run."
+  },
+  {
+   "id": "fv89",
+   "name": "Serve / Free / Down (wash)",
+   "phase": "Competitive",
+   "skills": [
+    "transition",
+    "side-out"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "Three-ball wash starting with a serve. (FIVB 8.9)",
+   "steps": [
+    "Ball 1: serve and rally. Ball 2: winner receives a down ball. Ball 3: then a free ball.",
+    "Win all 3 = a big point; split 2:1 = a wash (replay).",
+    "If a team wins none of the 3, the opponent also gets a big point. Optionally play sets of 5."
+   ],
+   "cue": "String together side-out and transition - reward the full sequence."
+  },
+  {
+   "id": "fv810",
+   "name": "Baseball",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "game sense"
+   ],
+   "min": 18,
+   "diagram": "kotc",
+   "setup": "Receiving team = batters, serving team = pitchers; extra teams wait. (FIVB 8.10)",
+   "steps": [
+    "Win a rally = one base; missed serve = a walk (one base); ace = strikeout + switch.",
+    "Lose a rally on receive = a strikeout; 4 rallies won = a home run = a run.",
+    "3 strikeouts and teams switch serve/receive; play set innings, most runs wins."
+   ],
+   "cue": "Fun frame, serious side-out reps - keep the pressure of the count."
+  },
+  {
+   "id": "fv811",
+   "name": "Modified 1-on-1 (2/3 touch)",
+   "phase": "Technical",
+   "skills": [
+    "ball control",
+    "all-round"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "1v1 on a modified court (long-thin or short-fat). (FIVB 8.11)",
+   "steps": [
+    "Coach tosses in; play out the rally using exactly 2 or 3 touches each.",
+    "Winner of the rally scores; play to a set score, then switch sides.",
+    "Harder: serve to start; coach feeds an extra ball to the rally winner for a bonus point."
+   ],
+   "cue": "Maximal touches on every skill - get back to base after each play."
+  },
+  {
+   "id": "fv813",
+   "name": "Over on 1",
+   "phase": "Competitive",
+   "skills": [
+    "attack accuracy",
+    "conditioning"
+   ],
+   "min": 12,
+   "diagram": "servevs",
+   "setup": "Pick a target spot (e.g. deep corner). (FIVB 8.13)",
+   "steps": [
+    "Server serves, then moves to the target spot to defend.",
+    "Receivers must attack into the chosen spot; miss it and the server scores.",
+    "The dug ball is sent straight back over to play out; with advanced players use soft shots so rallies last."
+   ],
+   "cue": "Attack a spot on a normal approach - turn the ball with the wrist."
+  },
+  {
+   "id": "fv814",
+   "name": "Standing Shot Game",
+   "phase": "Competitive",
+   "skills": [
+    "shot play",
+    "vision"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "Normal game, no jumping allowed. (FIVB 8.14)",
+   "steps": [
+    "Play out points using only standing shots - take a look at the defence before every contact.",
+    "Option: double points for any ball that lands untouched, to reward commitment.",
+    "Option: setter calls a specific shot to force communication."
+   ],
+   "cue": "Eyes up, feet under the ball, place it away from the defender."
+  }
+ ]
+}
