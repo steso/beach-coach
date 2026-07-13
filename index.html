@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10302E">
-<title>Beach Trainer</title>
+<title>Beach Coach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -157,8 +157,8 @@
 
 <header>
   <div class="wrap">
-    <p class="eyebrow">Beach · solo coach · 2 courts</p>
-    <h1 id="hTitle">Beach Trainer</h1>
+    <p class="eyebrow">Beach volleyball · training planner</p>
+    <h1 id="hTitle">Beach Coach</h1>
     <div class="sub-h" id="hSub">Build a session from your library, then run it hands-free.</div>
   </div>
 </header>
@@ -505,6 +505,7 @@ function renderPlanSwitch(){
   const s=document.getElementById('planSwitch');
   s.innerHTML=PLANS.map(p=>`<option value="${p.id}"${p.id===activePlan?' selected':''}>${esc(p.name)}</option>`).join('');
 }
+let planOpenIdx=null;
 function renderPlan(){
   renderPlanSwitch();
   const p=plan();
@@ -514,16 +515,26 @@ function renderPlan(){
   else{
     host.innerHTML=`<div class="card">`+p.blocks.map((b,i)=>{
       const e=exById(b.exId); if(!e)return'';
+      const open=planOpenIdx===i;
+      const dia=diagramFor(e);
       return `<div class="blk">
         <div class="grab"><button data-up="${i}" ${i===0?'disabled style=opacity:.25':''}>▲</button><button data-down="${i}" ${i===p.blocks.length-1?'disabled style=opacity:.25':''}>▼</button></div>
-        <div class="nm"><b>${esc(e.name)}</b><span>${e.phase}</span></div>
+        <div class="nm" data-toggle="${i}" style="cursor:pointer"><b>${esc(e.name)} <span style="color:var(--ink-soft);font-size:11px">${open?'▲':'▼'}</span></b><span>${e.phase}</span></div>
         <input class="min" type="number" min="1" max="60" value="${b.min}" data-min="${i}" aria-label="minutes">
         <button class="x" data-rm="${i}" aria-label="remove">✕</button>
-      </div>`;
+      </div>
+      ${open?`<div style="padding:0 13px 13px;border-bottom:1px solid var(--line)">
+        ${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
+        ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
+        <h4 class="sub" style="margin-top:0">Steps</h4>
+        <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+        ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+      </div>`:''}`;
     }).join('')+`</div>`;
-    host.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>{const i=+x.dataset.up;[p.blocks[i-1],p.blocks[i]]=[p.blocks[i],p.blocks[i-1]];savePlans();renderPlan();});
-    host.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>{const i=+x.dataset.down;[p.blocks[i+1],p.blocks[i]]=[p.blocks[i],p.blocks[i+1]];savePlans();renderPlan();});
-    host.querySelectorAll('[data-rm]').forEach(x=>x.onclick=()=>{p.blocks.splice(+x.dataset.rm,1);savePlans();renderPlan();});
+    host.querySelectorAll('[data-toggle]').forEach(h=>h.onclick=()=>{const i=+h.dataset.toggle;planOpenIdx=planOpenIdx===i?null:i;renderPlan();});
+    host.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>{const i=+x.dataset.up;[p.blocks[i-1],p.blocks[i]]=[p.blocks[i],p.blocks[i-1]];planOpenIdx=null;savePlans();renderPlan();});
+    host.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>{const i=+x.dataset.down;[p.blocks[i+1],p.blocks[i]]=[p.blocks[i],p.blocks[i+1]];planOpenIdx=null;savePlans();renderPlan();});
+    host.querySelectorAll('[data-rm]').forEach(x=>x.onclick=()=>{p.blocks.splice(+x.dataset.rm,1);planOpenIdx=null;savePlans();renderPlan();});
     host.querySelectorAll('[data-min]').forEach(x=>x.onchange=()=>{p.blocks[+x.dataset.min].min=Math.max(1,parseInt(x.value)||1);savePlans();renderPlan();});
   }
   const total=p.blocks.reduce((s,b)=>s+(+b.min||0),0);

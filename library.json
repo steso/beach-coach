@@ -1080,6 +1080,707 @@
     "Option: setter calls a specific shot to force communication."
    ],
    "cue": "Eyes up, feet under the ball, place it away from the defender."
+  },
+  {
+   "id": "nt1",
+   "name": "Manchette-Game (bump + reset)",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "footwork"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs/threes over a short space. (from your notes)",
+   "steps": [
+    "Keep the ball up with forearm passes only.",
+    "After every contact, sprint to touch the net post or baseline, then recover into the rally.",
+    "Progress: two touches (bump-set), then one-arm only."
+   ],
+   "cue": "Emergency control under fatigue - platform first, feet always moving."
+  },
+  {
+   "id": "nt2",
+   "name": "Bagger-Massaker (Dig Massacre)",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "defense"
+   ],
+   "min": 8,
+   "diagram": "kotc",
+   "setup": "Forearm-only game across the net in a tight space; each player/pair has 3-4 lives. (from your notes)",
+   "steps": [
+    "Rally with forearm passes only - no hands.",
+    "Lose a rally = lose a life; when you're out you drop to the 'loser court'.",
+    "Last one standing wins; shrink the space (3 m) to force control."
+   ],
+   "cue": "Everything is a dig - keep it alive, no hands."
+  },
+  {
+   "id": "nt3",
+   "name": "Norweger (Norwegian game)",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "game sense"
+   ],
+   "min": 12,
+   "diagram": "kotc",
+   "setup": "5v5 or 4v4 across a beach court, no jumping, two touches per side. (from your notes)",
+   "steps": [
+    "Start cooperative: two touches together, chase long rallies.",
+    "Switch to competitive two-touch points.",
+    "Change sides at a set score; add defense line/cut/hard-dia constraints."
+   ],
+   "cue": "Big-group, low-intensity activation that still competes."
+  },
+  {
+   "id": "nt4",
+   "name": "Reaction pepper (pass = bump)",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "reaction"
+   ],
+   "min": 5,
+   "diagram": "warmup",
+   "setup": "Pairs, one ball. (from your notes)",
+   "steps": [
+    "Call the opposite: 'pass' means bump, 'bump/manchette' means hand-set.",
+    "Hold the sequence and keep the ball alive.",
+    "Speed the calls up as they settle in."
+   ],
+   "cue": "Forces a read before every contact - no autopilot."
+  },
+  {
+   "id": "nt5",
+   "name": "6 Guns pepper",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs, one ball, continuous. (from your notes)",
+   "steps": [
+    "Cycle fast pepper (low, quick balls).",
+    "Then handcuffed (contact in front only), then one-arm only.",
+    "Keep it unbroken through all three."
+   ],
+   "cue": "Widen the control range - quick hands, quiet platform."
+  },
+  {
+   "id": "nt6",
+   "name": "3 m bump control",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "warmup",
+   "setup": "Pairs in a 3 m space, in front of then behind the 3 m line. (from your notes)",
+   "steps": [
+    "Forearm-pass only in the tight space.",
+    "Then two touches (bump-bump) working behind the line.",
+    "Stay controlled - short and precise."
+   ],
+   "cue": "Tiny space, perfect platform - control before power."
+  },
+  {
+   "id": "nt7",
+   "name": "Nähmaschine reception footwork",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "footwork"
+   ],
+   "min": 6,
+   "diagram": "serve",
+   "setup": "Feeder at the net, receiver on the baseline; fast 'sewing-machine' feet. (from your notes)",
+   "steps": [
+    "Shuffle in with quick small steps and pass the fed ball to target.",
+    "Recover and repeat; 2 series each.",
+    "Start facing front, then work stepping back off a deep ball."
+   ],
+   "cue": "Fast feet to a stopped, balanced platform."
+  },
+  {
+   "id": "nt8",
+   "name": "Core & knee stability circuit",
+   "phase": "Warm-up",
+   "skills": [
+    "physical",
+    "injury prevention"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "In threes, own space. (from your notes)",
+   "steps": [
+    "Leg-axis / knee stability 10 each side; shoulder stability 15x.",
+    "Plank with leg circles.",
+    "Single-leg jumps: front, back, right, left."
+   ],
+   "cue": "Prime the joints beach punishes - ankles, knees, shoulders."
+  },
+  {
+   "id": "nt9",
+   "name": "Sand coordination squares",
+   "phase": "Warm-up",
+   "skills": [
+    "movement",
+    "footwork"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "A 4-square grid in the sand; a feeder tosses. (from your notes)",
+   "steps": [
+    "Move to the next square on each ball, one-touch pass to target.",
+    "Second round: two touches per square.",
+    "Mix in lunges, star-walks and coordination circles around a ball."
+   ],
+   "cue": "Balance and change of direction in deep sand."
+  },
+  {
+   "id": "nt10",
+   "name": "3v3 King Court warm-up",
+   "phase": "Warm-up",
+   "skills": [
+    "game sense",
+    "ball control"
+   ],
+   "min": 8,
+   "diagram": "kotc",
+   "setup": "3 per side, King-Court rotation. (from your notes)",
+   "steps": [
+    "Exactly one touch per player, so the side must play all three.",
+    "Switch sides over the net after each ball.",
+    "Win to stay/advance, lose and rotate."
+   ],
+   "cue": "Light, touch-everyone activation with a competitive edge."
+  },
+  {
+   "id": "nt11",
+   "name": "Einspielen - 2v2 over the net",
+   "phase": "Technical",
+   "skills": [
+    "ball control",
+    "attack",
+    "blocking"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "2v2 over the net, both courts. (from your notes)",
+   "steps": [
+    "Controlled three-touch rallies over the net.",
+    "Rotate front/back each ball; add a block jump and a line shot.",
+    "Touch the baseline after each attack, then recover."
+   ],
+   "cue": "Game-tempo warm-up - clean touches, real approaches."
+  },
+  {
+   "id": "nt12",
+   "name": "Line & Diagonal hitting (rotation)",
+   "phase": "Technical",
+   "skills": [
+    "attack"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Groups of 3-4, one setter; work line then cross. (from your notes)",
+   "steps": [
+    "Pass/toss to the setter and attack line.",
+    "Next round attack diagonal; after each attack move into the setting role.",
+    "Swap the group every 2 attacks."
+   ],
+   "cue": "Repeat the approach and finish in both directions."
+  },
+  {
+   "id": "nt13",
+   "name": "Einschlagen - attack vs block & defense",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "blocking",
+    "defense",
+    "transition"
+   ],
+   "min": 14,
+   "diagram": "court",
+   "setup": "Two teams work at once: one serves, the other blocks + defends; rotate the attacking side. (from your notes)",
+   "steps": [
+    "Serve, reception, set, then a controlled attack against a real block and defender.",
+    "The defender digs and sets a return attack (side change).",
+    "Change sides after 2x6 reps; add a service before running to block."
+   ],
+   "cue": "The core beach rep - full side-out and transition against resistance."
+  },
+  {
+   "id": "nt14",
+   "name": "Block & pull (Block lösen)",
+   "phase": "Technical",
+   "skills": [
+    "blocking",
+    "defense"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "One player at the net, 2v2 or 3v3. (from your notes)",
+   "steps": [
+    "Every second ball the net player either blocks or pulls off to defend.",
+    "Partner covers the rest of the court.",
+    "Read the set early to decide block vs pull; work an easy serve to the left, then the right."
+   ],
+   "cue": "Commit to block or pull early - no half-measures at the net."
+  },
+  {
+   "id": "nt15",
+   "name": "Out-of-system setting",
+   "phase": "Technical",
+   "skills": [
+    "setting",
+    "transition"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "3-4 per court; a high ball is thrown deep to a back corner. (from your notes)",
+   "steps": [
+    "A player chases the off-net ball and delivers a hittable set.",
+    "Partner attacks it, or catches for a control focus.",
+    "Rotate through; work both back corners."
+   ],
+   "cue": "Turn a bad ball into a hittable set - the shot that wins beach."
+  },
+  {
+   "id": "nt16",
+   "name": "Square passing with rotation",
+   "phase": "Technical",
+   "skills": [
+    "passing"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Four players on the corners of a square (add a runner). (from your notes)",
+   "steps": [
+    "Pass to the next corner and follow your ball to that spot.",
+    "Keep it continuous; then reverse direction.",
+    "Aim ~20 clean passes as a group."
+   ],
+   "cue": "Platform to target, then move - passing on the go."
+  },
+  {
+   "id": "nt17",
+   "name": "Reception-set rotation (catch & rotate)",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "serve"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "Server, receiver, target (setter) per court. (from your notes)",
+   "steps": [
+    "Serve, reception to the target, target catches.",
+    "Rotate server -> receiver -> target.",
+    "10-20 balls each side; keep the target consistent."
+   ],
+   "cue": "Clean first contact to a consistent target every time."
+  },
+  {
+   "id": "nt18",
+   "name": "Serve to 4 zones",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "accuracy"
+   ],
+   "min": 8,
+   "diagram": "serve",
+   "setup": "Full serving, own ball. (from your notes)",
+   "steps": [
+    "Serve 2 to each zone: left, front, right, deep.",
+    "Chase your ball and reset quickly.",
+    "Progress: float then jump serve to each zone."
+   ],
+   "cue": "Land every serve on a called spot."
+  },
+  {
+   "id": "nt19",
+   "name": "Serve & targeted reception (line vs cut)",
+   "phase": "Technical",
+   "skills": [
+    "serve",
+    "passing"
+   ],
+   "min": 12,
+   "diagram": "serve",
+   "setup": "Two teams, one serving on each court; one fixed receiver. (from your notes)",
+   "steps": [
+    "20 serves, 10 at the same passer.",
+    "The passer plays 10 receptions that set up a line shot, then 10 that set up a cut.",
+    "Then swap serving/receiving roles."
+   ],
+   "cue": "Pressure serving plus reception that sets up a specific shot."
+  },
+  {
+   "id": "nt20",
+   "name": "Auto-smash & play out",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "transition"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Pairs across the net. (from your notes)",
+   "steps": [
+    "Self-toss and attack over the net, then play the rally out.",
+    "10 balls line, 10 cross.",
+    "Add a blocker or defender to force real reads."
+   ],
+   "cue": "Attack, then compete - finish and defend."
+  },
+  {
+   "id": "nt21",
+   "name": "Correction-step attack",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "footwork"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Feeder near the net. (from your notes)",
+   "steps": [
+    "3 approach jumps to feel the last adjusting step (left/right/front/back).",
+    "Then approach and spike a fed ball.",
+    "Coach checks the footprints for a straight take-off."
+   ],
+   "cue": "The last correction step puts you behind the ball."
+  },
+  {
+   "id": "nt22",
+   "name": "Back-set + line attack",
+   "phase": "Technical",
+   "skills": [
+    "setting",
+    "attack"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Threes: passer, setter, attacker at the pin. (from your notes)",
+   "steps": [
+    "Pass to the setter, who back-sets to the pin.",
+    "Attacker finishes line; then rotate.",
+    "Square the shoulders and deliver the back-set high."
+   ],
+   "cue": "Hide the direction, set it high to the pin."
+  },
+  {
+   "id": "nt23",
+   "name": "Cut & line shot (continuous)",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot control"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "Pairs/threes, auto-fed salt & pepper. (from your notes)",
+   "steps": [
+    "Alternate controlled cut shots and line shots, continuously.",
+    "Keep the ball in play throughout.",
+    "Add a defender to read and place away from."
+   ],
+   "cue": "Soft hands, sharp placement - repeatable shots."
+  },
+  {
+   "id": "nt24",
+   "name": "Standshot & defense with 2nd ball",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "Coach with two balls at the net. (from your notes)",
+   "steps": [
+    "Player plays a standing attack, then immediately a 2nd ball.",
+    "Next round: dig the first ball, then a 2nd defensive ball.",
+    "Rapid back-to-back reps, then rotate."
+   ],
+   "cue": "Reset fast - two live actions in a row."
+  },
+  {
+   "id": "nt25",
+   "name": "18:15 Sideout game",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "defense"
+   ],
+   "min": 15,
+   "diagram": "servevs",
+   "setup": "2v2; one team serves; start 18:15, play to 21. (from your notes)",
+   "steps": [
+    "Serve vs side-out from a tight score.",
+    "Switch serve/defense roles every 2 balls; same player receives.",
+    "Variation: only second-ball attacks, or jump on every attack."
+   ],
+   "cue": "Close-score side-out pressure from the first ball."
+  },
+  {
+   "id": "nt26",
+   "name": "Speed sideout (15:12 to 21)",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "conditioning"
+   ],
+   "min": 12,
+   "diagram": "servevs",
+   "setup": "Teams rotate on one court; start 15:12 to 21. (from your notes)",
+   "steps": [
+    "Fast feeds, minimal downtime.",
+    "The side that wins the point rotates; a team may blow max 3 side-outs before a penalty.",
+    "Variation: the first attack must be on 2."
+   ],
+   "cue": "Relentless tempo - hold side-out quality as it speeds up."
+  },
+  {
+   "id": "nt27",
+   "name": "Seilziehen / Tug-of-War (+/-)",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "transition"
+   ],
+   "min": 12,
+   "diagram": "servevs",
+   "setup": "Two teams head-to-head with coach free-balls and a shared counter. (from your notes)",
+   "steps": [
+    "Win a rally and the counter moves your way.",
+    "Reach +3 / +4 to win the round - but a win must be confirmed with one more side-out.",
+    "Loser switches out with a waiting team."
+   ],
+   "cue": "Momentum game - win the confirming ball, don't let it swing back."
+  },
+  {
+   "id": "nt28",
+   "name": "Survivor 4v2",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "4 attackers vs 2 defenders. (from your notes)",
+   "steps": [
+    "Attackers must play on 3 (full pass-set-attack).",
+    "Defenders survive and score by digging and covering.",
+    "Rotate attackers through the two defenders."
+   ],
+   "cue": "Outnumbered defense - read, communicate, cover."
+  },
+  {
+   "id": "nt29",
+   "name": "7 Sideouts (shot progression)",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "shot selection"
+   ],
+   "min": 12,
+   "diagram": "servevs",
+   "setup": "The same receiver takes 7 side-outs in a row. (from your notes)",
+   "steps": [
+    "Attack line first, then cut, then open/free choice, then play the rally out.",
+    "Team keeps a target of clean side-outs.",
+    "Rotate the receiver after the set of 7."
+   ],
+   "cue": "Don't speculate - execute the called shot, then compete."
+  },
+  {
+   "id": "nt30",
+   "name": "Mini-sets to 7 with handicap",
+   "phase": "Competitive",
+   "skills": [
+    "pressure",
+    "game sense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "2v2, short sets to 7. (from your notes)",
+   "steps": [
+    "Give the weaker pairing a 1-2 point handicap (start 14:14, 16:14, etc.).",
+    "Winner stays, loser rotates.",
+    "Adjust the handicap so sets stay tight."
+   ],
+   "cue": "Level the match so every point matters."
+  },
+  {
+   "id": "nt31",
+   "name": "Standshot King of the Court",
+   "phase": "Competitive",
+   "skills": [
+    "game sense",
+    "shot play"
+   ],
+   "min": 15,
+   "diagram": "kotc",
+   "setup": "2v2 King-Court, standing shots only. (from your notes)",
+   "steps": [
+    "Minimum two touches; a teammate touch is required between contacts 1 and 2.",
+    "Win to move up, lose and rotate.",
+    "No jumping - placement and teamwork only."
+   ],
+   "cue": "Win with shots and communication, not power."
+  },
+  {
+   "id": "nt32",
+   "name": "King Court with confirmation",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "game sense"
+   ],
+   "min": 18,
+   "diagram": "kotc",
+   "setup": "Standard King-Court across the court. (from your notes)",
+   "steps": [
+    "Win a rally to move up as usual.",
+    "But you must confirm it by winning the next side-out to bank the point / stay.",
+    "Miss the confirm and you don't advance."
+   ],
+   "cue": "Back-to-back balls - prove the point before it counts."
+  },
+  {
+   "id": "nt33",
+   "name": "Side-out / defense big-point chain",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "defense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "2v2, one team feeds. (from your notes)",
+   "steps": [
+    "Win a side-out, then win a defensive rally = one big point.",
+    "Keep chaining big points until an error.",
+    "Then swap sides and repeat."
+   ],
+   "cue": "String side-out and transition together without a mistake."
+  },
+  {
+   "id": "nt34",
+   "name": "Team + extra attacker (continuous)",
+   "phase": "Competitive",
+   "skills": [
+    "attack",
+    "transition"
+   ],
+   "min": 10,
+   "diagram": "court",
+   "setup": "A full team plus one extra 'attacker' who stays in. (from your notes)",
+   "steps": [
+    "Continuous rallies feeding the extra attacker 10 balls.",
+    "Then rotate the attacker in.",
+    "Keep the flow going - minimal resets."
+   ],
+   "cue": "High-volume attacking reps under game flow."
+  }
+ ],
+ "plans": [
+  {
+   "id": "np1",
+   "name": "Notes - Beach 8 (attack & defense)",
+   "players": 8,
+   "courts": 2,
+   "blocks": [
+    {
+     "exId": "nt8",
+     "min": 8
+    },
+    {
+     "exId": "nt1",
+     "min": 6
+    },
+    {
+     "exId": "nt17",
+     "min": 8
+    },
+    {
+     "exId": "nt18",
+     "min": 8
+    },
+    {
+     "exId": "nt12",
+     "min": 10
+    },
+    {
+     "exId": "nt13",
+     "min": 14
+    },
+    {
+     "exId": "nt25",
+     "min": 15
+    },
+    {
+     "exId": "cp4",
+     "min": 18
+    },
+    {
+     "exId": "cd1",
+     "min": 5
+    }
+   ]
+  },
+  {
+   "id": "np2",
+   "name": "Notes - Beach 12 (6+6)",
+   "players": 12,
+   "courts": 2,
+   "blocks": [
+    {
+     "exId": "nt8",
+     "min": 8
+    },
+    {
+     "exId": "nt6",
+     "min": 6
+    },
+    {
+     "exId": "nt11",
+     "min": 8
+    },
+    {
+     "exId": "nt14",
+     "min": 10
+    },
+    {
+     "exId": "nt13",
+     "min": 12
+    },
+    {
+     "exId": "nt33",
+     "min": 12
+    },
+    {
+     "exId": "nt31",
+     "min": 15
+    },
+    {
+     "exId": "cp4",
+     "min": 20
+    },
+    {
+     "exId": "cd1",
+     "min": 5
+    }
+   ]
   }
  ]
 }
