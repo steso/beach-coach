@@ -586,7 +586,23 @@ document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>switchTab(x.dataset.t
 
 /* ============ init ============ */
 function renderAll(){renderFilters();renderLib();renderPlan();}
+
+/* Auto-load the canonical library.json (falls back to the embedded seed when
+   it can't be fetched, e.g. when opened directly via file://). A library the
+   user has edited and saved locally always takes precedence. */
+async function loadLibrary(){
+  if(store.get('bvt.lib')) return;           // keep the user's saved/edited library
+  try{
+    const res=await fetch('library.json',{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const lib=Array.isArray(data)?data:data.library;
+    if(Array.isArray(lib)&&lib.length){LIB=lib;renderAll();}
+  }catch(e){/* fall back to SEED_LIB already held in LIB */}
+}
+
 renderAll();
+loadLibrary();
 </script>
 </body>
 </html>
