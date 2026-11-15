@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10302E">
-<title>Beach Coach · v1.2.1</title>
+<title>Beach Coach · v1.2.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -48,11 +48,12 @@
   .refresh{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;background:rgba(243,234,214,.08);color:#F3EAD6;border:1px solid #70847D;border-radius:10px;cursor:pointer}
   .refresh:hover{background:rgba(243,234,214,.16)}
   @media(max-width:360px){.brand-copy h1{font-size:23px}.brand-row{gap:8px}.settings{gap:6px}.sub-h{font-size:11px}}
-  .generator{padding:14px;background:var(--surface-2)}
-  .generator summary{cursor:pointer;font-weight:700;min-height:32px}
-  .generator .row{margin:12px 0;align-items:end}
-  .generator label{display:flex;flex:1;flex-direction:column;gap:5px;font-size:13px;min-width:130px}
-  .generator select{width:100%;padding:10px;border:1px solid var(--line-strong);border-radius:9px;background:white;color:var(--ink);min-height:44px}
+  .generator{padding:8px;background:var(--surface-2)}
+  .generator-controls{display:grid;grid-template-columns:minmax(0,1fr) 84px 44px;gap:6px;align-items:center}
+  .generator select{width:100%;min-width:0;height:44px;padding:0 8px;border:1px solid var(--line-strong);border-radius:9px;background:white;color:var(--ink);font-size:14px}
+  #generatePlan{display:grid;place-items:center;padding:0;width:44px;height:44px;min-height:44px}
+  #genStatus{margin:8px 2px 0}
+  #genStatus:empty{display:none}
   .stage-label{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px}
   /* tab bar */
   .tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--ink);border-top:1px solid rgba(243,234,214,.16);display:flex;padding:6px max(14px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom))}
@@ -190,7 +191,7 @@
   <div class="wrap brand-row">
     <div class="brand-copy">
       <h1 id="hTitle">Beach Coach</h1>
-      <div class="sub-h"><span id="hSub">Training planner</span> · <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.2.1">v1.2.1</a></div>
+      <div class="sub-h"><span id="hSub">Training planner</span> · <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.2.2">v1.2.2</a></div>
     </div>
     <div class="settings">
       <select id="language" aria-label="Language"><option value="en">EN</option><option value="de">DE</option></select>
@@ -203,19 +204,16 @@
 
   <!-- ===== PLAN ===== -->
   <div class="view" id="v-plan">
-    <details class="card generator">
-      <summary>Session generator</summary>
-      <p class="muted">Easy warm-up → technique → linked drills → conditioned game → free play → cool-down.</p>
-      <div class="row">
-        <label for="genTopic"><span>Topic</span><select id="genTopic">
+    <section class="card generator" aria-label="Session generator">
+      <div class="generator-controls">
+        <select id="genTopic" aria-label="Topic">
           <option value="mixed">Mixed session</option><option value="reception">Reception</option><option value="setting">Setting</option><option value="attack">Attack</option><option value="block">Block</option><option value="transition">Transition</option><option value="defense">Defense</option>
-        </select></label>
-        <label for="genMinutes"><span>Duration</span><select id="genMinutes"><option value="45">45 min</option><option value="60">60 min</option><option value="90" selected>90 min</option><option value="120">120 min</option></select></label>
+        </select>
+        <select id="genMinutes" aria-label="Duration"><option value="45">45 min</option><option value="60">60 min</option><option value="90" selected>90 min</option><option value="120">120 min</option></select>
+        <button class="btn solid" id="generatePlan" aria-label="Generate new session" title="Generate new session"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="16" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg></button>
       </div>
-      <button class="btn solid" id="generatePlan">✦ Generate new session</button>
-      <p class="muted" id="genStatus" role="status" aria-live="polite">Uses the player and court settings below. Creates a new plan; your saved sessions stay available.</p>
-
-    </details>
+      <p class="muted" id="genStatus" role="status" aria-live="polite"></p>
+    </section>
     <div class="plan-meta">
       <input class="plan-name" id="planName" aria-label="Session name" value="Session">
       <span class="total" id="planTotal">0 min</span>
@@ -320,7 +318,7 @@ const uid=()=>Math.random().toString(36).slice(2,9);
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1600);}
 
 /* Preferences, safe update checks and structured session generation. */
-const APP_VERSION='1.2.1';
+const APP_VERSION='1.2.2';
 let language=store.get('bvt.language')==='de'?'de':'en';
 const DE={
  'Start gently with controlled contacts; increase movement gradually.':'Locker und mit kontrollierten Kontakten beginnen; Bewegung langsam steigern.',
@@ -330,6 +328,7 @@ const DE={
  'Apply the topic in rallies using the selected game scoring.':'Den Schwerpunkt in Ballwechseln mit der Wertung der gewählten Spielform anwenden.',
  'Play normal beach rules and rally scoring; rotate waiting pairs between mini-sets.':'Nach normalen Beachregeln und Rally-Point-Zählweise spielen; wartende Teams nach Mini-Sätzen einwechseln.',
  'Reduce intensity, mobilize gently and share one learning point.':'Intensität reduzieren, locker mobilisieren und eine Erkenntnis teilen.',
+ 'Generate new session':'Neues Training erstellen','New session created':'Neues Training erstellt','All levels':'Alle Niveaus',
  'Training planner':'Trainingsplaner','Refresh app':'App aktualisieren',
  'Language':'Sprache','Check for updates':'Nach Updates suchen','Reload app':'App neu laden',
  'Beach volleyball · training planner':'Beachvolleyball · Trainingsplanung',
@@ -436,7 +435,7 @@ function createGeneratedPlan(topic,total,players,courts,random=Math.random){
  const pick=ids=>{const candidates=ids.filter(id=>exById(id)&&!used.has(id));if(!candidates.length)throw Error('Some required drills are missing. Restore the original library or choose another topic.');const id=candidates[Math.min(candidates.length-1,Math.floor(random()*candidates.length))];used.add(id);return id;};
  const focus=topic==='mixed'?topics[Math.min(topics.length-1,Math.floor(random()*topics.length))]:topic;
  const pools=TOPIC_POOLS[focus];
- const ids=[pick(['bab10','nt1','nt3','new5']),pick(pools.simple),pick(pools.decision),pick(pools.complex),pick(pools.game),pick(['new8']),pick(['cd1'])];
+ const ids=[pick(['wu3m','wufull','wuhands','wucatch','wubump','wuswitch','bab10','nt3','new5'].filter(id=>id!=='nt3'||players>=8)),pick(pools.simple),pick(pools.decision),pick(pools.complex),pick(pools.game),pick(['new8']),pick(['cd1'])];
  // Largest remainder allocation keeps the requested duration exact, all blocks positive.
  const weights=[10,12,16,18,20,20,4],minutes=weights.map(w=>Math.floor(total*w/100));
  const order=weights.map((w,i)=>({i,remainder:total*w/100-minutes[i]})).sort((a,b)=>b.remainder-a.remainder);
@@ -447,8 +446,77 @@ function generateSession(){
  try{
   const current=plan(),p=createGeneratedPlan(document.getElementById('genTopic').value,+document.getElementById('genMinutes').value,current.players,current.courts);
   PLANS.push(p);activePlan=p.id;planOpenIdx=null;savePlans();renderPlan();
-  document.getElementById('genStatus').textContent=language==='de'?`Neuer Plan erstellt: ${p.name}. ${p.courts} Feld(er). Übungen und Dauer lassen sich unten anpassen.`:`New plan created: ${p.name}. ${p.courts} court(s). Adjust drills and minutes below.`;
+  document.getElementById('genStatus').textContent='';toast(t('New session created'));
  }catch(e){document.getElementById('genStatus').textContent=t(e.message);}
+}
+
+const WARMUP_DE={
+  "wu3m": {
+    "name": "Manchette-Spiel · 3-m-Felder",
+    "setup": "Zwei 4 m breite Felder auf einem Court, jeweils 3 m tief ab Netz. Pro Feld 2 gegen 2; kurze Grenzen mit flachen Markierungen kennzeichnen.",
+    "steps": [
+      "Mit einem lockeren Wurf über das Netz beginnen. Nur baggern, maximal drei Teamkontakte.",
+      "Zuerst gemeinsam sechs Netzüberquerungen schaffen. Ohne Sprünge spielen und den Ball hoch halten.",
+      "Danach kurze Runden bis fünf Punkte. Mit einem Wurf starten; zwischen den Runden Partner wechseln."
+    ],
+    "cue": "Weiche Plattform und kleine Korrekturschritte; erst bei stabilen Ballwechseln das Feld verlängern."
+  },
+  "wufull": {
+    "name": "Manchette-Spiel · ganzes Feld",
+    "setup": "2 gegen 2 auf dem ganzen Feld. Bei acht Spielern die zwei wartenden Paare nach jeweils zwei Ballwechseln einwechseln; Wartebereich außerhalb des Spielfelds.",
+    "steps": [
+      "Mit einem Wurf statt Aufschlag beginnen. Alle Kontakte baggern, maximal drei pro Team.",
+      "Kooperativ beginnen: vier Netzüberquerungen schaffen, erst dann Punkte zählen. Keine Sprünge oder harten Angriffe.",
+      "Bis fünf mit Rally-Point-Zählweise spielen. Fallen zu viele Bälle unberührt zu Boden, das Feld verkürzen."
+    ],
+    "cue": "Früh bewegen und hohe, spielbare Bälle schicken; Reichweite vor Tempo aufbauen."
+  },
+  "wuhands": {
+    "name": "Zwei einhändige Kontakte + rüber",
+    "setup": "2 gegen 2 in kurzen, halbbreiten Feldern. Zunächst 3 m tief ab Netz spielen; jedes Feld mit eigenem Ball.",
+    "steps": [
+      "Ball hinüberwerfen. Die annehmende Person spielt einen weichen Kontakt links, dann einen rechts.",
+      "Der Partner baggert den dritten Kontakt kontrolliert über das Netz. Annahmerollen nach jedem Ballwechsel tauschen.",
+      "Gemeinsam drei Netzüberquerungen schaffen. Die aufeinanderfolgenden Eigenkontakte sind eine Trainingsregel, keine normale Beachregel; bei Bedarf vor der Folge einmal fangen."
+    ],
+    "cue": "Kontakte weich und über Stirnhöhe halten; nicht ausholen oder hart schlagen."
+  },
+  "wucatch": {
+    "name": "Fangen, bewegen, stellen, rüber",
+    "setup": "2 gegen 2 in zwei halbbreiten Feldern, jeweils 3–4 m tief. Ein Ball pro Feld.",
+    "steps": [
+      "Ankommenden Ball fangen, anhalten und hoch zum Partner werfen. Nach dem Wurf in eine Unterstützungsposition gehen.",
+      "Der Partner pritscht oder baggert über das Netz. Vor dem Wurf den Namen des Partners rufen.",
+      "Sechs gemeinsame Netzüberquerungen zählen; danach Fangen durch einen kontrollierten Baggerkontakt ersetzen. Keine Sprünge; nach Fehlern mit Wurf neu starten."
+    ],
+    "cue": "Durch Fangen Gleichgewicht finden, danach zu flüssigen Ballkontakten übergehen."
+  },
+  "wubump": {
+    "name": "Eigenbagger, Partner spielt rüber",
+    "setup": "2 gegen 2 in kurzen halbbreiten Feldern. Bei acht Spielern sind alle vier Paare gleichzeitig aktiv.",
+    "steps": [
+      "Die annehmende Person baggert den ersten Kontakt zu sich selbst und den zweiten zum Partner.",
+      "Der Partner baggert den dritten Kontakt hoch über das Netz. Bei der Annahme abwechseln.",
+      "Zwei Minuten gemeinsam spielen, danach Punkte bis fünf zählen. Eigenkontakte sind eine bewusste Aufwärmregel und entfallen später."
+    ],
+    "cue": "Ein ruhiger Eigenkontakt schafft Zeit für Kommunikation und Ausrichtung zum Partner."
+  },
+  "wuswitch": {
+    "name": "Baggern und Position wechseln",
+    "setup": "2 gegen 2 in halbbreiten Feldern, zunächst 3 m tief. Jedes Paar bekommt eine linke und rechte Grundposition.",
+    "steps": [
+      "Kooperativ baggern, maximal drei Teamkontakte. Keine Sprünge oder harten Bälle.",
+      "Nachdem euer Team über das Netz gespielt hat, links und rechts mit dem Partner tauschen: gehen oder lockere Nachstellschritte. Laufweg absprechen und im eigenen Feld bleiben.",
+      "Gemeinsam acht Netzüberquerungen schaffen. Danach die Feldtiefe langsam vergrößern; Positionswechsel weglassen, wenn der Spielfluss leidet."
+    ],
+    "cue": "Vor dem nächsten Ball eine stabile Grundposition finden; Aufwärmen, kein Sprinttest."
+  }
+};
+function displayExercise(e){
+ if(!e||language!=='de'||!WARMUP_DE[e.id])return e;
+ const seed=SEED_LIB.find(x=>x.id===e.id),copy={...e};
+ for(const [key,value] of Object.entries(WARMUP_DE[e.id]))if(seed&&JSON.stringify(e[key])===JSON.stringify(seed[key]))copy[key]=value;
+ return copy;
 }
 
 /* ============ seed library (replace/extend with your own notes) ============ */
@@ -2326,6 +2394,124 @@ const SEED_LIB=[
     "progression": "Easier: start 6–6, play to 9. Harder: each pair names a tactical goal.",
     "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
     "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "wu3m",
+    "name": "Manchette game · 3 m lanes",
+    "phase": "Warm-up",
+    "skills": [
+      "passing",
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Two 4 m-wide lanes on one court, each extending 3 m back from the net. Play 2v2 in each lane; mark short boundaries with flat markers.",
+    "steps": [
+      "Start with a gentle toss over the net. Use forearm passes only, with up to three team contacts.",
+      "First cooperate: aim for six net crossings. Play without jumping and keep the ball high.",
+      "Then play short rounds to five points. Restart with a toss; swap partners between rounds."
+    ],
+    "cue": "Soft platform, small adjustment steps; lengthen the court only when rallies are stable.",
+    "level": "All levels"
+  },
+  {
+    "id": "wufull",
+    "name": "Manchette game · full court",
+    "phase": "Warm-up",
+    "skills": [
+      "passing",
+      "movement",
+      "ball control"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "2v2 on the full court. With eight players, rotate the two waiting pairs in after every two rallies; keep the waiting area clear of play.",
+    "steps": [
+      "Begin with a toss rather than a serve. All contacts are forearm passes, up to three per team.",
+      "Start cooperatively: keep four net crossings alive before starting a scored rally. No jumps or hard attacks.",
+      "Play to five with normal rally scoring. Shorten the court if most balls fall untouched."
+    ],
+    "cue": "Move early and send playable high balls; build range before speed.",
+    "level": "All levels"
+  },
+  {
+    "id": "wuhands",
+    "name": "Two one-handed touches + send",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "coordination"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "2v2 in short half-width lanes. Start 3 m back from the net; each lane uses its own ball.",
+    "steps": [
+      "Toss the ball over. The receiving player plays one soft contact with the left hand, then one with the right hand.",
+      "The partner sends the third contact over with a controlled forearm pass. Swap receiving roles each rally.",
+      "Aim for three cooperative net crossings. These consecutive same-player contacts are a training rule, not normal beach rules; allow a catch before the sequence if needed."
+    ],
+    "cue": "Keep contacts above the forehead and soft; no swinging or hard slaps.",
+    "level": "All levels"
+  },
+  {
+    "id": "wucatch",
+    "name": "Catch, move, set, send",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "setting",
+      "communication"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "2v2 in two half-width lanes, 3–4 m deep on each side. One ball per lane.",
+    "steps": [
+      "Catch the incoming ball, stop, then toss it high to the partner. Move into support after the toss.",
+      "The partner sets or forearm-passes the ball over the net. Call the partner’s name before the toss.",
+      "Count six cooperative crossings, then remove the catch and use a controlled forearm first contact. No jumping; reset with a toss after errors."
+    ],
+    "cue": "Use the catch to find balance, then progress to continuous contacts.",
+    "level": "All levels"
+  },
+  {
+    "id": "wubump",
+    "name": "Bump to yourself, partner sends",
+    "phase": "Warm-up",
+    "skills": [
+      "passing",
+      "ball control",
+      "communication"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "2v2 in short half-width lanes. With eight players all four pairs play at once.",
+    "steps": [
+      "The receiver forearm-passes the first contact up to themselves, then forearm-passes the second contact to the partner.",
+      "The partner sends the third contact over the net with a high forearm pass. Alternate who receives.",
+      "Keep the rally cooperative for two minutes, then count points to five. Consecutive self-contacts are an intentional warm-up rule; remove them later."
+    ],
+    "cue": "One calm self-contact creates time to call and face the partner.",
+    "level": "All levels"
+  },
+  {
+    "id": "wuswitch",
+    "name": "Pass and change places",
+    "phase": "Warm-up",
+    "skills": [
+      "passing",
+      "footwork",
+      "communication"
+    ],
+    "min": 7,
+    "diagram": "court",
+    "setup": "2v2 in half-width lanes, initially 3 m deep. Give each pair a clear left and right base position.",
+    "steps": [
+      "Play cooperatively with forearm passes and up to three team contacts. No jumping or hard balls.",
+      "After your team sends the ball across, walk or shuffle to exchange left and right positions with your partner. Call the path and avoid crossing into the next lane.",
+      "Count eight crossings together. Then gradually extend the depth; stop changing positions if it breaks the rally rhythm."
+    ],
+    "cue": "Find a balanced base before the next ball; this is activation, not a sprint test.",
+    "level": "All levels"
   }
 ];
 const SEED_PLAN=[
@@ -2558,12 +2744,13 @@ function renderLib(){
   document.getElementById('libCount').textContent=`${LIB.length} exercises · ${favCount} favourite${favCount!==1?'s':''} · tap a name for details`;
   const list=document.getElementById('libList');
   let items=LIB.filter(e=> libFilter==='All' ? true : libFilter==='★' ? e.fav : e.phase===libFilter);
-  items=items.filter(e=>[e.name,e.setup,...e.skills,...e.skills.map(skill=>({passing:'Annahme Baggern',setting:'Zuspiel Pritschen',attack:'Angriff',blocking:'Block',transition:'Umschalten',defense:'Abwehr',serve:'Aufschlag'}[skill]||''))].join(' ').toLowerCase().includes(libSearch));
+  items=items.filter(e=>[displayExercise(e).name,displayExercise(e).setup,e.name,e.setup,...e.skills,...e.skills.map(skill=>({passing:'Annahme Baggern',setting:'Zuspiel Pritschen',attack:'Angriff',blocking:'Block',transition:'Umschalten',defense:'Abwehr',serve:'Aufschlag'}[skill]||''))].join(' ').toLowerCase().includes(libSearch));
   document.getElementById('libCount').textContent=language==='de'?`${items.length} von ${LIB.length} Übungen · ${favCount} Favoriten`:`${items.length} of ${LIB.length} exercises · ${favCount} favourites`;
   // favourites first, then keep existing order
   items=items.map((e,i)=>({e,i})).sort((a,b)=>(b.e.fav?1:0)-(a.e.fav?1:0)||a.i-b.i).map(x=>x.e);
   if(!items.length){list.innerHTML=`<div class="empty">${libFilter==='★'?'No favourites yet — tap the ☆ on any exercise.':'No exercises here yet.'}</div>`;return;}
   list.innerHTML=items.map(e=>{
+    e=displayExercise(e);
     const open=libOpenId===e.id;
     const dia=diagramFor(e);
     return `
@@ -2574,7 +2761,7 @@ function renderLib(){
         <div class="tags"><span class="tag">${e.min} min</span>${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
         ${open?`
         <div style="margin-top:11px">
-          ${b.guidance?`<p class="muted">${esc(t(b.guidance))}</p>`:''}${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
+          ${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
           ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
           <h4 class="sub" style="margin-top:0">Steps</h4>
           <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
@@ -2679,7 +2866,7 @@ function printSession(){
   const p=plan();
   const old=document.getElementById('printDetails');if(old)old.remove();
   const el=document.createElement('div');el.id='printDetails';
-  el.innerHTML=p.blocks.map(b=>{const e=exById(b.exId);return e?`<section><h2>${b.stage?esc(t(b.stage))+' · ':''}${esc(e.name)} · ${b.min} min</h2>${b.guidance?`<p>${esc(t(b.guidance))}</p>`:''}<p>${esc(e.setup)}</p><ol>${e.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol><p><b>Coach cue:</b> ${esc(e.cue)}</p></section>`:'';}).join('');
+  el.innerHTML=p.blocks.map(b=>{const e=displayExercise(exById(b.exId));return e?`<section><h2>${b.stage?esc(t(b.stage))+' · ':''}${esc(e.name)} · ${b.min} min</h2>${b.guidance?`<p>${esc(t(b.guidance))}</p>`:''}<p>${esc(e.setup)}</p><ol>${e.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol><p><b>Coach cue:</b> ${esc(e.cue)}</p></section>`:'';}).join('');
   document.getElementById('v-plan').append(el);window.print();el.remove();
 }
 function renderPlan(){
@@ -2690,7 +2877,7 @@ function renderPlan(){
   if(!p.blocks.length){host.innerHTML=`<div class="empty">No blocks yet.<br>Go to <b>Library</b> and tap ＋ Add.</div>`;}
   else{
     host.innerHTML=`<div class="card">`+p.blocks.map((b,i)=>{
-      const e=exById(b.exId); if(!e)return'';
+      const e=displayExercise(exById(b.exId)); if(!e)return'';
       const open=planOpenIdx===i;
       const dia=diagramFor(e);
       return `<div class="blk">
@@ -2737,9 +2924,9 @@ const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
 function renderDetail(){
   const host=document.getElementById('runDetail');
   if(!runBlocks.length){host.innerHTML=`<div class="empty" style="margin-top:20px">This plan has no blocks. Add some in Plan / Library.</div>`;return;}
-  const e=runBlocks[idx].ex;
+  const e=displayExercise(runBlocks[idx].ex);
   const dia=diagramFor(e);
-  const nx=runBlocks[idx+1]?`${language==='de'?'Danach':'Up next'} · ${esc(runBlocks[idx+1].ex.name)}`:'Last block';
+  const nx=runBlocks[idx+1]?`${language==='de'?'Danach':'Up next'} · ${esc(displayExercise(runBlocks[idx+1].ex).name)}`:'Last block';
   host.innerHTML=`<div class="detail">${runBlocks[idx].stage?`<div class="stage-label">${esc(t(runBlocks[idx].stage))}</div>`:''}
     ${runBlocks[idx].guidance?`<p class="muted">${esc(t(runBlocks[idx].guidance))}</p>`:''}${e.setup?`<div class="setup-line">${esc(e.setup)}</div>`:''}
     ${dia?dia+LEGEND:''}
@@ -2751,7 +2938,7 @@ function renderDetail(){
 function paint(){
   if(!runBlocks.length){document.getElementById('clock').textContent='0:00';document.getElementById('nowBlock').textContent='No session loaded';document.getElementById('nowIdx').textContent='Start a session from Plan';document.getElementById('progress').style.width='0%';return;}
   document.getElementById('clock').textContent=fmt(remaining);
-  document.getElementById('nowBlock').textContent=runBlocks[idx].ex.name;
+  document.getElementById('nowBlock').textContent=displayExercise(runBlocks[idx].ex).name;
   document.getElementById('nowIdx').textContent=(language==='de'?'Block ':'Block ')+(idx+1)+(language==='de'?' von ':' of ')+runBlocks.length;
   const total=runBlocks[idx].min*60;
   document.getElementById('progress').style.width=((total-remaining)/total*100)+'%';
@@ -2815,6 +3002,14 @@ async function loadLibrary(){
     for(const e of SEED_LIB.filter(e=>/^new[1-8]$/.test(e.id)))if(!LIB.some(x=>x.id===e.id))LIB.push(structuredClone(e));
     for(const p of EXTRA_PLANS)if(!PLANS.some(x=>x.id===p.id)&&p.blocks.every(b=>exById(b.exId)))PLANS.push(structuredClone(p));
     saveLib();savePlans();store.set('bvt.content.v2',true);
+  }
+  if(!store.get('bvt.defaults.8x1.v1')){
+    for(const p of PLANS)if(p.players===14&&p.courts===2){p.players=8;p.courts=1;}
+    savePlans();store.set('bvt.defaults.8x1.v1',true);
+  }
+  if(!store.get('bvt.content.warmups.v1')){
+    for(const e of SEED_LIB.filter(e=>Object.hasOwn(WARMUP_DE,e.id)))if(!exById(e.id))LIB.push(structuredClone(e));
+    saveLib();store.set('bvt.content.warmups.v1',true);
   }
   renderAll();
 }

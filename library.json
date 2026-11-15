@@ -1873,6 +1873,124 @@
    "progression": "Easier: start 6–6, play to 9. Harder: each pair names a tactical goal.",
    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "wu3m",
+   "name": "Manchette game · 3 m lanes",
+   "phase": "Warm-up",
+   "skills": [
+    "passing",
+    "ball control"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "Two 4 m-wide lanes on one court, each extending 3 m back from the net. Play 2v2 in each lane; mark short boundaries with flat markers.",
+   "steps": [
+    "Start with a gentle toss over the net. Use forearm passes only, with up to three team contacts.",
+    "First cooperate: aim for six net crossings. Play without jumping and keep the ball high.",
+    "Then play short rounds to five points. Restart with a toss; swap partners between rounds."
+   ],
+   "cue": "Soft platform, small adjustment steps; lengthen the court only when rallies are stable.",
+   "level": "All levels"
+  },
+  {
+   "id": "wufull",
+   "name": "Manchette game · full court",
+   "phase": "Warm-up",
+   "skills": [
+    "passing",
+    "movement",
+    "ball control"
+   ],
+   "min": 8,
+   "diagram": "court",
+   "setup": "2v2 on the full court. With eight players, rotate the two waiting pairs in after every two rallies; keep the waiting area clear of play.",
+   "steps": [
+    "Begin with a toss rather than a serve. All contacts are forearm passes, up to three per team.",
+    "Start cooperatively: keep four net crossings alive before starting a scored rally. No jumps or hard attacks.",
+    "Play to five with normal rally scoring. Shorten the court if most balls fall untouched."
+   ],
+   "cue": "Move early and send playable high balls; build range before speed.",
+   "level": "All levels"
+  },
+  {
+   "id": "wuhands",
+   "name": "Two one-handed touches + send",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "coordination"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "2v2 in short half-width lanes. Start 3 m back from the net; each lane uses its own ball.",
+   "steps": [
+    "Toss the ball over. The receiving player plays one soft contact with the left hand, then one with the right hand.",
+    "The partner sends the third contact over with a controlled forearm pass. Swap receiving roles each rally.",
+    "Aim for three cooperative net crossings. These consecutive same-player contacts are a training rule, not normal beach rules; allow a catch before the sequence if needed."
+   ],
+   "cue": "Keep contacts above the forehead and soft; no swinging or hard slaps.",
+   "level": "All levels"
+  },
+  {
+   "id": "wucatch",
+   "name": "Catch, move, set, send",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "setting",
+    "communication"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "2v2 in two half-width lanes, 3–4 m deep on each side. One ball per lane.",
+   "steps": [
+    "Catch the incoming ball, stop, then toss it high to the partner. Move into support after the toss.",
+    "The partner sets or forearm-passes the ball over the net. Call the partner’s name before the toss.",
+    "Count six cooperative crossings, then remove the catch and use a controlled forearm first contact. No jumping; reset with a toss after errors."
+   ],
+   "cue": "Use the catch to find balance, then progress to continuous contacts.",
+   "level": "All levels"
+  },
+  {
+   "id": "wubump",
+   "name": "Bump to yourself, partner sends",
+   "phase": "Warm-up",
+   "skills": [
+    "passing",
+    "ball control",
+    "communication"
+   ],
+   "min": 6,
+   "diagram": "court",
+   "setup": "2v2 in short half-width lanes. With eight players all four pairs play at once.",
+   "steps": [
+    "The receiver forearm-passes the first contact up to themselves, then forearm-passes the second contact to the partner.",
+    "The partner sends the third contact over the net with a high forearm pass. Alternate who receives.",
+    "Keep the rally cooperative for two minutes, then count points to five. Consecutive self-contacts are an intentional warm-up rule; remove them later."
+   ],
+   "cue": "One calm self-contact creates time to call and face the partner.",
+   "level": "All levels"
+  },
+  {
+   "id": "wuswitch",
+   "name": "Pass and change places",
+   "phase": "Warm-up",
+   "skills": [
+    "passing",
+    "footwork",
+    "communication"
+   ],
+   "min": 7,
+   "diagram": "court",
+   "setup": "2v2 in half-width lanes, initially 3 m deep. Give each pair a clear left and right base position.",
+   "steps": [
+    "Play cooperatively with forearm passes and up to three team contacts. No jumping or hard balls.",
+    "After your team sends the ball across, walk or shuffle to exchange left and right positions with your partner. Call the path and avoid crossing into the next lane.",
+    "Count eight crossings together. Then gradually extend the depth; stop changing positions if it breaks the rally rhythm."
+   ],
+   "cue": "Find a balanced base before the next ball; this is activation, not a sprint test.",
+   "level": "All levels"
   }
  ],
  "plans": [

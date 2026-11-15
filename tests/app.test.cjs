@@ -13,7 +13,7 @@ function app(saved={}){
   return {run:code=>vm.runInContext(code,context),nodes,storage};
 }
 test('canonical library, durations and references are valid',()=>{
-  const a=app(); assert.equal(a.run('LIB.length'),102);
+  const a=app(); assert.equal(a.run('LIB.length'),108);
   assert.equal(a.run('plan().blocks.reduce((n,b)=>n+b.min,0)'),90);
   assert.equal(a.run("PLANS.find(p=>p.id==='p2').blocks.reduce((n,b)=>n+b.min,0)"),120);
   assert.equal(a.run("PLANS.find(p=>p.id==='setting90').blocks.reduce((n,b)=>n+b.min,0)"),90);
@@ -21,7 +21,7 @@ test('canonical library, durations and references are valid',()=>{
   assert.equal(a.run('JSON.stringify(SEED_LIB)===JSON.stringify('+fs.readFileSync('library.json','utf8')+'.library)'),true);
 });
 test('valid full backup round-trips and malformed data is rejected',()=>{
- const a=app();assert.equal(a.run('validateBackup({library:LIB,plans:PLANS}).library.length'),102);
+ const a=app();assert.equal(a.run('validateBackup({library:LIB,plans:PLANS}).library.length'),108);
  for(const input of ['{}','{library:[{id:"bad\\\""}]}','{plans:[{id:"p",name:"x",blocks:[{exId:"a",min:-1}]}]}','{library:[],plans:[{id:"p",name:"x",blocks:[],players:100}]}'])assert.throws(()=>a.run(`validateBackup(${input})`));
  assert.throws(()=>a.run('validateBackup({library:[LIB[0],LIB[0]]})'));
 });
@@ -54,7 +54,7 @@ test('all selected diagrams exist and unknown diagrams stay hidden',()=>{
  for(const key of a.run('Object.keys(DIAGRAMS)'))assert.ok(a.run(`DIAGRAMS[${JSON.stringify(key)}]`).includes('<title>'));
 });
 test('saved empty library and plan arrays recover to valid defaults',()=>{
- const a=app({'bvt.lib':'[]','bvt.plans':'[]'});assert.equal(a.run('LIB.length'),102);assert.ok(a.run('PLANS.length')>0);
+ const a=app({'bvt.lib':'[]','bvt.plans':'[]'});assert.equal(a.run('LIB.length'),108);assert.ok(a.run('PLANS.length')>0);
 });
 test('court splitting never loses a pair',()=>{
  const a=app();for(let p=2;p<=40;p++)for(let c=1;c<=6;c++)assert.equal(a.run(`distribute(${p},${c}).per.reduce((n,v)=>n+v,0)`),Math.floor(p/2));
@@ -119,4 +119,28 @@ test('fresh sessions default to eight players and one court; saved settings surv
  a.run('plan().players=12;plan().courts=2;savePlans()');
  const b=app({...a.storage});assert.equal(b.run('plan().players'),12);assert.equal(b.run('plan().courts'),2);
  const manifest=JSON.parse(fs.readFileSync('version.json','utf8'));assert.equal(manifest.version,a.run('APP_VERSION'));
+});
+
+test('old 14/2 defaults migrate once while other settings and later overrides survive',()=>{
+ const saved=[{id:'old',name:'Old default',players:14,courts:2,blocks:[{exId:'wm1',min:5}]},{id:'custom',name:'Custom',players:10,courts:2,blocks:[]}];
+ const a=app({'bvt.plans':JSON.stringify(saved),'bvt.content.v2':'true'});
+ assert.equal(a.run('plan().players'),8);assert.equal(a.run('plan().courts'),1);
+ assert.equal(a.run("PLANS.find(p=>p.id==='custom').players"),10);assert.equal(a.run("PLANS.find(p=>p.id==='custom').courts"),2);
+ a.run('plan().players=14;plan().courts=2;savePlans()');
+ const b=app({...a.storage});assert.equal(b.run('plan().players'),14);assert.equal(b.run('plan().courts'),2);
+});
+test('warm-up upgrade adds new games once, preserves edits/deletions and localizes display only',()=>{
+ const old=JSON.parse(fs.readFileSync('tests/legacy-backup.json','utf8'));
+ const a=app({'bvt.lib':JSON.stringify(old.library),'bvt.content.v2':'true','bvt.language':'"de"'});
+ assert.equal(a.run("LIB.filter(e=>e.id.startsWith('wu')).length"),6);
+ assert.equal(a.run("displayExercise(exById('wuhands')).name"),'Zwei einhändige Kontakte + rüber');
+ assert.equal(a.run("exById('wuhands').name"),'Two one-handed touches + send');
+ a.run("exById('wuhands').cue='Mein Hinweis';exById('wuhands').fav=true;LIB=LIB.filter(e=>e.id!=='wu3m');saveLib()");
+ const b=app({...a.storage});assert.equal(b.run("exById('wu3m')"),undefined);
+ assert.equal(b.run("displayExercise(exById('wuhands')).cue"),'Mein Hinweis');assert.equal(b.run("exById('wuhands').fav"),true);
+ assert.equal(b.run("LIB.filter(e=>e.id==='wuhands').length"),1);
+});
+test('every library exercise can expand in English and German without a runtime error',()=>{
+ const a=app();for(const lang of ['en','de'])a.run(`language='${lang}';for(const e of LIB){libOpenId=e.id;renderLib();}`);
+ assert.match(a.nodes.get('libList').innerHTML,/Baggern und Position wechseln/);
 });

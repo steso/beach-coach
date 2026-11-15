@@ -2,7 +2,7 @@
 
 A lightweight beach volleyball planner for a coach running one or more courts. No build step, server account, or backend is required.
 
-- **Library:** 102 exercises, text search, phase filters, favourites, and editable instructions. Eight new coaching adaptations include level, progression, and source links.
+- **Library:** 108 exercises, text search, phase filters, favourites, and editable instructions. Eight new coaching adaptations include level, progression, and source links.
 - **Plan:** create, duplicate and reorder sessions; adjust durations and court distribution; print a session with its instructions. Includes 90/120-minute templates, two notes-based sessions, and a 90-minute setting/play session.
 - **Run:** a countdown with automatic block transitions, sound toggle, previous/next controls, and restart. Elapsed time catches up after backgrounding. Supported browsers request a screen wake lock while running.
 - **Diagrams:** 17 labelled SVG presets drawn on a 16 × 8 m court. Servers start outside the end line unless a drill intentionally uses short serving. Ball paths cross the net where appropriate. Drills without a matching diagram show instructions rather than an unrelated picture.
@@ -53,3 +53,9 @@ The generator is a starting point: adjust feeds, intensity, repetitions and cour
 ## Version 1.2.1
 
 Compact mobile header with EN/DE and one refresh arrow. The generator is collapsed initially. New sessions and built-in template defaults use 8 players and 1 court; saved session configurations are preserved.
+
+## Version 1.2.2
+
+The generator is a single compact row: choose a topic and duration, then tap the dice. Existing plans with the old 14-player/2-court default migrate to 8 players/1 court once; other configurations and subsequent changes are preserved.
+
+Six new low-intensity warm-up games enter the library and generator: 3 m manchette lanes, full-court manchette, two one-handed touches plus a partner return, catch/move/set, self-bump plus a partner return, and passing with position changes. The modified contact rules are explicit training variations. These six games display in English or German; edited fields stay as saved. Existing browsers receive them once without overwriting personal edits or restoring them after deletion.
