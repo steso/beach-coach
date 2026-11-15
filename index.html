@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10302E">
-<title>Beach Coach · v1.2.0</title>
+<title>Beach Coach · v1.2.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,8 +29,10 @@
   h1{font-family:var(--disp);font-weight:700;font-size:27px;line-height:.98;margin:1px 0 0}
   .sub-h{font-size:12.5px;color:#CBBFA6;margin-top:3px}
 
-  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .version{display:inline-block;border:1px solid #70847D;border-radius:99px;padding:4px 10px;color:#F3EAD6;font-size:12px;white-space:nowrap;text-decoration:none}
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap}
+  .brand-copy{min-width:0}
+  .brand-copy h1{font-size:26px;white-space:nowrap}
+  .version{color:#F3EAD6;font-size:11px;white-space:nowrap;text-decoration:none}
   .version:hover{background:rgba(243,234,214,.12)}
   main.wrap{padding-top:14px}
   .card{box-shadow:0 3px 12px rgba(16,48,46,.04)}
@@ -40,11 +42,12 @@
   .fchip{min-height:44px}
   .tab.active{box-shadow:inset 0 3px 0 var(--marigold)}
 
-  .settings{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .settings select,.settings button{min-height:44px;border-radius:9px;padding:7px 10px}
-  .settings label{font-size:13px}
-  .settings select{background:var(--surface);color:var(--ink)}
-  #updateStatus{flex-basis:100%;font-size:13px;color:#F3EAD6}
+  .settings{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+  .settings select{height:44px;width:62px;border:1px solid #70847D;border-radius:10px;padding:0 7px;background:transparent;color:#F3EAD6;font-size:13px;font-weight:600}
+  .settings option{background:var(--ink);color:#F3EAD6}
+  .refresh{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;background:rgba(243,234,214,.08);color:#F3EAD6;border:1px solid #70847D;border-radius:10px;cursor:pointer}
+  .refresh:hover{background:rgba(243,234,214,.16)}
+  @media(max-width:360px){.brand-copy h1{font-size:23px}.brand-row{gap:8px}.settings{gap:6px}.sub-h{font-size:11px}}
   .generator{padding:14px;background:var(--surface-2)}
   .generator summary{cursor:pointer;font-weight:700;min-height:32px}
   .generator .row{margin:12px 0;align-items:end}
@@ -184,19 +187,14 @@
 </defs></svg>
 
 <header>
-  <div class="wrap">
-    <p class="eyebrow">Beach volleyball · training planner</p>
-    <div class="brand-row">
+  <div class="wrap brand-row">
+    <div class="brand-copy">
       <h1 id="hTitle">Beach Coach</h1>
-      <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.2.0, released 15 November 2026. View source history">v1.2.0 · 15 Nov 2026</a>
+      <div class="sub-h"><span id="hSub">Training planner</span> · <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.2.1">v1.2.1</a></div>
     </div>
-    <div class="sub-h" id="hSub">Build a session from your library, then run it hands-free.</div>
     <div class="settings">
-      <label for="language">Language</label>
-      <select id="language"><option value="en">English</option><option value="de">Deutsch</option></select>
-      <button class="mini" id="checkUpdate">Check for updates</button>
-      <button class="mini" id="reloadApp">Reload app</button>
-      <div id="updateStatus" role="status" aria-live="polite"></div>
+      <select id="language" aria-label="Language"><option value="en">EN</option><option value="de">DE</option></select>
+      <button class="refresh" id="reloadApp" aria-label="Refresh app" title="Refresh app"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M20 12a8 8 0 1 0-2.4 5.7M20 12l-3-4"/></svg></button>
     </div>
   </div>
 </header>
@@ -205,7 +203,7 @@
 
   <!-- ===== PLAN ===== -->
   <div class="view" id="v-plan">
-    <details class="card generator" open>
+    <details class="card generator">
       <summary>Session generator</summary>
       <p class="muted">Easy warm-up → technique → linked drills → conditioned game → free play → cool-down.</p>
       <div class="row">
@@ -216,15 +214,15 @@
       </div>
       <button class="btn solid" id="generatePlan">✦ Generate new session</button>
       <p class="muted" id="genStatus" role="status" aria-live="polite">Uses the player and court settings below. Creates a new plan; your saved sessions stay available.</p>
-      <p class="muted">Language changes the interface and stage guidance. Exercise instructions stay in their saved language; use Edit to customize them.</p>
+
     </details>
     <div class="plan-meta">
       <input class="plan-name" id="planName" aria-label="Session name" value="Session">
       <span class="total" id="planTotal">0 min</span>
     </div>
     <div class="squad">
-      <div class="fld"><label for="cfgPlayers">Players</label><input id="cfgPlayers" type="number" min="2" max="40" value="14"></div>
-      <div class="fld"><label for="cfgCourts">Courts</label><input id="cfgCourts" type="number" min="1" max="6" value="2"></div>
+      <div class="fld"><label for="cfgPlayers">Players</label><input id="cfgPlayers" type="number" min="2" max="40" value="8"></div>
+      <div class="fld"><label for="cfgCourts">Courts</label><input id="cfgCourts" type="number" min="1" max="6" value="1"></div>
     </div>
     <div class="dist" id="distLine"></div>
     <div class="row" style="margin:8px 0 2px">
@@ -322,7 +320,7 @@ const uid=()=>Math.random().toString(36).slice(2,9);
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1600);}
 
 /* Preferences, safe update checks and structured session generation. */
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.2.1';
 let language=store.get('bvt.language')==='de'?'de':'en';
 const DE={
  'Start gently with controlled contacts; increase movement gradually.':'Locker und mit kontrollierten Kontakten beginnen; Bewegung langsam steigern.',
@@ -332,6 +330,7 @@ const DE={
  'Apply the topic in rallies using the selected game scoring.':'Den Schwerpunkt in Ballwechseln mit der Wertung der gewählten Spielform anwenden.',
  'Play normal beach rules and rally scoring; rotate waiting pairs between mini-sets.':'Nach normalen Beachregeln und Rally-Point-Zählweise spielen; wartende Teams nach Mini-Sätzen einwechseln.',
  'Reduce intensity, mobilize gently and share one learning point.':'Intensität reduzieren, locker mobilisieren und eine Erkenntnis teilen.',
+ 'Training planner':'Trainingsplaner','Refresh app':'App aktualisieren',
  'Language':'Sprache','Check for updates':'Nach Updates suchen','Reload app':'App neu laden',
  'Beach volleyball · training planner':'Beachvolleyball · Trainingsplanung',
  'Build a session from your library, then run it hands-free.':'Training zusammenstellen und mit dem Timer durchführen.',
@@ -401,27 +400,9 @@ function initPreferences(){
   renderAll();renderDetail();paint();translateUI();
  };
  document.getElementById('generatePlan').onclick=generateSession;
- document.getElementById('checkUpdate').onclick=checkForUpdates;
  document.getElementById('reloadApp').onclick=reloadApp;
  if(typeof MutationObserver!=='undefined')uiObserver=new MutationObserver(translateUI);
  translateUI();
-}
-function compareVersions(a,b){
- const parse=s=>{if(typeof s!=='string'||!/^\d+\.\d+\.\d+$/.test(s))throw Error('Invalid version');return s.split('.').map(Number);};
- const x=parse(a),y=parse(b);for(let i=0;i<3;i++)if(x[i]!==y[i])return Math.sign(x[i]-y[i]);return 0;
-}
-async function checkForUpdates(){
- const status=document.getElementById('updateStatus'),button=document.getElementById('checkUpdate');
- status.textContent=t('Checking for updates…');button.disabled=true;
- const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);
- try{
-  const response=await fetch(new URL('version.json?check='+Date.now(),window.location.href),{cache:'no-store',signal:controller.signal});
-  if(!response.ok)throw Error('Version check failed');
-  const data=await response.json();
-  const newer=compareVersions(data.version,APP_VERSION)>0;
-  status.textContent=language==='de'?(newer?`Version ${data.version} verfügbar. „App neu laden“ antippen.`:`Version ${APP_VERSION} ist aktuell.`):(newer?`Version ${data.version} available. Tap Reload app.`:`Version ${APP_VERSION} is up to date.`);
- }catch{status.textContent=t('Offline: update check unavailable. Your saved plans are safe.');}
- finally{clearTimeout(timeout);button.disabled=false;}
 }
 function reloadApp(){
  if(running&&!confirm(t('A session is running. Reloading resets timer progress. Continue?')))return;
@@ -2348,10 +2329,10 @@ const SEED_LIB=[
   }
 ];
 const SEED_PLAN=[
-  {id:'p1',name:'Standard 90 (1.5h)',players:14,courts:2,blocks:[
+  {id:'p1',name:'Standard 90 (1.5h)',players:8,courts:1,blocks:[
     {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'tc3',min:8},{exId:'cp1',min:14},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:5}
   ]},
-  {id:'p2',name:'Extended 120 (2h)',players:14,courts:2,blocks:[
+  {id:'p2',name:'Extended 120 (2h)',players:8,courts:1,blocks:[
     {exId:'wm1',min:5},{exId:'wm2',min:6},{exId:'tc1',min:12},{exId:'tc3',min:8},{exId:'tc2',min:10},{exId:'cp1',min:18},{exId:'cp3',min:15},{exId:'cp2',min:15},{exId:'cp4',min:25},{exId:'cd1',min:6}
   ]}
 ];
@@ -2361,7 +2342,7 @@ const EXTRA_PLANS=[
     "id": "np1",
     "name": "Notes - Beach 8 (attack & defense)",
     "players": 8,
-    "courts": 2,
+    "courts": 1,
     "blocks": [
       {
         "exId": "nt8",
@@ -2404,8 +2385,8 @@ const EXTRA_PLANS=[
   {
     "id": "np2",
     "name": "Notes - Beach 12 (6+6)",
-    "players": 12,
-    "courts": 2,
+    "players": 8,
+    "courts": 1,
     "blocks": [
       {
         "exId": "nt8",
@@ -2448,8 +2429,8 @@ const EXTRA_PLANS=[
   {
     "id": "setting90",
     "name": "90 min · Setting & playful side-out",
-    "players": 14,
-    "courts": 2,
+    "players": 8,
+    "courts": 1,
     "blocks": [
       {
         "exId": "wm1",
@@ -2507,7 +2488,7 @@ const plan=()=>PLANS.find(p=>p.id===activePlan)||PLANS[0];
 const PHASE_CLASS={'Warm-up':'warm','Technical':'tech','Competitive':'comp','Cool-down':'cool'};
 
 /* migrate older saved plans that predate players/courts */
-PLANS.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;});
+PLANS.forEach(p=>{if(p.players==null)p.players=8;if(p.courts==null)p.courts=1;});
 
 /* ============ squad / court split ============ */
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -2674,7 +2655,7 @@ document.getElementById('importFile').onchange=ev=>{
     else if(incoming.length){LIB=incoming;}
     if(incomingPlans.length){
       const byP=new Map(PLANS.map(p=>[p.id,p]));
-      incomingPlans.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;byP.set(p.id,p);});
+      incomingPlans.forEach(p=>{if(p.players==null)p.players=8;if(p.courts==null)p.courts=1;byP.set(p.id,p);});
       PLANS=Array.from(byP.values());
       activePlan=incomingPlans[incomingPlans.length-1].id; // jump to the last plan brought in, so it's visible immediately
     }
@@ -2742,7 +2723,7 @@ document.getElementById('planName').oninput=e=>{plan().name=e.target.value;saveP
 document.getElementById('planSwitch').onchange=e=>{activePlan=e.target.value;savePlans();renderPlan();};
 document.getElementById('cfgPlayers').oninput=e=>{plan().players=clamp(parseInt(e.target.value)||2,2,40);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
 document.getElementById('cfgCourts').oninput=e=>{plan().courts=clamp(parseInt(e.target.value)||1,1,6);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
-document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',players:14,courts:2,blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
+document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',players:8,courts:1,blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
 document.getElementById('dupPlan').onclick=()=>{const s=plan();const p={id:uid(),name:s.name+' copy',players:s.players,courts:s.courts,blocks:s.blocks.map(b=>({...b}))};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();toast('Duplicated');};
 document.getElementById('delPlan').onclick=()=>{if(PLANS.length<2){toast('Keep at least one plan');return;}if(confirm('Delete this plan?')){PLANS=PLANS.filter(p=>p.id!==activePlan);activePlan=PLANS[0].id;savePlans();renderPlan();}};
 function addToPlan(exId){const e=exById(exId);plan().blocks.push({exId,min:e.min});savePlans();renderPlan();toast(e.name+' added');}

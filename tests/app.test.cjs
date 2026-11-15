@@ -68,11 +68,11 @@ test('failed import leaves library and sessions unchanged',()=>{
 });
 test('valid import merges records and switches to imported plan',()=>{
  const a=app();a.run(`document.getElementById('importFile').onchange({target:{files:[{content:JSON.stringify({library:[{...LIB[0],name:'Updated import'}],plans:[{id:'imported',name:'Imported plan',blocks:[{exId:LIB[0].id,min:7}]}]})}],value:'backup.json'}})`);
- assert.equal(a.run('LIB[0].name'),'Updated import');assert.equal(a.run('plan().id'),'imported');assert.equal(a.run('plan().players'),14);
+ assert.equal(a.run('LIB[0].name'),'Updated import');assert.equal(a.run('plan().id'),'imported');assert.equal(a.run('plan().players'),8);
 });
 test('Start session starts the clock and preserves run squad when selection changes',()=>{
  const a=app();a.run("document.getElementById('startBtn').onclick();activePlan='np1';renderRunSquad()");
- assert.equal(a.run('running'),true);assert.ok(a.nodes.get('runSquad').innerHTML.includes('<b>14</b> players'));
+ assert.equal(a.run('running'),true);assert.ok(a.nodes.get('runSquad').innerHTML.includes('<b>8</b> players'));
 });
 test('storage failures retain edits in memory and show a backup warning',()=>{
  const a=app();a.run("localStorage.setItem=()=>{throw Error('quota')};store.set('test',{value:42})");
@@ -113,10 +113,10 @@ test('German preference persists without modifying saved content',()=>{
  const b=app({...a.storage});assert.equal(b.run('language'),'de');
  assert.match(b.run("createGeneratedPlan('setting',90,14,2).name"),/Zuspiel/);
 });
-test('version comparison checks semantic components and rejects malformed manifests',()=>{
- const a=app();assert.equal(a.run("compareVersions('1.10.0','1.2.0')"),1);
- assert.equal(a.run("compareVersions(APP_VERSION,APP_VERSION)"),0);
- assert.equal(a.run("compareVersions('1.1.1',APP_VERSION)"),-1);
- assert.throws(()=>a.run("compareVersions('<script>','1.2.0')"));
+test('fresh sessions default to eight players and one court; saved settings survive',()=>{
+ const a=app();assert.equal(a.run('plan().players'),8);assert.equal(a.run('plan().courts'),1);
+ a.run("document.getElementById('newPlan').onclick()");assert.equal(a.run('plan().players'),8);assert.equal(a.run('plan().courts'),1);
+ a.run('plan().players=12;plan().courts=2;savePlans()');
+ const b=app({...a.storage});assert.equal(b.run('plan().players'),12);assert.equal(b.run('plan().courts'),2);
  const manifest=JSON.parse(fs.readFileSync('version.json','utf8'));assert.equal(manifest.version,a.run('APP_VERSION'));
 });

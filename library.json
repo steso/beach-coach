@@ -1880,7 +1880,7 @@
    "id": "np1",
    "name": "Notes - Beach 8 (attack & defense)",
    "players": 8,
-   "courts": 2,
+   "courts": 1,
    "blocks": [
     {
      "exId": "nt8",
@@ -1923,8 +1923,8 @@
   {
    "id": "np2",
    "name": "Notes - Beach 12 (6+6)",
-   "players": 12,
-   "courts": 2,
+   "players": 8,
+   "courts": 1,
    "blocks": [
     {
      "exId": "nt8",
@@ -1967,8 +1967,8 @@
   {
    "id": "setting90",
    "name": "90 min · Setting & playful side-out",
-   "players": 14,
-   "courts": 2,
+   "players": 8,
+   "courts": 1,
    "blocks": [
     {
      "exId": "wm1",
