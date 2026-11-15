@@ -41,3 +41,11 @@ New exercises are original coaching adaptations, not verbatim reproductions or e
 - [FIVB official rules](https://www.fivb.com/beach-volleyball/the-game/official-rules-of-the-games/): court dimensions and overhand attack wording.
 
 The existing Better at Beach/FIVB/notes exercise collections retain their IDs and existing attribution. Some games deliberately modify standard match scoring or contacts; their instructions specify the training constraint.
+
+## Version 1.2.0
+
+- **Updates on iOS:** the header shows the installed version. “Check for updates” fetches `version.json` without caching. “Reload app” opens a fresh document URL without clearing browser storage. If a timer is running, reloading requires confirmation because timer progress resets. An older Home Screen copy needs one initial refresh or re-add before these controls appear. Changes to the app must update `APP_VERSION`, the visible badge/title and `version.json` together.
+- **Language:** choose English or Deutsch in the header. The choice stays on this device. Controls, generator stages and coaching guidance are localized; exercise names and instructions remain as saved, including personal edits. German skill search includes Annahme/Baggern, Zuspiel/Pritschen, Angriff, Block, Umschalten, Abwehr and Aufschlag. Use the exercise editor for German exercise wording.
+- **Session generator:** choose a topic (reception, setting, attack, block, transition or defense), or let a mixed session choose a random focus. Choose 45/60/90/120 minutes. It creates a new editable plan with easy warm-up play, isolated technique, decisions, linked drills, a topic-based game, normal-rules play and a short cool-down. Drill pools are curated by stage, not free keyword matches. It requires at least four players and limits active courts to those supporting 2v2; extra pairs rotate. Missing required drills produce a message without changing existing plans. Generated stage guidance survives JSON export/import and appears in printouts and Run.
+
+The generator is a starting point: adjust feeds, intensity, repetitions and court organization for your group. It uses your current saved versions of drills, so personal exercise edits also affect generated sessions.

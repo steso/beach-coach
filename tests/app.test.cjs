@@ -78,3 +78,45 @@ test('storage failures retain edits in memory and show a backup warning',()=>{
  const a=app();a.run("localStorage.setItem=()=>{throw Error('quota')};store.set('test',{value:42})");
  assert.equal(a.run("store.get('test').value"),42);assert.match(a.nodes.get('toast').textContent,/backup/);
 });
+
+test('generator has a staged, topic-linked progression with exact durations',()=>{
+ const a=app();
+ for(const topic of ['mixed','reception','setting','attack','block','transition','defense']){
+  for(const total of [45,60,90,120])for(let n=0;n<20;n++){
+   const p=a.run(`createGeneratedPlan('${topic}',${total},14,2)`);
+   assert.equal(p.blocks.reduce((sum,b)=>sum+b.min,0),total);
+   assert.equal(new Set(p.blocks.map(b=>b.exId)).size,7);
+   assert.deepEqual(Array.from(p.blocks,b=>b.stage),Array.from(a.run('STAGES')));
+   for(const [i,key] of ['simple','decision','complex','game'].entries())assert.equal(a.run(`TOPIC_POOLS['${p.topic}']['${key}'].includes('${p.blocks[i+1].exId}')`),true);
+   assert.equal(a.run(`exById('${p.blocks[0].exId}').phase`),'Warm-up');
+   assert.equal(p.blocks[5].exId,'new8'); // normal scoring, no artificial contact limits
+   assert.equal(a.run(`exById('${p.blocks[6].exId}').phase`),'Cool-down');
+   assert.ok(p.blocks.every(b=>b.min>=1&&b.min<=60));
+   assert.equal(a.run(`validateBackup({plans:[${JSON.stringify(p)}]}).plans.length`),1);
+  }
+ }
+});
+test('generator preserves sessions, rejects invalid settings and handles missing drills atomically',()=>{
+ const a=app(),before=a.run('JSON.stringify(PLANS)');
+ assert.equal(a.run("createGeneratedPlan('block',60,4,6).courts"),1);
+ for(const args of ["'wrong',90,14,2","'setting',61,14,2","'setting',60,2,2","'setting',60,14,0"])assert.throws(()=>a.run(`createGeneratedPlan(${args})`));
+ a.run("LIB=LIB.filter(e=>!TOPIC_POOLS.block.simple.includes(e.id))");
+ assert.throws(()=>a.run("createGeneratedPlan('block',90,14,2)"));
+ assert.equal(a.run('JSON.stringify(PLANS)'),before);
+});
+test('German preference persists without modifying saved content',()=>{
+ const a=app(),before=a.run('JSON.stringify({library:LIB,plans:PLANS})');
+ a.run("document.getElementById('language').onchange({target:{value:'de'}})");
+ assert.equal(a.run("t('Reception')"),'Annahme');
+ assert.equal(a.run("t('4 · Linked complex drill')"),'4 · Komplexe Übungskette');
+ assert.equal(a.run('JSON.stringify({library:LIB,plans:PLANS})'),before);
+ const b=app({...a.storage});assert.equal(b.run('language'),'de');
+ assert.match(b.run("createGeneratedPlan('setting',90,14,2).name"),/Zuspiel/);
+});
+test('version comparison checks semantic components and rejects malformed manifests',()=>{
+ const a=app();assert.equal(a.run("compareVersions('1.10.0','1.2.0')"),1);
+ assert.equal(a.run("compareVersions(APP_VERSION,APP_VERSION)"),0);
+ assert.equal(a.run("compareVersions('1.1.1',APP_VERSION)"),-1);
+ assert.throws(()=>a.run("compareVersions('<script>','1.2.0')"));
+ const manifest=JSON.parse(fs.readFileSync('version.json','utf8'));assert.equal(manifest.version,a.run('APP_VERSION'));
+});

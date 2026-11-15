@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10302E">
-<title>Beach Coach · v1.1.1</title>
+<title>Beach Coach · v1.2.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,6 +40,17 @@
   .fchip{min-height:44px}
   .tab.active{box-shadow:inset 0 3px 0 var(--marigold)}
 
+  .settings{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .settings select,.settings button{min-height:44px;border-radius:9px;padding:7px 10px}
+  .settings label{font-size:13px}
+  .settings select{background:var(--surface);color:var(--ink)}
+  #updateStatus{flex-basis:100%;font-size:13px;color:#F3EAD6}
+  .generator{padding:14px;background:var(--surface-2)}
+  .generator summary{cursor:pointer;font-weight:700;min-height:32px}
+  .generator .row{margin:12px 0;align-items:end}
+  .generator label{display:flex;flex:1;flex-direction:column;gap:5px;font-size:13px;min-width:130px}
+  .generator select{width:100%;padding:10px;border:1px solid var(--line-strong);border-radius:9px;background:white;color:var(--ink);min-height:44px}
+  .stage-label{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px}
   /* tab bar */
   .tabs{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--ink);border-top:1px solid rgba(243,234,214,.16);display:flex;padding:6px max(14px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom))}
   .tab{flex:1;background:none;border:0;color:#9FB0AD;padding:9px 4px 7px;cursor:pointer;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:3px}
@@ -177,9 +188,16 @@
     <p class="eyebrow">Beach volleyball · training planner</p>
     <div class="brand-row">
       <h1 id="hTitle">Beach Coach</h1>
-      <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.1.1, released 15 November 2026. View source history">v1.1.1 · 15 Nov 2026</a>
+      <a class="version" href="https://github.com/steso/beach-coach/commits/main/" target="_blank" rel="noopener" aria-label="Version 1.2.0, released 15 November 2026. View source history">v1.2.0 · 15 Nov 2026</a>
     </div>
     <div class="sub-h" id="hSub">Build a session from your library, then run it hands-free.</div>
+    <div class="settings">
+      <label for="language">Language</label>
+      <select id="language"><option value="en">English</option><option value="de">Deutsch</option></select>
+      <button class="mini" id="checkUpdate">Check for updates</button>
+      <button class="mini" id="reloadApp">Reload app</button>
+      <div id="updateStatus" role="status" aria-live="polite"></div>
+    </div>
   </div>
 </header>
 
@@ -187,6 +205,19 @@
 
   <!-- ===== PLAN ===== -->
   <div class="view" id="v-plan">
+    <details class="card generator" open>
+      <summary>Session generator</summary>
+      <p class="muted">Easy warm-up → technique → linked drills → conditioned game → free play → cool-down.</p>
+      <div class="row">
+        <label for="genTopic"><span>Topic</span><select id="genTopic">
+          <option value="mixed">Mixed session</option><option value="reception">Reception</option><option value="setting">Setting</option><option value="attack">Attack</option><option value="block">Block</option><option value="transition">Transition</option><option value="defense">Defense</option>
+        </select></label>
+        <label for="genMinutes"><span>Duration</span><select id="genMinutes"><option value="45">45 min</option><option value="60">60 min</option><option value="90" selected>90 min</option><option value="120">120 min</option></select></label>
+      </div>
+      <button class="btn solid" id="generatePlan">✦ Generate new session</button>
+      <p class="muted" id="genStatus" role="status" aria-live="polite">Uses the player and court settings below. Creates a new plan; your saved sessions stay available.</p>
+      <p class="muted">Language changes the interface and stage guidance. Exercise instructions stay in their saved language; use Edit to customize them.</p>
+    </details>
     <div class="plan-meta">
       <input class="plan-name" id="planName" aria-label="Session name" value="Session">
       <span class="total" id="planTotal">0 min</span>
@@ -228,7 +259,7 @@
       <div class="section-title" id="edTitle" style="margin-top:0">New exercise</div>
       <div class="form">
         <label for="edName">Name</label><input id="edName" placeholder="e.g. Deep-corner serve targets">
-        <label for="edPhase">Phase</label><select id="edPhase"><option>Warm-up</option><option>Technical</option><option>Competitive</option><option>Cool-down</option></select>
+        <label for="edPhase">Phase</label><select id="edPhase"><option value="Warm-up">Warm-up</option><option value="Technical">Technical</option><option value="Competitive">Competitive</option><option value="Cool-down">Cool-down</option></select>
         <label for="edSkills">Skills (comma-separated)</label><input id="edSkills" placeholder="serve, passing, shot selection">
         <label for="edMin">Default minutes</label><input id="edMin" type="number" min="1" max="60" value="12">
         <label for="edSetup">Court setup (one line)</label><input id="edSetup" placeholder="Court A: 4 teams · Court B: 3 teams">
@@ -289,6 +320,155 @@ const store={
 };
 const uid=()=>Math.random().toString(36).slice(2,9);
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1600);}
+
+/* Preferences, safe update checks and structured session generation. */
+const APP_VERSION='1.2.0';
+let language=store.get('bvt.language')==='de'?'de':'en';
+const DE={
+ 'Start gently with controlled contacts; increase movement gradually.':'Locker und mit kontrollierten Kontakten beginnen; Bewegung langsam steigern.',
+ 'Use predictable feeds and repeat the basic movement before adding pressure.':'Mit berechenbaren Zuspielen die Grundbewegung wiederholen; erst danach Druck erhöhen.',
+ 'Vary the feed or target; require a clear call and a deliberate decision.':'Zuspiel oder Ziel variieren; klare Kommunikation und bewusste Entscheidungen verlangen.',
+ 'Link the first contact, set and attack; rotate roles and keep rallies controlled.':'Ersten Kontakt, Zuspiel und Angriff verbinden; Rollen wechseln und kontrolliert spielen.',
+ 'Apply the topic in rallies using the selected game scoring.':'Den Schwerpunkt in Ballwechseln mit der Wertung der gewählten Spielform anwenden.',
+ 'Play normal beach rules and rally scoring; rotate waiting pairs between mini-sets.':'Nach normalen Beachregeln und Rally-Point-Zählweise spielen; wartende Teams nach Mini-Sätzen einwechseln.',
+ 'Reduce intensity, mobilize gently and share one learning point.':'Intensität reduzieren, locker mobilisieren und eine Erkenntnis teilen.',
+ 'Language':'Sprache','Check for updates':'Nach Updates suchen','Reload app':'App neu laden',
+ 'Beach volleyball · training planner':'Beachvolleyball · Trainingsplanung',
+ 'Build a session from your library, then run it hands-free.':'Training zusammenstellen und mit dem Timer durchführen.',
+ 'Session generator':'Zufallstraining','Topic':'Schwerpunkt','Duration':'Dauer','Mixed session':'Gemischtes Training',
+ 'Reception':'Annahme','Setting':'Zuspiel','Attack':'Angriff','Block':'Block','Transition':'Umschalten','Defense':'Abwehr',
+ '✦ Generate new session':'✦ Neues Training erstellen',
+ 'Easy warm-up → technique → linked drills → conditioned game → free play → cool-down.':'Leichtes Aufwärmen → Technik → verbundene Übungen → Spielform → freies Spiel → Ausklang.',
+ 'Uses the player and court settings below. Creates a new plan; your saved sessions stay available.':'Verwendet die Spieler- und Feldanzahl unten. Erstellt einen neuen Plan; gespeicherte Trainings bleiben erhalten.',
+ 'Language changes the interface and stage guidance. Exercise instructions stay in their saved language; use Edit to customize them.':'Sprache ändert Bedienung und Phasenhinweise. Übungstexte bleiben in ihrer gespeicherten Sprache; mit Bearbeiten anpassen.',
+ 'Plan':'Plan','Library':'Übungen','Run':'Training','Players':'Spieler','Courts':'Felder','＋ New':'＋ Neu','Duplicate':'Duplizieren','Delete':'Löschen',
+ 'Print session':'Training drucken','▶ Start session':'▶ Training starten','Exercise library':'Übungsbibliothek',
+ 'Find an exercise':'Übung suchen','Search names, skills, setup…':'Namen, Technik, Aufbau suchen…',
+ '＋ New exercise':'＋ Neue Übung','Export JSON':'JSON exportieren','Import JSON':'JSON importieren',
+ 'All':'Alle','Warm-up':'Aufwärmen','Technical':'Technik','Competitive':'Spielform','Cool-down':'Ausklang',
+ 'New exercise':'Neue Übung','Edit exercise':'Übung bearbeiten','Name':'Name','Phase':'Phase','Skills (comma-separated)':'Techniken (mit Komma trennen)',
+ 'Default minutes':'Standarddauer in Minuten','Court setup (one line)':'Aufbau (eine Zeile)','Steps (one per line)':'Ablauf (ein Schritt pro Zeile)',
+ 'Coach cue (one line)':'Coaching-Hinweis (eine Zeile)','Diagram':'Skizze','No diagram':'Keine Skizze','Save exercise':'Übung speichern','Cancel':'Abbrechen',
+ 'Diagrams are presets — pick the closest match.':'Skizzen sind Vorlagen – die passendste auswählen.',
+ '＋ Add to session':'＋ Zum Training','Edit':'Bearbeiten','Steps':'Ablauf','Cue':'Hinweis','How it runs':'Ablauf',
+ 'Now running':'Aktuelle Übung','Start':'Start','Pause':'Pause','Resume':'Fortsetzen','Restart':'Neu starten','Next ›':'Weiter ›',
+ 'No session loaded':'Kein Training geladen','Start a session from Plan':'Training im Plan starten','Last block':'Letzter Block',
+ 'No favourites yet — tap the ☆ on any exercise.':'Noch keine Favoriten – bei einer Übung auf ☆ tippen.',
+ 'No exercises here yet.':'Hier gibt es noch keine Übungen.','Session complete!':'Training beendet!',
+ 'Saved':'Gespeichert','Duplicated':'Dupliziert','Session name':'Trainingsname','Choose session':'Training auswählen',
+ 'Previous block':'Vorherige Übung','Previous':'Zurück','Reset session':'Training zurücksetzen','Reset':'Zurücksetzen','Sound':'Ton','Favourite':'Favorit',
+ 'Main navigation':'Hauptnavigation','minutes':'Minuten','remove':'Entfernen',
+ '1 · Easy warm-up game':'1 · Leichtes Aufwärmspiel','2 · Isolated technique':'2 · Einfache Technik',
+ '3 · Technique with decisions':'3 · Technik mit Entscheidungen','4 · Linked complex drill':'4 · Komplexe Übungskette',
+ '5 · Conditioned game':'5 · Spielform mit Schwerpunkt','6 · Free play':'6 · Freies Spiel','7 · Cool-down':'7 · Ausklang',
+ 'Checking for updates…':'Suche nach Updates…','Offline: update check unavailable. Your saved plans are safe.':'Offline: Updateprüfung nicht verfügbar. Gespeicherte Pläne bleiben erhalten.',
+ 'A session is running. Reloading resets timer progress. Continue?':'Ein Training läuft. Neuladen setzt den Timer zurück. Fortfahren?',
+ 'At least 4 players are needed for these game-based sessions.':'Für diese Trainings mit Spielformen werden mindestens 4 Spieler benötigt.',
+ 'Some required drills are missing. Restore the original library or choose another topic.':'Benötigte Übungen fehlen. Originalbibliothek wiederherstellen oder anderen Schwerpunkt wählen.'
+};
+function t(text){return language==='de'?(DE[text]||text):text;}
+// Translate only UI text, never user input values or saved exercise content.
+const textOrigins=new WeakMap();
+let uiObserver;
+function translateUI(){
+ if(!document.createTreeWalker)return;
+ if(uiObserver)uiObserver.disconnect();
+ document.documentElement.lang=language;
+ const walker=document.createTreeWalker(document.body,4);
+ let node;
+ while((node=walker.nextNode())){
+  if(node.parentElement.closest('script,style,textarea,.play,.setup-line,.cue p'))continue;
+  const previous=textOrigins.get(node);
+  let original=previous&&node.nodeValue===previous.rendered?previous.original:node.nodeValue;
+  const trimmed=original.trim();
+  if(!DE[trimmed])continue;
+  const rendered=original.replace(trimmed,t(trimmed));
+  node.nodeValue=rendered;textOrigins.set(node,{original,rendered});
+ }
+ document.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{
+  for(const attr of ['placeholder','aria-label','title']){
+   const key='data-en-'+attr;
+   const value=el.getAttribute(key)||el.getAttribute(attr);
+   if(value&&DE[value]){el.setAttribute(key,value);el.setAttribute(attr,t(value));}
+  }
+ });
+ if(uiObserver)uiObserver.observe(document.body,{childList:true,subtree:true,characterData:true});
+}
+function initPreferences(){
+ document.getElementById('language').value=language;
+ document.getElementById('language').onchange=e=>{
+  language=e.target.value==='de'?'de':'en';store.set('bvt.language',language);
+  renderAll();renderDetail();paint();translateUI();
+ };
+ document.getElementById('generatePlan').onclick=generateSession;
+ document.getElementById('checkUpdate').onclick=checkForUpdates;
+ document.getElementById('reloadApp').onclick=reloadApp;
+ if(typeof MutationObserver!=='undefined')uiObserver=new MutationObserver(translateUI);
+ translateUI();
+}
+function compareVersions(a,b){
+ const parse=s=>{if(typeof s!=='string'||!/^\d+\.\d+\.\d+$/.test(s))throw Error('Invalid version');return s.split('.').map(Number);};
+ const x=parse(a),y=parse(b);for(let i=0;i<3;i++)if(x[i]!==y[i])return Math.sign(x[i]-y[i]);return 0;
+}
+async function checkForUpdates(){
+ const status=document.getElementById('updateStatus'),button=document.getElementById('checkUpdate');
+ status.textContent=t('Checking for updates…');button.disabled=true;
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);
+ try{
+  const response=await fetch(new URL('version.json?check='+Date.now(),window.location.href),{cache:'no-store',signal:controller.signal});
+  if(!response.ok)throw Error('Version check failed');
+  const data=await response.json();
+  const newer=compareVersions(data.version,APP_VERSION)>0;
+  status.textContent=language==='de'?(newer?`Version ${data.version} verfügbar. „App neu laden“ antippen.`:`Version ${APP_VERSION} ist aktuell.`):(newer?`Version ${data.version} available. Tap Reload app.`:`Version ${APP_VERSION} is up to date.`);
+ }catch{status.textContent=t('Offline: update check unavailable. Your saved plans are safe.');}
+ finally{clearTimeout(timeout);button.disabled=false;}
+}
+function reloadApp(){
+ if(running&&!confirm(t('A session is running. Reloading resets timer progress. Continue?')))return;
+ // A changing document URL bypasses stale iOS Home Screen HTML without clearing storage.
+ const url=new URL(window.location.href);url.searchParams.set('reload',Date.now());window.location.replace(url.href);
+}
+const TOPIC_POOLS={
+ reception:{simple:['bab1','nt7','nt16'],decision:['tc1','bab4','new3'],complex:['new2','nt19','nt17'],game:['cp1','bab36','nt25']},
+ setting:{simple:['tc3','bab2','bab9'],decision:['new1','nt15','nt22'],complex:['new2','new4','fv67'],game:['bab30','bab31','cp3']},
+ attack:{simple:['bab18','bab19','nt12'],decision:['new7','bab20','bab21'],complex:['nt13','nt20','nt23'],game:['bab25','bab26','nt29']},
+ block:{simple:['nt14','fv66'],decision:['fv68','fv610'],complex:['fv67','bab35','nt13'],game:['fv87','cp2']},
+ transition:{simple:['tc3','bab34'],decision:['fv67','nt15'],complex:['new4','bab35','nt20'],game:['new6','cp3','fv89']},
+ defense:{simple:['bab34','bab6'],decision:['fv610','fv66','nt24'],complex:['new4','bab35','nt13'],game:['bab25','fv86','bab37']}
+};
+const STAGES=['1 · Easy warm-up game','2 · Isolated technique','3 · Technique with decisions','4 · Linked complex drill','5 · Conditioned game','6 · Free play','7 · Cool-down'];
+const STAGE_GUIDANCE=[
+ 'Start gently with controlled contacts; increase movement gradually.',
+ 'Use predictable feeds and repeat the basic movement before adding pressure.',
+ 'Vary the feed or target; require a clear call and a deliberate decision.',
+ 'Link the first contact, set and attack; rotate roles and keep rallies controlled.',
+ 'Apply the topic in rallies using the selected game scoring.',
+ 'Play normal beach rules and rally scoring; rotate waiting pairs between mini-sets.',
+ 'Reduce intensity, mobilize gently and share one learning point.'
+];
+const TOPIC_NAMES={mixed:'Mixed session',reception:'Reception',setting:'Setting',attack:'Attack',block:'Block',transition:'Transition',defense:'Defense'};
+function createGeneratedPlan(topic,total,players,courts,random=Math.random){
+ if(!Object.hasOwn(TOPIC_NAMES,topic)||![45,60,90,120].includes(total))throw Error('Invalid generator options');
+ if(!Number.isInteger(players)||players<4||players>40)throw Error('At least 4 players are needed for these game-based sessions.');
+ if(!Number.isInteger(courts)||courts<1||courts>6)throw Error('Invalid courts');
+ const used=new Set(),topics=Object.keys(TOPIC_POOLS);
+ const pick=ids=>{const candidates=ids.filter(id=>exById(id)&&!used.has(id));if(!candidates.length)throw Error('Some required drills are missing. Restore the original library or choose another topic.');const id=candidates[Math.min(candidates.length-1,Math.floor(random()*candidates.length))];used.add(id);return id;};
+ const focus=topic==='mixed'?topics[Math.min(topics.length-1,Math.floor(random()*topics.length))]:topic;
+ const pools=TOPIC_POOLS[focus];
+ const ids=[pick(['bab10','nt1','nt3','new5']),pick(pools.simple),pick(pools.decision),pick(pools.complex),pick(pools.game),pick(['new8']),pick(['cd1'])];
+ // Largest remainder allocation keeps the requested duration exact, all blocks positive.
+ const weights=[10,12,16,18,20,20,4],minutes=weights.map(w=>Math.floor(total*w/100));
+ const order=weights.map((w,i)=>({i,remainder:total*w/100-minutes[i]})).sort((a,b)=>b.remainder-a.remainder);
+ for(let i=0,left=total-minutes.reduce((a,b)=>a+b,0);i<left;i++)minutes[order[i].i]++;
+ return {id:uid(),name:`${total} min · ${t(TOPIC_NAMES[topic])}${topic==='mixed'?' · '+t(TOPIC_NAMES[focus]):''}`,players,courts:Math.min(courts,Math.floor(players/4)),topic:focus,blocks:ids.map((id,i)=>({exId:id,min:minutes[i],stage:STAGES[i],guidance:STAGE_GUIDANCE[i]}))};
+}
+function generateSession(){
+ try{
+  const current=plan(),p=createGeneratedPlan(document.getElementById('genTopic').value,+document.getElementById('genMinutes').value,current.players,current.courts);
+  PLANS.push(p);activePlan=p.id;planOpenIdx=null;savePlans();renderPlan();
+  document.getElementById('genStatus').textContent=language==='de'?`Neuer Plan erstellt: ${p.name}. ${p.courts} Feld(er). Übungen und Dauer lassen sich unten anpassen.`:`New plan created: ${p.name}. ${p.courts} court(s). Adjust drills and minutes below.`;
+ }catch(e){document.getElementById('genStatus').textContent=t(e.message);}
+}
 
 /* ============ seed library (replace/extend with your own notes) ============ */
 const SEED_LIB=[
@@ -2342,8 +2522,8 @@ function distribute(players,courts){
 function distText(players,courts){
   const d=distribute(players,courts);
   if(d.pairs<1) return 'Add players to see the court split.';
-  const parts=d.per.map((t,i)=>`Court ${courtLabel(i)}: <b>${t}</b> team${t!==1?'s':''} (${t*2})`);
-  let s=`<b>${players}</b> players → <b>${d.pairs}</b> pairs · ${parts.join(' · ')}`;
+  const parts=d.per.map((t,i)=>` ${language==='de'?'Feld':'Court'} ${courtLabel(i)}: <b>${t}</b> Team${t!==1?'s':''} (${t*2})`);
+  let s=`<b>${players}</b> ${language==='de'?'Spieler':'players'} → <b>${d.pairs}</b> ${language==='de'?'Paare':'pairs'} · ${parts.join(' · ')}`;
   const hints=[];
   if(d.odd) hints.push('1 player left over — make one trio, or rotate that player in each round.');
   if(Math.min(...d.per)<3) hints.push('Use a court with at least 2 pairs for 2v2. With 2 pairs, play a fixed matchup; with 3+, rotate waiting teams.');
@@ -2397,8 +2577,8 @@ function renderLib(){
   document.getElementById('libCount').textContent=`${LIB.length} exercises · ${favCount} favourite${favCount!==1?'s':''} · tap a name for details`;
   const list=document.getElementById('libList');
   let items=LIB.filter(e=> libFilter==='All' ? true : libFilter==='★' ? e.fav : e.phase===libFilter);
-  items=items.filter(e=>[e.name,e.setup,...e.skills].join(' ').toLowerCase().includes(libSearch));
-  document.getElementById('libCount').textContent=`${items.length} of ${LIB.length} exercises · ${favCount} favourites`;
+  items=items.filter(e=>[e.name,e.setup,...e.skills,...e.skills.map(skill=>({passing:'Annahme Baggern',setting:'Zuspiel Pritschen',attack:'Angriff',blocking:'Block',transition:'Umschalten',defense:'Abwehr',serve:'Aufschlag'}[skill]||''))].join(' ').toLowerCase().includes(libSearch));
+  document.getElementById('libCount').textContent=language==='de'?`${items.length} von ${LIB.length} Übungen · ${favCount} Favoriten`:`${items.length} of ${LIB.length} exercises · ${favCount} favourites`;
   // favourites first, then keep existing order
   items=items.map((e,i)=>({e,i})).sort((a,b)=>(b.e.fav?1:0)-(a.e.fav?1:0)||a.i-b.i).map(x=>x.e);
   if(!items.length){list.innerHTML=`<div class="empty">${libFilter==='★'?'No favourites yet — tap the ☆ on any exercise.':'No exercises here yet.'}</div>`;return;}
@@ -2413,7 +2593,7 @@ function renderLib(){
         <div class="tags"><span class="tag">${e.min} min</span>${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
         ${open?`
         <div style="margin-top:11px">
-          ${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
+          ${b.guidance?`<p class="muted">${esc(t(b.guidance))}</p>`:''}${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
           ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
           <h4 class="sub" style="margin-top:0">Steps</h4>
           <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
@@ -2471,7 +2651,7 @@ function validateBackup(d){
   if(!d||typeof d!=='object'||(!Array.isArray(d.library)&&!Array.isArray(d.plans)))throw Error('Expected library or plans');
   for(const list of [d.library||[],d.plans||[]])if(new Set(list.map(x=>x&&x.id)).size!==list.length)throw Error('Duplicate IDs');
   for(const e of d.library||[])if(!e||!id(e.id)||!text(e.name)||!['Warm-up','Technical','Competitive','Cool-down'].includes(e.phase)||!minutes(e.min)||!Array.isArray(e.skills)||!e.skills.every(text)||!Array.isArray(e.steps)||!e.steps.every(text)||['setup','cue','diagram','source','sourceLabel','level','progression'].some(k=>e[k]!=null&&!text(e[k])))throw Error('Invalid exercise');
-  for(const p of d.plans||[])if(!p||!id(p.id)||!text(p.name)||!Array.isArray(p.blocks)||p.blocks.some(b=>!b||!id(b.exId)||!minutes(b.min))||(p.players!=null&&(!Number.isInteger(p.players)||p.players<2||p.players>40))||(p.courts!=null&&(!Number.isInteger(p.courts)||p.courts<1||p.courts>6)))throw Error('Invalid session');
+  for(const p of d.plans||[])if(!p||!id(p.id)||!text(p.name)||!Array.isArray(p.blocks)||p.blocks.some(b=>!b||!id(b.exId)||!minutes(b.min)||(b.stage!=null&&!text(b.stage))||(b.guidance!=null&&!text(b.guidance)))||(p.players!=null&&(!Number.isInteger(p.players)||p.players<2||p.players>40))||(p.courts!=null&&(!Number.isInteger(p.courts)||p.courts<1||p.courts>6)))throw Error('Invalid session');
   return d;
 }
 /* ============ import / export ============ */
@@ -2518,7 +2698,7 @@ function printSession(){
   const p=plan();
   const old=document.getElementById('printDetails');if(old)old.remove();
   const el=document.createElement('div');el.id='printDetails';
-  el.innerHTML=p.blocks.map(b=>{const e=exById(b.exId);return e?`<section><h2>${esc(e.name)} · ${b.min} min</h2><p>${esc(e.setup)}</p><ol>${e.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol><p><b>Coach cue:</b> ${esc(e.cue)}</p></section>`:'';}).join('');
+  el.innerHTML=p.blocks.map(b=>{const e=exById(b.exId);return e?`<section><h2>${b.stage?esc(t(b.stage))+' · ':''}${esc(e.name)} · ${b.min} min</h2>${b.guidance?`<p>${esc(t(b.guidance))}</p>`:''}<p>${esc(e.setup)}</p><ol>${e.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol><p><b>Coach cue:</b> ${esc(e.cue)}</p></section>`:'';}).join('');
   document.getElementById('v-plan').append(el);window.print();el.remove();
 }
 function renderPlan(){
@@ -2534,12 +2714,12 @@ function renderPlan(){
       const dia=diagramFor(e);
       return `<div class="blk">
         <div class="grab"><button data-up="${i}" ${i===0?'disabled style=opacity:.25':''}>▲</button><button data-down="${i}" ${i===p.blocks.length-1?'disabled style=opacity:.25':''}>▼</button></div>
-        <div class="nm" role="button" tabindex="0" aria-expanded="${open}" data-toggle="${i}" style="cursor:pointer"><b>${esc(e.name)} <span style="color:var(--ink-soft);font-size:11px">${open?'▲':'▼'}</span></b><span>${e.phase} · ${b.min} min</span></div>
+        <div class="nm" role="button" tabindex="0" aria-expanded="${open}" data-toggle="${i}" style="cursor:pointer">${b.stage?`<div class="stage-label">${esc(t(b.stage))}</div>`:''}<b>${esc(e.name)} <span style="color:var(--ink-soft);font-size:11px">${open?'▲':'▼'}</span></b><span>${e.phase} · ${b.min} min</span></div>
         <input class="min" type="number" min="1" max="60" value="${b.min}" data-min="${i}" aria-label="minutes">
         <button class="x" data-rm="${i}" aria-label="remove">✕</button>
       </div>
       ${open?`<div style="padding:0 13px 13px;border-bottom:1px solid var(--line)">
-        ${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
+        ${b.guidance?`<p class="muted">${esc(t(b.guidance))}</p>`:''}${e.setup?`<div class="setup-line" style="margin-bottom:11px">${esc(e.setup)}</div>`:''}
         ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
         <h4 class="sub" style="margin-top:0">Steps</h4>
         <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
@@ -2569,7 +2749,7 @@ function addToPlan(exId){const e=exById(exId);plan().blocks.push({exId,min:e.min
 
 /* ============ RUN / timer ============ */
 let runConfig=null,runBlocks=[],idx=0,remaining=0,running=false,tick=null,sound=store.get('bvt.sound')!==false,actx=null,deadline=0,completed=false;
-function buildRun(){runConfig={name:plan().name,players:plan().players,courts:plan().courts};runBlocks=plan().blocks.map(b=>({ex:exById(b.exId)?structuredClone(exById(b.exId)):null,min:b.min})).filter(b=>b.ex);}
+function buildRun(){runConfig={name:plan().name,players:plan().players,courts:plan().courts};runBlocks=plan().blocks.map(b=>({ex:exById(b.exId)?structuredClone(exById(b.exId)):null,min:b.min,stage:b.stage,guidance:b.guidance})).filter(b=>b.ex);}
 function beep(f,d,w){if(!sound)return;try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime+(w||0);const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.02);}catch(e){}}
 function chime(){beep(660,.16,0);beep(660,.16,.22);beep(990,.28,.44);}
 const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
@@ -2578,9 +2758,9 @@ function renderDetail(){
   if(!runBlocks.length){host.innerHTML=`<div class="empty" style="margin-top:20px">This plan has no blocks. Add some in Plan / Library.</div>`;return;}
   const e=runBlocks[idx].ex;
   const dia=diagramFor(e);
-  const nx=runBlocks[idx+1]?`Up next · ${esc(runBlocks[idx+1].ex.name)}`:'Last block';
-  host.innerHTML=`<div class="detail">
-    ${e.setup?`<div class="setup-line">${esc(e.setup)}</div>`:''}
+  const nx=runBlocks[idx+1]?`${language==='de'?'Danach':'Up next'} · ${esc(runBlocks[idx+1].ex.name)}`:'Last block';
+  host.innerHTML=`<div class="detail">${runBlocks[idx].stage?`<div class="stage-label">${esc(t(runBlocks[idx].stage))}</div>`:''}
+    ${runBlocks[idx].guidance?`<p class="muted">${esc(t(runBlocks[idx].guidance))}</p>`:''}${e.setup?`<div class="setup-line">${esc(e.setup)}</div>`:''}
     ${dia?dia+LEGEND:''}
     <h4 class="sub">How it runs</h4>
     <ol class="play">${e.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
@@ -2591,7 +2771,7 @@ function paint(){
   if(!runBlocks.length){document.getElementById('clock').textContent='0:00';document.getElementById('nowBlock').textContent='No session loaded';document.getElementById('nowIdx').textContent='Start a session from Plan';document.getElementById('progress').style.width='0%';return;}
   document.getElementById('clock').textContent=fmt(remaining);
   document.getElementById('nowBlock').textContent=runBlocks[idx].ex.name;
-  document.getElementById('nowIdx').textContent='Block '+(idx+1)+' of '+runBlocks.length;
+  document.getElementById('nowIdx').textContent=(language==='de'?'Block ':'Block ')+(idx+1)+(language==='de'?' von ':' of ')+runBlocks.length;
   const total=runBlocks[idx].min*60;
   document.getElementById('progress').style.width=((total-remaining)/total*100)+'%';
 }
@@ -2660,6 +2840,7 @@ async function loadLibrary(){
 
 renderAll();
 loadLibrary();
+initPreferences();
 document.getElementById('soundBtn').textContent=sound?'🔊':'🔈';
 document.getElementById('soundBtn').setAttribute('aria-pressed',sound);
 document.querySelector('[data-tab="plan"]').setAttribute('aria-current','page');
