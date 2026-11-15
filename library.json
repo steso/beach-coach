@@ -9,7 +9,7 @@
     "footwork"
    ],
    "min": 5,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "All pairs spread across both courts. No teams yet.",
    "steps": [
     "Baseline to net and back, 4-5 mid-tempo runs.",
@@ -26,7 +26,7 @@
     "ball control"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "pepper",
    "setup": "In pairs on half a court.",
    "steps": [
     "Dig -> set -> controlled hit, keep it alive.",
@@ -44,8 +44,8 @@
     "passing"
    ],
    "min": 12,
-   "diagram": "serve",
-   "setup": "Serve straight to your partner in lanes - as many lanes per court as fit, so nobody waits.",
+   "diagram": "receive",
+   "setup": "Groups of 3: one server behind the baseline, one receiver opposite, one target 1–2 m off the net. Use separate lanes for controlled serves; use the full court for zone serving.",
    "steps": [
     "Server names a zone before serving: deep seam, deep corner, or short.",
     "Passer calls the ball early - short / deep / wind - and passes to a target by the net.",
@@ -62,12 +62,12 @@
     "shot selection"
    ],
    "min": 10,
-   "diagram": "servevs",
+   "diagram": "secondball",
    "setup": "2v2 full court. One tough serve at a receiver.",
    "steps": [
-    "Receiver passes high off a hard serve.",
-    "Attacker plays the 2nd ball to the open side - hard hit if on, else shot / poke / free.",
-    "Rally must finish within two contacts."
+    "Serve to the receiver, who passes high toward their partner.",
+    "The partner attacks the second contact if the ball is playable; otherwise send a controlled free ball.",
+    "Each side has a maximum of two contacts; continue the rally until the ball is dead."
    ],
    "cue": "Good decisions from bad passes - that is the whole beach game."
   },
@@ -79,12 +79,12 @@
     "setting"
    ],
    "min": 8,
-   "diagram": "court",
-   "setup": "Pairs, one feeder near the net.",
+   "diagram": "setting",
+   "setup": "Groups of 3 on one side: feeder deep, setter moving from reception base, target near the sideline and 1–2 m off the net.",
    "steps": [
-    "Feeder simulates a reception near the net.",
-    "Setter runs in and delivers a lateral set to the pin.",
-    "Focus: body square to target, high contact, full extension."
+    "Feeder tosses a simulated pass toward the setter near the net.",
+    "Setter moves under the ball and sets along the net toward the target, who catches.",
+    "Rotate feeder → setter → target after 5 balls. Progress to a controlled attack over the net."
    ],
    "cue": "Hands high, set the line - no rushing the feet."
   },
@@ -97,12 +97,12 @@
     "shot selection"
    ],
    "min": 18,
-   "diagram": "sideout",
+   "diagram": "zones",
    "setup": "Per court: 2 teams on, the rest rotate in after each finished attack.",
    "steps": [
     "You only score by landing an attack in a marked zone: deep corners + short.",
     "First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.",
-    "Everything else is a wash - next team rotates in after each finished attack."
+    "Outside a zone = no point. Rotate the waiting team in after the rally ends; never enter while a ball is live."
    ],
    "cue": "Tempts the high deep line shot. Reward smart shot selection over power."
   },
@@ -116,11 +116,11 @@
     "pressure"
    ],
    "min": 15,
-   "diagram": "servevs",
+   "diagram": "corridors",
    "setup": "Winner stays, loser out, next team serves in (mini King of the Court).",
    "steps": [
     "Serving team scores +2 for an ace.",
-    "Receiving team must attack into the corridor 1 m inside each sideline: +1 in, -1 out.",
+    "Receiving team attacks into either marked 1 m-wide sideline strip: +1 inside the strip, −1 for an attack outside it. Play the rally out before rotating.",
     "First to 8 wins the round, then swap who serves; winner holds court."
    ],
    "cue": "Risk management: when is the aggressive serve or line shot worth it?"
@@ -134,7 +134,7 @@
     "transition"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "2v2, one serving side. Extra teams queue to enter.",
    "steps": [
     "Serve, play it out. First-ball side-out win = a big point.",
@@ -152,11 +152,11 @@
     "game sense"
    ],
    "min": 25,
-   "diagram": "kotc",
+   "diagram": "king",
    "setup": "Each court runs its own King of the Court with the teams on it.",
    "steps": [
     "King side scores by winning; challenger side wins to move up. Loser out, next in serves.",
-    "Beach rules: no open-hand tips, no sideways hand-set over.",
+    "No open-hand finger tips. An intentional overhand pass attack must travel perpendicular to the shoulders; an attempted set to a partner is the exception.",
     "Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side."
    ],
    "cue": "Say almost nothing. Tempo surfaces every weak pass - note them."
@@ -169,7 +169,7 @@
     "mobility"
    ],
    "min": 5,
-   "diagram": "cool",
+   "diagram": "court",
    "setup": "Stay in pairs, on court.",
    "steps": [
     "Light mobility & stretch: calves, shoulders, hips, wrists.",
@@ -186,7 +186,7 @@
     "technique"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "partner",
    "setup": "Pairs ~5 m apart. (Better at Beach #1)",
    "steps": [
     "Toss, pass, catch, repeat; give lots of feedback.",
@@ -204,7 +204,7 @@
     "passing"
    ],
    "min": 6,
-   "diagram": "court",
+   "diagram": "triple",
    "setup": "Three in a straight line. (Better at Beach #2)",
    "steps": [
     "P1 tosses to P2, who overhead-passes over their head to P3; P2 turns to face P3 and repeats back.",
@@ -222,7 +222,7 @@
     "ball control"
    ],
    "min": 5,
-   "diagram": "court",
+   "diagram": "triangle",
    "setup": "3 in a triangle (4 = square). (Better at Beach #3)",
    "steps": [
     "Toss right, pass right, catch, repeat; once smooth, go left.",
@@ -240,11 +240,11 @@
     "passing"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "receive",
    "setup": "P1 baseline, P2 receives, P3 target near net (add P4 at the pin if you have one). (Better at Beach #4)",
    "steps": [
     "P1 sends 10 balls to P2, who passes to the target; target catches and feeds P1.",
-    "Use 2-3 balls; rotate after 10. Aim under 20 s for 10 good passes at this level.",
+    "Use 2–3 balls; rotate after 10 controlled receptions. Allow the target time to return each ball safely.",
     "Progress: serve instead of throw, move back to full court, then jump serve; work float or topspin."
    ],
    "cue": "Target quality over speed - a pass the setter can use."
@@ -259,7 +259,7 @@
     "movement"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Passing Groups but with constant rotation - follow your ball. (Better at Beach #5)",
    "steps": [
     "P1 serves/throws to a passer, who passes to the target; target catches.",
@@ -277,7 +277,7 @@
     "ball control"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "shortdeep",
    "setup": "Pairs across the net. (Better at Beach #6)",
    "steps": [
     "P1 tosses a short ball (~2 m off net); P2 passes it back; then P1 tosses deep (~7 m).",
@@ -294,7 +294,7 @@
     "ball control"
    ],
    "min": 8,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Three touches each side over the net; extra players rotate out after sending it over. With 7-8, split the court into two. (Better at Beach #7)",
    "steps": [
     "Progress the third contact: pass-pass-pass, then pass-set-tomahawk, -pokey, -hit, -jump hit.",
@@ -313,7 +313,7 @@
     "competitive"
    ],
    "min": 10,
-   "diagram": "serve",
+   "diagram": "receive",
    "setup": "Half court. P1 serves 10 at P2 (passing to P3, the judge). (Better at Beach #8)",
    "steps": [
     "Score the passer: perfect pass or missed serve = 3, OK = 2, bad = 1, ace = 0.",
@@ -349,7 +349,7 @@
     "communication"
    ],
    "min": 8,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs; one holds a spare 'potato' ball. (Better at Beach #10)",
    "steps": [
     "P1 tosses the play ball; P2 throws the potato up, sets the play ball back, catches the potato. 10x, switch.",
@@ -367,7 +367,7 @@
     "emergency"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Across from a partner. (Better at Beach #11)",
    "steps": [
     "Six contacts before sending it over: pass-tomahawk-fist-fist-set-control spike (or pokey-pokey variant).",
@@ -384,7 +384,7 @@
     "ball control"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs; coach names a 3-touch sequence. (Better at Beach #12)",
    "steps": [
     "Alternate touches while holding the order, e.g. open hand-backhand-fist, or pokey-head-chicken wing.",
@@ -419,7 +419,7 @@
     "serve"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "partnerserve",
    "setup": "Partners across the net at ~half court. (Better at Beach #14)",
    "steps": [
     "Serve so your partner catches with no more than one step; they serve back the same way.",
@@ -437,7 +437,7 @@
     "accuracy"
    ],
    "min": 10,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Split each side into 6 zones (3 back, 3 front). (Better at Beach #15)",
    "steps": [
     "Serve the zones in order; only advance once you hit the current zone.",
@@ -455,7 +455,7 @@
     "accuracy"
    ],
    "min": 10,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Runner starts opposite the server and may move only at contact. (Better at Beach #16)",
    "steps": [
     "Server tries to land it in the court untouched; runner tries to get a hand on it.",
@@ -472,7 +472,7 @@
     "serve"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Chairs (or players) ~3 m from the baseline across the court. (Better at Beach #17)",
    "steps": [
     "Land the serve behind the chairs, in the court, without touching them.",
@@ -599,7 +599,7 @@
     "shot selection"
    ],
    "min": 10,
-   "diagram": "sideout",
+   "diagram": "court",
    "setup": "Cone a box 1-2 m off the net and lines; one setter, a line of attackers on the other side. (Better at Beach #24)",
    "steps": [
     "Coach feeds easy balls; pass-set-hit anywhere OUTSIDE the box.",
@@ -635,7 +635,7 @@
     "defense"
    ],
    "min": 12,
-   "diagram": "sideout",
+   "diagram": "court",
    "setup": "Split a half into short/deep; 3 defenders deep, no block; short half is out. (Better at Beach #26)",
    "steps": [
     "Attacking side gets free balls, pass-set and hit HARD into the deep court; rotate every point.",
@@ -653,7 +653,7 @@
     "defense"
    ],
    "min": 12,
-   "diagram": "sideout",
+   "diagram": "court",
    "setup": "Split a half into short/deep; 1 defender short; deep half is out. (Better at Beach #27)",
    "steps": [
     "Attacking side gets free balls, pass-set and hit into the SHORT court; rotate every point.",
@@ -671,7 +671,7 @@
     "conditioning"
    ],
    "min": 12,
-   "diagram": "sideout",
+   "diagram": "court",
    "setup": "Offense opposite the coach; two defensive teams swap every 3 points to stay fresh. (Better at Beach #28)",
    "steps": [
     "Coach feeds fast free balls to the offense; next feed within 8 s of the last.",
@@ -689,7 +689,7 @@
     "transition"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "A team each side, others waiting to rotate in. (Better at Beach #29)",
    "steps": [
     "Coach throws a joust/near-net ball. Win it = 'U' and receive a free ball; win that = 'US'.",
@@ -707,7 +707,7 @@
     "game sense"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Two teams on, others waiting. Coach feeds the team with fewer points. (Better at Beach #30)",
    "steps": [
     "First time you play the ball = 1 touch only; second time = exactly 2; third and after = 3.",
@@ -725,7 +725,7 @@
     "transition"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Coach feeds a free ball; teams try to attack on 2. (Better at Beach #31)",
    "steps": [
     "Goal is a second-ball attack (jump attack at the top level).",
@@ -762,7 +762,7 @@
     "game sense"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Two teams on, others waiting. (Better at Beach #33)",
    "steps": [
     "Start 12-12, game to 15 win-by-2.",
@@ -816,7 +816,7 @@
     "side-out"
    ],
    "min": 18,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Paradise-style side-out game to 21. One side is the 'Dog House' (can't score); other side scores. (Better at Beach #36)",
    "steps": [
     "Coach serves/free-balls the scoring side. Scoring side wins first ball = 1 point, rotate off.",
@@ -834,7 +834,7 @@
     "hustle"
    ],
    "min": 12,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "One team defends 'The Pit' for 3 minutes; others feed free balls opposite and rotate every point. (Better at Beach #37)",
    "steps": [
     "Only the Pit scores: any dig (2 touches, even a fingernail) = a point.",
@@ -982,7 +982,7 @@
     "side-out"
    ],
    "min": 20,
-   "diagram": "kotc",
+   "diagram": "king",
    "setup": "Points side vs challenger side; 3+ teams. (FIVB 8.8)",
    "steps": [
     "Challengers serve; win the rally to cross to the points side.",
@@ -1000,7 +1000,7 @@
     "side-out"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Three-ball wash starting with a serve. (FIVB 8.9)",
    "steps": [
     "Ball 1: serve and rally. Ball 2: winner receives a down ball. Ball 3: then a free ball.",
@@ -1018,7 +1018,7 @@
     "game sense"
    ],
    "min": 18,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Receiving team = batters, serving team = pitchers; extra teams wait. (FIVB 8.10)",
    "steps": [
     "Win a rally = one base; missed serve = a walk (one base); ace = strikeout + switch.",
@@ -1054,7 +1054,7 @@
     "conditioning"
    ],
    "min": 12,
-   "diagram": "servevs",
+   "diagram": "court",
    "setup": "Pick a target spot (e.g. deep corner). (FIVB 8.13)",
    "steps": [
     "Server serves, then moves to the target spot to defend.",
@@ -1090,7 +1090,7 @@
     "footwork"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs/threes over a short space. (from your notes)",
    "steps": [
     "Keep the ball up with forearm passes only.",
@@ -1108,7 +1108,7 @@
     "defense"
    ],
    "min": 8,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Forearm-only game across the net in a tight space; each player/pair has 3-4 lives. (from your notes)",
    "steps": [
     "Rally with forearm passes only - no hands.",
@@ -1126,7 +1126,7 @@
     "game sense"
    ],
    "min": 12,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "5v5 or 4v4 across a beach court, no jumping, two touches per side. (from your notes)",
    "steps": [
     "Start cooperative: two touches together, chase long rallies.",
@@ -1144,7 +1144,7 @@
     "reaction"
    ],
    "min": 5,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs, one ball. (from your notes)",
    "steps": [
     "Call the opposite: 'pass' means bump, 'bump/manchette' means hand-set.",
@@ -1161,7 +1161,7 @@
     "ball control"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs, one ball, continuous. (from your notes)",
    "steps": [
     "Cycle fast pepper (low, quick balls).",
@@ -1178,7 +1178,7 @@
     "ball control"
    ],
    "min": 6,
-   "diagram": "warmup",
+   "diagram": "court",
    "setup": "Pairs in a 3 m space, in front of then behind the 3 m line. (from your notes)",
    "steps": [
     "Forearm-pass only in the tight space.",
@@ -1196,7 +1196,7 @@
     "footwork"
    ],
    "min": 6,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Feeder at the net, receiver on the baseline; fast 'sewing-machine' feet. (from your notes)",
    "steps": [
     "Shuffle in with quick small steps and pass the fed ball to target.",
@@ -1250,7 +1250,7 @@
     "ball control"
    ],
    "min": 8,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "3 per side, King-Court rotation. (from your notes)",
    "steps": [
     "Exactly one touch per player, so the side must play all three.",
@@ -1377,7 +1377,7 @@
     "serve"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Server, receiver, target (setter) per court. (from your notes)",
    "steps": [
     "Serve, reception to the target, target catches.",
@@ -1395,10 +1395,10 @@
     "accuracy"
    ],
    "min": 8,
-   "diagram": "serve",
+   "diagram": "targets",
    "setup": "Full serving, own ball. (from your notes)",
    "steps": [
-    "Serve 2 to each zone: left, front, right, deep.",
+    "Mark four quadrants: short left, short right, deep left, deep right. Serve 2 balls to each.",
     "Chase your ball and reset quickly.",
     "Progress: float then jump serve to each zone."
    ],
@@ -1413,7 +1413,7 @@
     "passing"
    ],
    "min": 12,
-   "diagram": "serve",
+   "diagram": "court",
    "setup": "Two teams, one serving on each court; one fixed receiver. (from your notes)",
    "steps": [
     "20 serves, 10 at the same passer.",
@@ -1521,7 +1521,7 @@
     "defense"
    ],
    "min": 15,
-   "diagram": "servevs",
+   "diagram": "court",
    "setup": "2v2; one team serves; start 18:15, play to 21. (from your notes)",
    "steps": [
     "Serve vs side-out from a tight score.",
@@ -1539,7 +1539,7 @@
     "conditioning"
    ],
    "min": 12,
-   "diagram": "servevs",
+   "diagram": "court",
    "setup": "Teams rotate on one court; start 15:12 to 21. (from your notes)",
    "steps": [
     "Fast feeds, minimal downtime.",
@@ -1557,7 +1557,7 @@
     "transition"
    ],
    "min": 12,
-   "diagram": "servevs",
+   "diagram": "court",
    "setup": "Two teams head-to-head with coach free-balls and a shared counter. (from your notes)",
    "steps": [
     "Win a rally and the counter moves your way.",
@@ -1593,7 +1593,7 @@
     "shot selection"
    ],
    "min": 12,
-   "diagram": "servevs",
+   "diagram": "court",
    "setup": "The same receiver takes 7 side-outs in a row. (from your notes)",
    "steps": [
     "Attack line first, then cut, then open/free choice, then play the rally out.",
@@ -1629,7 +1629,7 @@
     "shot play"
    ],
    "min": 15,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "2v2 King-Court, standing shots only. (from your notes)",
    "steps": [
     "Minimum two touches; a teammate touch is required between contacts 1 and 2.",
@@ -1647,7 +1647,7 @@
     "game sense"
    ],
    "min": 18,
-   "diagram": "kotc",
+   "diagram": "court",
    "setup": "Standard King-Court across the court. (from your notes)",
    "steps": [
     "Win a rally to move up as usual.",
@@ -1691,6 +1691,188 @@
     "Keep the flow going - minimal resets."
    ],
    "cue": "High-volume attacking reps under game flow."
+  },
+  {
+   "id": "new1",
+   "name": "Four-pass setting decisions",
+   "phase": "Technical",
+   "skills": [
+    "setting",
+    "out of system"
+   ],
+   "min": 10,
+   "diagram": "setting",
+   "setup": "3 per group: feeder deep, moving setter, target 1–2 m off the net.",
+   "steps": [
+    "Feed a comfortable pass, then vary it tight, deep or wide.",
+    "Setter chooses a hand set or bump set to the target; target catches.",
+    "Score one for a catchable set with space from the net. Rotate every 5 feeds."
+   ],
+   "cue": "Arrive balanced; choose the contact you can control.",
+   "level": "Intermediate",
+   "progression": "Easier: predictable tosses. Harder: target attacks into the opposite court.",
+   "source": "https://www.fivb.com/wp-content/uploads/2024/03/FIVB_Beachvolley_Drill-Book_EN.pdf",
+   "sourceLabel": "Coaching adaptation · FIVB drill book, 4.7"
+  },
+  {
+   "id": "new2",
+   "name": "Serve, receive, set, catch",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "setting",
+    "communication"
+   ],
+   "min": 10,
+   "diagram": "receive",
+   "setup": "3 per group: server behind one end line, receiver and setting target opposite.",
+   "steps": [
+    "Serve or toss over the net. Receiver calls early and passes to partner.",
+    "Partner sets; original receiver moves to catch at an attacking point off the net.",
+    "Count 5 catchable sequences together, then rotate roles."
+   ],
+   "cue": "Pass, connect, then move again.",
+   "level": "Beginner",
+   "progression": "Easier: closer toss. Harder: attack instead of catch.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new3",
+   "name": "Seam ownership challenge",
+   "phase": "Technical",
+   "skills": [
+    "passing",
+    "communication",
+    "serve receive"
+   ],
+   "min": 10,
+   "diagram": "seam",
+   "setup": "4 per court: server and collector opposite two receivers.",
+   "steps": [
+    "Receivers agree who owns the seam before each serve.",
+    "Server alternates seam, short and deep serves; receivers call before contact.",
+    "A controlled pass plus an early call earns one; swap pairs after 6 serves."
+   ],
+   "cue": "Decide together before the serve.",
+   "level": "Beginner",
+   "progression": "Easier: toss from inside court. Harder: vary serving position.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new4",
+   "name": "Dig, set, send",
+   "phase": "Technical",
+   "skills": [
+    "defense",
+    "setting",
+    "transition"
+   ],
+   "min": 10,
+   "diagram": "digset",
+   "setup": "Feeder on one side; defender and partner on the other. Extra players collect.",
+   "steps": [
+    "Feeder sends a controlled standing attack to the defender.",
+    "Partner moves to set the dig; defender sends a controlled third contact over.",
+    "Reset after each sequence and rotate all roles after 5 feeds."
+   ],
+   "cue": "Make the dig high enough for your partner.",
+   "level": "Intermediate",
+   "progression": "Easier: feed a free ball. Harder: unpredictable standing shots.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new5",
+   "name": "Cooperative three-contact streak",
+   "phase": "Warm-up",
+   "skills": [
+    "ball control",
+    "communication"
+   ],
+   "min": 8,
+   "diagram": "cooperative",
+   "setup": "2v2 across the net; extras replace a pair every 90 seconds.",
+   "steps": [
+    "Start with an easy toss and use pass, set, controlled third contact.",
+    "Both teams count consecutive net crossings together; aim for 6.",
+    "On an error restart the count with an easy ball. Change partners next round."
+   ],
+   "cue": "Send a ball the other pair can play.",
+   "level": "Beginner",
+   "progression": "Easier: allow a catch on contact two. Harder: standing shots to space.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new6",
+   "name": "Side-out plus transition confirmation",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "transition",
+    "pressure"
+   ],
+   "min": 14,
+   "diagram": "court",
+   "setup": "2v2 per court; waiting team feeds the second ball and collects.",
+   "steps": [
+    "Play a serve rally. Receiving team must win it to unlock a confirmation ball.",
+    "Immediately feed an easy ball to that team; winning this rally earns one big point.",
+    "After two rally sequences rotate a waiting team in; first to 5 big points wins."
+   ],
+   "cue": "Reset quickly after the first rally.",
+   "level": "Intermediate",
+   "progression": "Easier: a controlled feed instead of serve. Harder: a down ball for confirmation.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new7",
+   "name": "See the space: line or cut",
+   "phase": "Technical",
+   "skills": [
+    "attack",
+    "shot selection",
+    "vision"
+   ],
+   "min": 10,
+   "diagram": "shot",
+   "setup": "Feeder and attacker below the net; one defender above it. Spare players collect.",
+   "steps": [
+    "Feeder tosses a hittable ball off the net; defender chooses line or cross-court early.",
+    "Attacker looks before contact and plays a controlled shot toward the open area.",
+    "Play one ball at a time; rotate attacker → defender → feeder after 5 balls."
+   ],
+   "cue": "See space before choosing your shot.",
+   "level": "Intermediate",
+   "progression": "Easier: standing shots. Harder: defender moves later.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+   "id": "new8",
+   "name": "Finish at 18–18",
+   "phase": "Competitive",
+   "skills": [
+    "side-out",
+    "pressure",
+    "game sense"
+   ],
+   "min": 12,
+   "diagram": "court",
+   "setup": "2v2 per court; waiting pairs enter at the end of each mini-set.",
+   "steps": [
+    "Start at 18–18; normal rally scoring to 21, win by two.",
+    "Switch sides after each combined 7 points, counting from 36.",
+    "After the mini-set rotate the waiting pair in and alternate the first serving team."
+   ],
+   "cue": "Choose one serving plan and commit to it.",
+   "level": "All levels",
+   "progression": "Easier: start 6–6, play to 9. Harder: each pair names a tactical goal.",
+   "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+   "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
   }
  ],
  "plans": [
@@ -1775,6 +1957,50 @@
     {
      "exId": "cp4",
      "min": 20
+    },
+    {
+     "exId": "cd1",
+     "min": 5
+    }
+   ]
+  },
+  {
+   "id": "setting90",
+   "name": "90 min · Setting & playful side-out",
+   "players": 14,
+   "courts": 2,
+   "blocks": [
+    {
+     "exId": "wm1",
+     "min": 5
+    },
+    {
+     "exId": "new5",
+     "min": 8
+    },
+    {
+     "exId": "new2",
+     "min": 10
+    },
+    {
+     "exId": "tc3",
+     "min": 10
+    },
+    {
+     "exId": "new3",
+     "min": 10
+    },
+    {
+     "exId": "new7",
+     "min": 10
+    },
+    {
+     "exId": "new6",
+     "min": 14
+    },
+    {
+     "exId": "cp4",
+     "min": 18
     },
     {
      "exId": "cd1",

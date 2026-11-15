@@ -1,0 +1,69 @@
+{
+  "library": [
+    {
+      "id": "wm1",
+      "name": "Movement ladder",
+      "phase": "Warm-up",
+      "skills": [
+        "activation",
+        "footwork"
+      ],
+      "min": 5,
+      "diagram": "warmup",
+      "setup": "All pairs spread across both courts. No teams yet.",
+      "steps": [
+        "Baseline to net and back, 4-5 mid-tempo runs.",
+        "Each player calls one movement for the next length: skips, side-steps, split-steps, drop-steps.",
+        "Build intensity up, then ease back into mobility."
+      ],
+      "cue": "Quiet feet, early to the ball. One reminder only."
+    },
+    {
+      "id": "tc3",
+      "name": "Lateral set reps",
+      "phase": "Technical",
+      "skills": [
+        "setting"
+      ],
+      "min": 8,
+      "diagram": "court",
+      "setup": "Pairs, one feeder near the net.",
+      "steps": [
+        "Feeder simulates a reception near the net.",
+        "Setter runs in and delivers a lateral set to the pin.",
+        "Focus: body square to target, high contact, full extension."
+      ],
+      "cue": "Hands high, set the line - no rushing the feet."
+    },
+    {
+      "id": "cd1",
+      "name": "Cool-down & debrief",
+      "phase": "Cool-down",
+      "skills": [
+        "mobility"
+      ],
+      "min": 5,
+      "diagram": "cool",
+      "setup": "Stay in pairs, on court.",
+      "steps": [
+        "Light mobility & stretch: calves, shoulders, hips, wrists.",
+        "30 s pair debrief: one thing that worked, one to fix."
+      ],
+      "cue": "One collective takeaway. Keep it short - end on energy."
+    }
+  ],
+  "plans": [
+    {
+      "id": "legacy",
+      "name": "Legacy session",
+      "players": 14,
+      "courts": 2,
+      "blocks": [
+        {
+          "exId": "tc3",
+          "min": 8
+        }
+      ]
+    }
+  ]
+}

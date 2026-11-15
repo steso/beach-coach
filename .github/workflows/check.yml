@@ -1,0 +1,14 @@
+name: Check coaching app
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tests/app.test.cjs
+      - run: python3 scripts/sync-library.py && git diff --exit-code

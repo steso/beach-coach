@@ -145,6 +145,12 @@
   .toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:var(--ink);color:#F3EAD6;padding:10px 16px;border-radius:99px;font-size:14px;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}
   .toast.show{opacity:1}
   @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+  button:disabled{opacity:.4;cursor:default}
+  .mini,.blk .grab button,.blk .x{min-height:36px;min-width:36px}
+  [data-toggle]:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+  @media(max-width:400px){.clock{font-size:44px;min-width:112px}.ctrls{gap:4px}.tbtn{padding:10px 6px}.plan-name{width:60%;min-width:0}.blk{gap:6px;padding:10px 8px}}
+  #printDetails{display:none}
+  @media print{#planBlocks{display:none}#printDetails{display:block}#printDetails section{break-inside:avoid}#printDetails h2{font-size:18px}header,.tabs,.timer,.acts,.row,.squad,button,#v-library,#v-run{display:none!important}body{padding:0;background:white}#v-plan{display:block!important}.card{break-inside:avoid}.wrap{max-width:none}}
 </style>
 </head>
 <body data-view="plan">
@@ -177,13 +183,13 @@
     </div>
     <div class="dist" id="distLine"></div>
     <div class="row" style="margin:8px 0 2px">
-      <select id="planSwitch" class="min" style="width:auto;flex:1;text-align:left;padding:8px 10px"></select>
+      <select aria-label="Choose session" id="planSwitch" class="min" style="width:auto;flex:1;text-align:left;padding:8px 10px"></select>
       <button class="mini" id="newPlan">＋ New</button>
       <button class="mini" id="dupPlan">Duplicate</button>
       <button class="mini warn" id="delPlan">Delete</button>
     </div>
 
-    <div id="planBlocks"></div>
+    <div id="planBlocks"></div><button class="mini" onclick="printSession()">Print session</button>
 
     <button class="btn big" id="startBtn" style="margin-top:14px">▶ Start session</button>
     <p class="muted" style="text-align:center;margin-top:8px">Add exercises from the <b>Library</b> tab. Reorder with ▲▼, set minutes per block.</p>
@@ -193,6 +199,7 @@
   <div class="view" id="v-library">
     <div class="section-title">Exercise library</div>
     <p class="muted" id="libCount">—</p>
+    <label class="muted" for="libSearch">Find an exercise</label><input id="libSearch" type="search" placeholder="Search names, skills, setup…" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:10px;background:white">
     <div class="filters" id="libFilters"></div>
     <div class="row" style="margin:8px 0">
       <button class="mini solid" id="newEx">＋ New exercise</button>
@@ -206,24 +213,14 @@
     <div class="card" id="editor" style="display:none;padding:15px 16px">
       <div class="section-title" id="edTitle" style="margin-top:0">New exercise</div>
       <div class="form">
-        <label>Name</label><input id="edName" placeholder="e.g. Deep-corner serve targets">
-        <label>Phase</label>
-        <select id="edPhase"><option>Warm-up</option><option>Technical</option><option>Competitive</option><option>Cool-down</option></select>
-        <label>Skills (comma-separated)</label><input id="edSkills" placeholder="serve, passing, shot selection">
-        <label>Default minutes</label><input id="edMin" type="number" min="1" max="60" value="12">
-        <label>Court setup (one line)</label><input id="edSetup" placeholder="Court A: 4 teams · Court B: 3 teams">
-        <label>Steps (one per line)</label><textarea id="edSteps" placeholder="Server aims a named zone.&#10;Passer calls the ball early.&#10;Swap roles every minute."></textarea>
-        <label>Coach cue (one line)</label><input id="edCue" placeholder="Every serve has a target — no aimless reps.">
-        <label>Diagram</label>
-        <select id="edDiagram">
-          <option value="court">Plain court</option>
-          <option value="warmup">Pepper / warm-up</option>
-          <option value="serve">Serve lanes to target</option>
-          <option value="sideout">Side-out zones</option>
-          <option value="servevs">Serve vs side-out corridor</option>
-          <option value="kotc">King of the Court</option>
-          <option value="cool">Cool-down</option>
-        </select>
+        <label for="edName">Name</label><input id="edName" placeholder="e.g. Deep-corner serve targets">
+        <label for="edPhase">Phase</label><select id="edPhase"><option>Warm-up</option><option>Technical</option><option>Competitive</option><option>Cool-down</option></select>
+        <label for="edSkills">Skills (comma-separated)</label><input id="edSkills" placeholder="serve, passing, shot selection">
+        <label for="edMin">Default minutes</label><input id="edMin" type="number" min="1" max="60" value="12">
+        <label for="edSetup">Court setup (one line)</label><input id="edSetup" placeholder="Court A: 4 teams · Court B: 3 teams">
+        <label for="edSteps">Steps (one per line)</label><textarea id="edSteps" placeholder="Server aims a named zone.&#10;Passer calls the ball early.&#10;Swap roles every minute."></textarea>
+        <label for="edCue">Coach cue (one line)</label><input id="edCue" placeholder="Every serve has a target — no aimless reps.">
+        <label for="edDiagram">Diagram</label><select id="edDiagram"><option value="court">No diagram</option><option value="partner">partner</option><option value="pepper">pepper</option><option value="triple">triple</option><option value="triangle">triangle</option><option value="receive">receive</option><option value="setting">setting</option><option value="partnerserve">partnerserve</option><option value="shortdeep">shortdeep</option><option value="targets">targets</option><option value="zones">zones</option><option value="corridors">corridors</option><option value="secondball">secondball</option><option value="king">king</option><option value="seam">seam</option><option value="digset">digset</option><option value="cooperative">cooperative</option><option value="shot">shot</option></select>
         <div class="hint">Diagrams are presets — pick the closest match.</div>
         <div class="row" style="margin-top:14px">
           <button class="btn solid" id="edSave" style="flex:2">Save exercise</button>
@@ -249,8 +246,8 @@
         <div class="ctrls">
           <button class="tbtn play" id="playBtn">Start</button>
           <button class="tbtn" id="skipBtn">Next ›</button>
-          <button class="tbtn ghost" id="prevBtn" title="Previous">‹</button>
-          <button class="tbtn ghost" id="resetBtn" title="Reset">↺</button>
+          <button class="tbtn ghost" id="prevBtn" aria-label="Previous block" title="Previous">‹</button>
+          <button class="tbtn ghost" id="resetBtn" aria-label="Reset session" title="Reset">↺</button>
           <button class="tbtn ghost" id="soundBtn" aria-pressed="true" title="Sound">🔊</button>
         </div>
       </div>
@@ -261,66 +258,1900 @@
 
 </main>
 
-<nav class="tabs" role="tablist">
-  <button class="tab active" data-tab="plan" role="tab"><span class="ico">📋</span><span class="tl">Plan</span></button>
-  <button class="tab" data-tab="library" role="tab"><span class="ico">🗂️</span><span class="tl">Library</span></button>
-  <button class="tab" data-tab="run" role="tab"><span class="ico">⏱️</span><span class="tl">Run</span></button>
+<nav class="tabs" aria-label="Main navigation">
+  <button class="tab active" data-tab="plan"><span class="ico">📋</span><span class="tl">Plan</span></button>
+  <button class="tab" data-tab="library"><span class="ico">🗂️</span><span class="tl">Library</span></button>
+  <button class="tab" data-tab="run"><span class="ico">⏱️</span><span class="tl">Run</span></button>
 </nav>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ============ storage (graceful: localStorage on a real host, memory in sandbox) ============ */
 const mem={};
 const store={
-  get(k){ try{const v=localStorage.getItem(k);return v==null?null:JSON.parse(v);}catch(e){return k in mem?mem[k]:null;} },
-  set(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){mem[k]=v;} }
+  get(k){ try{if(k in mem)return mem[k];const v=localStorage.getItem(k);return v==null?null:JSON.parse(v);}catch(e){return k in mem?mem[k]:null;} },
+  set(k,v){ mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){toast('Storage unavailable — export a backup before closing.');} }
 };
 const uid=()=>Math.random().toString(36).slice(2,9);
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1600);}
 
 /* ============ seed library (replace/extend with your own notes) ============ */
 const SEED_LIB=[
-  {id:'wm1',name:'Movement ladder',phase:'Warm-up',skills:['activation','footwork'],min:5,diagram:'warmup',
-   setup:'All pairs spread across both courts. No teams yet.',
-   steps:['Baseline to net and back, 4–5 mid-tempo runs.','Each player calls one movement for the next length: skips, side-steps, split-steps, drop-steps.','Build intensity up, then ease back into mobility.'],
-   cue:'Quiet feet, early to the ball. One reminder only.'},
-  {id:'wm2',name:'Pepper progression',phase:'Warm-up',skills:['ball control'],min:6,diagram:'warmup',
-   setup:'In pairs on half a court.',
-   steps:['Dig → set → controlled hit, keep it alive.','2nd and 3rd contact stay controlled — chase long rallies.','Last 2 min: allow harder controlled hits.'],
-   cue:'Reward rallies that stay alive, not winners.'},
-  {id:'tc1',name:'Serve targets + first contact',phase:'Technical',skills:['serve','passing'],min:12,diagram:'serve',
-   setup:'Serve straight to your partner in lanes — as many lanes per court as fit, so nobody waits.',
-   steps:['Server names a zone before serving: deep seam, deep corner, or short.','Passer calls the ball early — “short / deep / wind” — and passes to a target by the net.','Swap server/passer every minute; count clean passes as a pair.'],
-   cue:'Every serve has a named target. A serve with no plan is a wasted rep.'},
-  {id:'tc2',name:'Two-touch attack, imperfect pass',phase:'Technical',skills:['attack','shot selection'],min:10,diagram:'servevs',
-   setup:'2v2 full court. One tough serve at a receiver.',
-   steps:['Receiver passes high off a hard serve.','Attacker plays the 2nd ball to the open side — hard hit if on, else shot / poke / free.','Rally must finish within two contacts.'],
-   cue:'Good decisions from bad passes — that is the whole beach game.'},
-  {id:'tc3',name:'Lateral set reps',phase:'Technical',skills:['setting'],min:8,diagram:'court',
-   setup:'Pairs, one feeder near the net.',
-   steps:['Feeder simulates a reception near the net.','Setter runs in and delivers a lateral set to the pin.','Focus: body square to target, high contact, full extension.'],
-   cue:'Hands high, set the line — no rushing the feet.'},
-  {id:'cp1',name:'Perfect side-out — zones',phase:'Competitive',skills:['side-out','shot selection'],min:18,diagram:'sideout',
-   setup:'Per court: 2 teams on, the rest rotate in after each finished attack.',
-   steps:['You only score by landing an attack in a marked zone: deep corners + short.','First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.','Everything else is a wash — next team rotates in after each finished attack.'],
-   cue:'Tempts the high deep line shot. Reward smart shot selection over power.'},
-  {id:'cp2',name:'Serve vs side-out game',phase:'Competitive',skills:['serve','attack','pressure'],min:15,diagram:'servevs',
-   setup:'Winner stays, loser out, next team serves in (mini King of the Court).',
-   steps:['Serving team scores +2 for an ace.','Receiving team must attack into the corridor 1 m inside each sideline: +1 in, −1 out.','First to 8 wins the round, then swap who serves; winner holds court.'],
-   cue:'Risk management: when is the aggressive serve or line shot worth it?'},
-  {id:'cp3',name:'1-2-3 Wash',phase:'Competitive',skills:['side-out','transition'],min:15,diagram:'kotc',
-   setup:'2v2, one serving side. Extra teams queue to enter.',
-   steps:['Serve, play it out. First-ball side-out win = a big point.','Side-out but not first-ball → win a follow-up free-ball rally to earn the point.','Serving team wins → receivers must win two follow-ups. Play 15 balls, then switch.'],
-   cue:'Rewards clean first-ball side-out. Track big points out loud.'},
-  {id:'cp4',name:'King of the Court',phase:'Competitive',skills:['everything','game sense'],min:25,diagram:'kotc',
-   setup:'Each court runs its own King of the Court with the teams on it.',
-   steps:['King side scores by winning; challenger side wins to move up. Loser out, next in serves.','Beach rules: no open-hand tips, no sideways hand-set over.','Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side.'],
-   cue:'Say almost nothing. Tempo surfaces every weak pass — note them.'},
-  {id:'cd1',name:'Cool-down & debrief',phase:'Cool-down',skills:['mobility'],min:5,diagram:'cool',
-   setup:'Stay in pairs, on court.',
-   steps:['Light mobility & stretch: calves, shoulders, hips, wrists.','30 s pair debrief: one thing that worked, one to fix.'],
-   cue:'One collective takeaway. Keep it short — end on energy.'}
+  {
+    "id": "wm1",
+    "name": "Movement ladder",
+    "phase": "Warm-up",
+    "skills": [
+      "activation",
+      "footwork"
+    ],
+    "min": 5,
+    "diagram": "court",
+    "setup": "All pairs spread across both courts. No teams yet.",
+    "steps": [
+      "Baseline to net and back, 4-5 mid-tempo runs.",
+      "Each player calls one movement for the next length: skips, side-steps, split-steps, drop-steps.",
+      "Build intensity up, then ease back into mobility."
+    ],
+    "cue": "Quiet feet, early to the ball. One reminder only."
+  },
+  {
+    "id": "wm2",
+    "name": "Pepper progression",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "pepper",
+    "setup": "In pairs on half a court.",
+    "steps": [
+      "Dig -> set -> controlled hit, keep it alive.",
+      "2nd and 3rd contact stay controlled - chase long rallies.",
+      "Last 2 min: allow harder controlled hits."
+    ],
+    "cue": "Reward rallies that stay alive, not winners."
+  },
+  {
+    "id": "tc1",
+    "name": "Serve targets + first contact",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "passing"
+    ],
+    "min": 12,
+    "diagram": "receive",
+    "setup": "Groups of 3: one server behind the baseline, one receiver opposite, one target 1–2 m off the net. Use separate lanes for controlled serves; use the full court for zone serving.",
+    "steps": [
+      "Server names a zone before serving: deep seam, deep corner, or short.",
+      "Passer calls the ball early - short / deep / wind - and passes to a target by the net.",
+      "Swap server/passer every minute; count clean passes as a pair."
+    ],
+    "cue": "Every serve has a named target. A serve with no plan is a wasted rep."
+  },
+  {
+    "id": "tc2",
+    "name": "Two-touch attack, imperfect pass",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot selection"
+    ],
+    "min": 10,
+    "diagram": "secondball",
+    "setup": "2v2 full court. One tough serve at a receiver.",
+    "steps": [
+      "Serve to the receiver, who passes high toward their partner.",
+      "The partner attacks the second contact if the ball is playable; otherwise send a controlled free ball.",
+      "Each side has a maximum of two contacts; continue the rally until the ball is dead."
+    ],
+    "cue": "Good decisions from bad passes - that is the whole beach game."
+  },
+  {
+    "id": "tc3",
+    "name": "Lateral set reps",
+    "phase": "Technical",
+    "skills": [
+      "setting"
+    ],
+    "min": 8,
+    "diagram": "setting",
+    "setup": "Groups of 3 on one side: feeder deep, setter moving from reception base, target near the sideline and 1–2 m off the net.",
+    "steps": [
+      "Feeder tosses a simulated pass toward the setter near the net.",
+      "Setter moves under the ball and sets along the net toward the target, who catches.",
+      "Rotate feeder → setter → target after 5 balls. Progress to a controlled attack over the net."
+    ],
+    "cue": "Hands high, set the line - no rushing the feet."
+  },
+  {
+    "id": "cp1",
+    "name": "Perfect side-out - zones",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "shot selection"
+    ],
+    "min": 18,
+    "diagram": "zones",
+    "setup": "Per court: 2 teams on, the rest rotate in after each finished attack.",
+    "steps": [
+      "You only score by landing an attack in a marked zone: deep corners + short.",
+      "First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.",
+      "Outside a zone = no point. Rotate the waiting team in after the rally ends; never enter while a ball is live."
+    ],
+    "cue": "Tempts the high deep line shot. Reward smart shot selection over power."
+  },
+  {
+    "id": "cp2",
+    "name": "Serve vs side-out game",
+    "phase": "Competitive",
+    "skills": [
+      "serve",
+      "attack",
+      "pressure"
+    ],
+    "min": 15,
+    "diagram": "corridors",
+    "setup": "Winner stays, loser out, next team serves in (mini King of the Court).",
+    "steps": [
+      "Serving team scores +2 for an ace.",
+      "Receiving team attacks into either marked 1 m-wide sideline strip: +1 inside the strip, −1 for an attack outside it. Play the rally out before rotating.",
+      "First to 8 wins the round, then swap who serves; winner holds court."
+    ],
+    "cue": "Risk management: when is the aggressive serve or line shot worth it?"
+  },
+  {
+    "id": "cp3",
+    "name": "1-2-3 Wash",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "transition"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "2v2, one serving side. Extra teams queue to enter.",
+    "steps": [
+      "Serve, play it out. First-ball side-out win = a big point.",
+      "Side-out but not first-ball -> win a follow-up free-ball rally to earn the point.",
+      "Serving team wins -> receivers must win two follow-ups. Play 15 balls, then switch."
+    ],
+    "cue": "Rewards clean first-ball side-out. Track big points out loud."
+  },
+  {
+    "id": "cp4",
+    "name": "King of the Court",
+    "phase": "Competitive",
+    "skills": [
+      "everything",
+      "game sense"
+    ],
+    "min": 25,
+    "diagram": "king",
+    "setup": "Each court runs its own King of the Court with the teams on it.",
+    "steps": [
+      "King side scores by winning; challenger side wins to move up. Loser out, next in serves.",
+      "No open-hand finger tips. An intentional overhand pass attack must travel perpendicular to the shoulders; an attempted set to a partner is the exception.",
+      "Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side."
+    ],
+    "cue": "Say almost nothing. Tempo surfaces every weak pass - note them."
+  },
+  {
+    "id": "cd1",
+    "name": "Cool-down & debrief",
+    "phase": "Cool-down",
+    "skills": [
+      "mobility"
+    ],
+    "min": 5,
+    "diagram": "court",
+    "setup": "Stay in pairs, on court.",
+    "steps": [
+      "Light mobility & stretch: calves, shoulders, hips, wrists.",
+      "30 s pair debrief: one thing that worked, one to fix."
+    ],
+    "cue": "One collective takeaway. Keep it short - end on energy."
+  },
+  {
+    "id": "bab1",
+    "name": "Partner Passing",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "technique"
+    ],
+    "min": 6,
+    "diagram": "partner",
+    "setup": "Pairs ~5 m apart. (Better at Beach #1)",
+    "steps": [
+      "Toss, pass, catch, repeat; give lots of feedback.",
+      "Progress: pass back and forth continuously.",
+      "Harder: toss to 8 and 4 o'clock, then one arm only, then juggle two balls."
+    ],
+    "cue": "Slowest, most technical drill of the day - fix platform angles here."
+  },
+  {
+    "id": "bab2",
+    "name": "Overhead Passing (line of 3)",
+    "phase": "Technical",
+    "skills": [
+      "setting",
+      "passing"
+    ],
+    "min": 6,
+    "diagram": "triple",
+    "setup": "Three in a straight line. (Better at Beach #2)",
+    "steps": [
+      "P1 tosses to P2, who overhead-passes over their head to P3; P2 turns to face P3 and repeats back.",
+      "15 passes, then rotate.",
+      "Harder: continuous, or two balls with P3 passing a long ball so P2 never turns."
+    ],
+    "cue": "Square the hips before the ball arrives - no passing on the turn."
+  },
+  {
+    "id": "bab3",
+    "name": "Triangle / Square Passing",
+    "phase": "Warm-up",
+    "skills": [
+      "passing",
+      "ball control"
+    ],
+    "min": 5,
+    "diagram": "triangle",
+    "setup": "3 in a triangle (4 = square). (Better at Beach #3)",
+    "steps": [
+      "Toss right, pass right, catch, repeat; once smooth, go left.",
+      "Progress: continuous passing.",
+      "Harder: two or more balls at once."
+    ],
+    "cue": "Feet to the ball, deliver to the next station - not just up."
+  },
+  {
+    "id": "bab4",
+    "name": "Passing Groups",
+    "phase": "Technical",
+    "skills": [
+      "serve receive",
+      "passing"
+    ],
+    "min": 8,
+    "diagram": "receive",
+    "setup": "P1 baseline, P2 receives, P3 target near net (add P4 at the pin if you have one). (Better at Beach #4)",
+    "steps": [
+      "P1 sends 10 balls to P2, who passes to the target; target catches and feeds P1.",
+      "Use 2–3 balls; rotate after 10 controlled receptions. Allow the target time to return each ball safely.",
+      "Progress: serve instead of throw, move back to full court, then jump serve; work float or topspin."
+    ],
+    "cue": "Target quality over speed - a pass the setter can use."
+  },
+  {
+    "id": "bab5",
+    "name": "Butterfly",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "serve",
+      "movement"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Passing Groups but with constant rotation - follow your ball. (Better at Beach #5)",
+    "steps": [
+      "P1 serves/throws to a passer, who passes to the target; target catches.",
+      "After each action, rotate to the next spot (follow the ball).",
+      "Progress: serve instead of throw; keep it continuous."
+    ],
+    "cue": "Move through the drill under control - reps stay clean at speed."
+  },
+  {
+    "id": "bab6",
+    "name": "Partners Short-Deep",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "shortdeep",
+    "setup": "Pairs across the net. (Better at Beach #6)",
+    "steps": [
+      "P1 tosses a short ball (~2 m off net); P2 passes it back; then P1 tosses deep (~7 m).",
+      "5 short + 5 deep, then switch. Tosses must rise above net height.",
+      "Harder: P1 sets to self first; then pokey the short and hit a soft deep ball."
+    ],
+    "cue": "Read short vs deep early and get the platform there first."
+  },
+  {
+    "id": "bab7",
+    "name": "Over-the-Net Pepper w/ Switching",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Three touches each side over the net; extra players rotate out after sending it over. With 7-8, split the court into two. (Better at Beach #7)",
+    "steps": [
+      "Progress the third contact: pass-pass-pass, then pass-set-tomahawk, -pokey, -hit, -jump hit.",
+      "If more than two on a side, the player who sends it over rotates out.",
+      "Harder: back-sets - P1 goes around P2, who sets behind to P1 to send over."
+    ],
+    "cue": "Stay at a progression you can sustain - don't chase the hardest version."
+  },
+  {
+    "id": "bab8",
+    "name": "Server vs Passer (scored)",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "passing",
+      "competitive"
+    ],
+    "min": 10,
+    "diagram": "receive",
+    "setup": "Half court. P1 serves 10 at P2 (passing to P3, the judge). (Better at Beach #8)",
+    "steps": [
+      "Score the passer: perfect pass or missed serve = 3, OK = 2, bad = 1, ace = 0.",
+      "Judge counts out loud; only the passer scores. Rotate through the group.",
+      "Re-seed by score for a second round so like plays like."
+    ],
+    "cue": "Passer wins by never getting aced and rarely giving a bad ball."
+  },
+  {
+    "id": "bab9",
+    "name": "Two-Ball Rhythm Control",
+    "phase": "Technical",
+    "skills": [
+      "ball control",
+      "setting"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "3 v 3, a full-time setter each side. Adjust one side if fewer. (Better at Beach #9)",
+    "steps": [
+      "Two balls start at once: P1 throws over to one side while P5 throws to the other.",
+      "Three-touch volleyball, middle player sets every second touch; hitters hit line only.",
+      "If one ball dies, keep the other alive and re-enter a ball in rhythm. Rotate every 2-3 min; later hit cross."
+    ],
+    "cue": "Keep both balls alive - this is a control drill, not a kill drill."
+  },
+  {
+    "id": "bab10",
+    "name": "Hot Potato",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "communication"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Pairs; one holds a spare 'potato' ball. (Better at Beach #10)",
+    "steps": [
+      "P1 tosses the play ball; P2 throws the potato up, sets the play ball back, catches the potato. 10x, switch.",
+      "Progress: forearm pass instead of set; then both players hold a potato.",
+      "Team version: 2v2, each team has a potato they must toss to a partner before playing - 3 touches, never drop it."
+    ],
+    "cue": "Forces early, decisive movement - no standing and reaching."
+  },
+  {
+    "id": "bab11",
+    "name": "6-Touch Pepper",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "emergency"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Across from a partner. (Better at Beach #11)",
+    "steps": [
+      "Six contacts before sending it over: pass-tomahawk-fist-fist-set-control spike (or pokey-pokey variant).",
+      "Never catch - even out of order, keep it up with real volleyball touches.",
+      "Fist = contact above the head with palms/closed fingers, not a punch."
+    ],
+    "cue": "Trains the emergency touches players skip - keep it airborne."
+  },
+  {
+    "id": "bab12",
+    "name": "Fun Touch Pepper",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Pairs; coach names a 3-touch sequence. (Better at Beach #12)",
+    "steps": [
+      "Alternate touches while holding the order, e.g. open hand-backhand-fist, or pokey-head-chicken wing.",
+      "Be creative and keep it challenging.",
+      "Goal: keep the ball alive and keep the sequence correct."
+    ],
+    "cue": "Widen the emergency-touch range - laughter allowed."
+  },
+  {
+    "id": "bab13",
+    "name": "Agility Passing",
+    "phase": "Warm-up",
+    "skills": [
+      "movement",
+      "passing"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "4x4 m box of cones each side; feeder feeds 4 balls, one per cone. (Better at Beach #13)",
+    "steps": [
+      "Pass each ball to a target while moving the pattern with correct footwork, chest to the net.",
+      "Pattern 1: figure-8, all forward running.",
+      "Pattern 2: figure-8 with diagonal sprints + backpedals. Pattern 3: shuffle-sprint-shuffle, finish with a dive."
+    ],
+    "cue": "Fast, balanced, and still a clean platform - movement under control."
+  },
+  {
+    "id": "bab14",
+    "name": "Step-Back Partner Serving",
+    "phase": "Technical",
+    "skills": [
+      "serve"
+    ],
+    "min": 8,
+    "diagram": "partnerserve",
+    "setup": "Partners across the net at ~half court. (Better at Beach #14)",
+    "steps": [
+      "Serve so your partner catches with no more than one step; they serve back the same way.",
+      "Two clean catches in a row -> both step back and repeat.",
+      "Progress: jump-float and jump-spike serves."
+    ],
+    "cue": "Add power only when accuracy holds - one step, no more."
+  },
+  {
+    "id": "bab15",
+    "name": "Around the World Serving",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "accuracy"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Split each side into 6 zones (3 back, 3 front). (Better at Beach #15)",
+    "steps": [
+      "Serve the zones in order; only advance once you hit the current zone.",
+      "Chase your own ball and return to the line quickly. Complete all 6 to finish.",
+      "Harder: jump serves; net/out = back a zone (or restart from zone 1)."
+    ],
+    "cue": "Cold, deliberate accuracy - pick the zone, then execute."
+  },
+  {
+    "id": "bab16",
+    "name": "Servers vs Runners",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "accuracy"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Runner starts opposite the server and may move only at contact. (Better at Beach #16)",
+    "steps": [
+      "Server tries to land it in the court untouched; runner tries to get a hand on it.",
+      "Aim a specific zone (e.g. short) and set the runner's start to match.",
+      "Harder: runner must make a volleyball touch AND catch to score."
+    ],
+    "cue": "Fast, flat, accurate serves that beat a moving defender."
+  },
+  {
+    "id": "bab17",
+    "name": "Deep Rainbow Serves",
+    "phase": "Technical",
+    "skills": [
+      "serve"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Chairs (or players) ~3 m from the baseline across the court. (Better at Beach #17)",
+    "steps": [
+      "Land the serve behind the chairs, in the court, without touching them.",
+      "No chairs? Draw a line 3-4 m from the baseline; a defender inside it tries to touch the serve.",
+      "Server keeps the ball out of the defender's reach."
+    ],
+    "cue": "High, heavy, deep - the serve that pins passers to the line."
+  },
+  {
+    "id": "bab18",
+    "name": "Zig-Zag Approach",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "footwork"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Players in a zig-zag down the beach, each with a ball except P1. (Better at Beach #18)",
+    "steps": [
+      "Wait on the power foot facing forward; the next player tosses a ball straight up in front.",
+      "Use the power step to the ball and jump straight up-and-down to touch or pokey it.",
+      "Work down the line, then the next player leads."
+    ],
+    "cue": "Feet to the ball, then vertical - check the footprints for straight take-offs."
+  },
+  {
+    "id": "bab19",
+    "name": "Hitting Lines",
+    "phase": "Technical",
+    "skills": [
+      "attack"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Coach or partner feeds consistent balls to an attacker. (Better at Beach #19)",
+    "steps": [
+      "Attack with rhythm: work sharp cross, middle, and line.",
+      "Progress: attacker tosses to a setter for a simple up-and-down set.",
+      "Harder: toss to setter, setter returns a playable ball, then sets - attacker finishes."
+    ],
+    "cue": "Groove the approach and arm swing before adding decisions."
+  },
+  {
+    "id": "bab20",
+    "name": "Short-Deep Decision Vision",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot selection",
+      "vision"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Partners across the net. (Better at Beach #20)",
+    "steps": [
+      "P1 sets a high ball to self; as it goes up P2 moves to the net or deep.",
+      "P1 reads P2 and hits to the open space; P2 catches; switch.",
+      "Harder: keep it alive by digging and setting to yourself instead of catching."
+    ],
+    "cue": "Eyes up on the set - hit where the defender isn't."
+  },
+  {
+    "id": "bab21",
+    "name": "Pokey-Spike Decision Vision",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot selection",
+      "vision"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Partners across the net. (Better at Beach #21)",
+    "steps": [
+      "P1 sets high to self; as it rises P2 raises hands (block) or leaves them down.",
+      "Hands up -> pokey over; hands down -> spike. P2 catches; switch.",
+      "Harder: keep it alive without catching."
+    ],
+    "cue": "Read the block late and commit to the right shot."
+  },
+  {
+    "id": "bab22",
+    "name": "Listen for Your Partner",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "communication"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Set up like Hitting Lines; setter calls the shot. (Better at Beach #22)",
+    "steps": [
+      "P1 jumps to attack hard every ball.",
+      "P2 calls during/after the jump: silence = spike hard.",
+      "A 'cut' or 'high line' call = execute that shot instead."
+    ],
+    "cue": "Trust the caller - late information, correct execution."
+  },
+  {
+    "id": "bab23",
+    "name": "Can't Touch This",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Coach tosses a high ball mid-court to P1; P2 defends the other side. (Better at Beach #23)",
+    "steps": [
+      "P1 attacks so P2 can't touch it.",
+      "Play 1v1, or team-vs-one where the defender stays and attackers rotate through.",
+      "Score touches vs clean kills to keep it competitive."
+    ],
+    "cue": "Attack off the net into space - make the defender wrong."
+  },
+  {
+    "id": "bab24",
+    "name": "Outside the Box",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot selection"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Cone a box 1-2 m off the net and lines; one setter, a line of attackers on the other side. (Better at Beach #24)",
+    "steps": [
+      "Coach feeds easy balls; pass-set-hit anywhere OUTSIDE the box.",
+      "New setter after every attacker.",
+      "Harder: setter calls the shot on/after the jump; add a blocker/defender to force decisions."
+    ],
+    "cue": "Corners and seams, not the middle - place it outside the box."
+  },
+  {
+    "id": "bab25",
+    "name": "Stable Attack vs Defense",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Attacker on a box 2 m off net / 2 m in from antenna; the cross-court cut is out. (Better at Beach #25)",
+    "steps": [
+      "Attacker tosses high to self and attacks for a point (not into the cut zone).",
+      "Defenders may hide their formation until the set; higher levels should.",
+      "Defense scores on any error or a 3-touch return; attacker scores otherwise. Mini-games to 7."
+    ],
+    "cue": "Stable set, real read - beat a set defense without the easy cut."
+  },
+  {
+    "id": "bab26",
+    "name": "Open Net Power Game",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Split a half into short/deep; 3 defenders deep, no block; short half is out. (Better at Beach #26)",
+    "steps": [
+      "Attacking side gets free balls, pass-set and hit HARD into the deep court; rotate every point.",
+      "Defense scores on hitting errors or a dig that a teammate then catches.",
+      "Offense scores when defense can't dig-and-catch. Games to 7."
+    ],
+    "cue": "Commit to the hard swing into the deep box."
+  },
+  {
+    "id": "bab27",
+    "name": "Open Net Short Game",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Split a half into short/deep; 1 defender short; deep half is out. (Better at Beach #27)",
+    "steps": [
+      "Attacking side gets free balls, pass-set and hit into the SHORT court; rotate every point.",
+      "Defender scores on hitting errors or a dig they then catch.",
+      "Offense scored as a team; games to 7, rotate defenders."
+    ],
+    "cue": "Disguise and place the short attack - touch, not power."
+  },
+  {
+    "id": "bab28",
+    "name": "Plus / Minus",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "conditioning"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Offense opposite the coach; two defensive teams swap every 3 points to stay fresh. (Better at Beach #28)",
+    "steps": [
+      "Coach feeds fast free balls to the offense; next feed within 8 s of the last.",
+      "Win a rally = +1, lose = -1.",
+      "Offense wins the round at +3, loses at -3."
+    ],
+    "cue": "Physical side-out grind - hold quality as the legs tire."
+  },
+  {
+    "id": "bab29",
+    "name": "U.S.A.",
+    "phase": "Competitive",
+    "skills": [
+      "game sense",
+      "transition"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "A team each side, others waiting to rotate in. (Better at Beach #29)",
+    "steps": [
+      "Coach throws a joust/near-net ball. Win it = 'U' and receive a free ball; win that = 'US'.",
+      "'US' team gets a two-touch ball; win it = 'USA' and then receive serve for the point.",
+      "Win the serve-receive = 1 point; either way losers rotate off. Lose an earlier ball = restart at the joust. Play to 3 with a time cap."
+    ],
+    "cue": "Chain skills under fatigue - each stage is a different pressure."
+  },
+  {
+    "id": "bab30",
+    "name": "1-2-3 Drill",
+    "phase": "Competitive",
+    "skills": [
+      "touch discipline",
+      "game sense"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Two teams on, others waiting. Coach feeds the team with fewer points. (Better at Beach #30)",
+    "steps": [
+      "First time you play the ball = 1 touch only; second time = exactly 2; third and after = 3.",
+      "Win having used only 1 touch = 3 pts, only 2 touches = 2 pts, otherwise 1 pt. Wrong touch count ends the point. (Blocks don't count against the sequence.)",
+      "Mini-games to 7; first to 5 games wins."
+    ],
+    "cue": "Score big by killing early - discipline the touch count."
+  },
+  {
+    "id": "bab31",
+    "name": "On 2",
+    "phase": "Competitive",
+    "skills": [
+      "attack on 2",
+      "transition"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Coach feeds a free ball; teams try to attack on 2. (Better at Beach #31)",
+    "steps": [
+      "Goal is a second-ball attack (jump attack at the top level).",
+      "The court must produce three dug 'on-2' attacks (not killed) before scoring turns on.",
+      "In the scoring phase: on-2 kill = 3 pts, anything else = 1; losing team rotates. First to 7."
+    ],
+    "cue": "Attack on 2 when it's there; keep it alive when it isn't."
+  },
+  {
+    "id": "bab32",
+    "name": "Virus",
+    "phase": "Technical",
+    "skills": [
+      "setting",
+      "attack off net",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Split both sides in half; P1 mid-court with ball, P2 chases, P3 defends opposite half. (Better at Beach #32)",
+    "steps": [
+      "P1 throws a hard-but-playable deep ball; P2 chases and puts up a hittable set.",
+      "P1 attacks (into their half only); P3 tries to dig-and-catch.",
+      "7 balls per position. Setter+attacker score: kill 3, jump-attack dug-and-caught 2, other dug 1, error 0."
+    ],
+    "cue": "Trains the ugliest ball in beach - the set that runs off the net."
+  },
+  {
+    "id": "bab33",
+    "name": "End Game",
+    "phase": "Competitive",
+    "skills": [
+      "pressure",
+      "game sense"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Two teams on, others waiting. (Better at Beach #33)",
+    "steps": [
+      "Start 12-12, game to 15 win-by-2.",
+      "Sudden death: a service error, attack error, ball-handling error, or stuff block ends it.",
+      "Loser swaps with the waiting team; first to 5 wins overall."
+    ],
+    "cue": "Simulate closing a tight set - clean, brave, no cheap errors."
+  },
+  {
+    "id": "bab34",
+    "name": "3-Man Cross Court",
+    "phase": "Technical",
+    "skills": [
+      "defense",
+      "digging"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "P1 and P2 at the antennas one side; P3 defends diagonally. (Better at Beach #34)",
+    "steps": [
+      "P1 hits cross to P3, who digs to mid-court then slides to the other diagonal.",
+      "P1 runs in to set P2, returns to the antenna; P2 hits cross to P3; repeat.",
+      "Run 2 minutes or 20 digs; if hits are wild, tomahawk/set/pass to the digger instead."
+    ],
+    "cue": "Read the diagonal, dig to the middle, reset fast."
+  },
+  {
+    "id": "bab35",
+    "name": "6-Ball Block Defense",
+    "phase": "Technical",
+    "skills": [
+      "defense",
+      "blocking",
+      "transition"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Coach attacks from a box; two players in blocker-defender positions, reset each ball. (Better at Beach #35)",
+    "steps": [
+      "1: hard line into the block. 2: playable cut or high line. 3: the shot not hit on ball 2.",
+      "4: ball at the defender, return on two. 5: short ball over the block, return on two.",
+      "6: blocker backs off and takes a ball to the face/body. Transition each for a kill."
+    ],
+    "cue": "Block, pull, and convert - a full defensive sequence every round."
+  },
+  {
+    "id": "bab36",
+    "name": "Dog House",
+    "phase": "Competitive",
+    "skills": [
+      "side-out"
+    ],
+    "min": 18,
+    "diagram": "court",
+    "setup": "Paradise-style side-out game to 21. One side is the 'Dog House' (can't score); other side scores. (Better at Beach #36)",
+    "steps": [
+      "Coach serves/free-balls the scoring side. Scoring side wins first ball = 1 point, rotate off.",
+      "Scoring side loses first ball -> Dog House gets a free ball; win it and swap sides.",
+      "You must win two in a row to climb out of the Dog House."
+    ],
+    "cue": "Earn your way out - two straight, no shortcuts."
+  },
+  {
+    "id": "bab37",
+    "name": "The Pit",
+    "phase": "Competitive",
+    "skills": [
+      "defense",
+      "hustle"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "One team defends 'The Pit' for 3 minutes; others feed free balls opposite and rotate every point. (Better at Beach #37)",
+    "steps": [
+      "Only the Pit scores: any dig (2 touches, even a fingernail) = a point.",
+      "Won rallies and errors by the offense score; a stuff block = 2.",
+      "After 3 min, the next team takes the Pit; compare final scores."
+    ],
+    "cue": "Reward hustle - every touch is a point, chase everything."
+  },
+  {
+    "id": "fv66",
+    "name": "Retreat & Play the Ball",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "defense",
+      "footwork"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Blocker starts at the net, then drops off to defend. (FIVB 6.6)",
+    "steps": [
+      "On the attacker's slap, the blocker retreats off the net (karaoke footwork, eyes on the net) and plays the driven ball.",
+      "Vary the attack: short, deep over the head, hard at the face/body, either side.",
+      "Partner sets up or catches the dig; practise dropping off both line and angle."
+    ],
+    "cue": "Face the net, be stopped and balanced at contact - then dig."
+  },
+  {
+    "id": "fv67",
+    "name": "Block & Transition Set",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "setting",
+      "transition"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Blocker at net, defender behind; ball driven past the block. (FIVB 6.7)",
+    "steps": [
+      "Blocker jumps, then turns on the way down and hustles around the dug ball to set the partner.",
+      "Defender digs the hard ball high enough to give the blocker time.",
+      "With a team each side it becomes continuous angle attacks; get 'around' the ball, shoulders to target."
+    ],
+    "cue": "Turn in the air, get around the ball - don't set on the run."
+  },
+  {
+    "id": "fv68",
+    "name": "Retreat Decision Drill",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "reading"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Blocker lines up on the attacker; a feeder sets tight or off the net. (FIVB 6.8)",
+    "steps": [
+      "Blocker reads the set and decides: stay and block, or pull off.",
+      "Attacker hits into the block or down the line at the retreated blocker.",
+      "Add a back defender to play out digs; blocker randomly drops line or angle to train the read."
+    ],
+    "cue": "Wind, set trajectory, hitter tendency - decide early, commit."
+  },
+  {
+    "id": "fv69",
+    "name": "Jousting",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "net play"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Ball placed on top of the net for two blockers to fight over. (FIVB 6.9)",
+    "steps": [
+      "Two players joust; lock the arm shoulder-to-wrist to bring bodyweight, not just the elbow.",
+      "Time the jump so you get the last push; one hand gives more reach.",
+      "With a third player, a setter over-sets to create the joust. Work all areas of the net."
+    ],
+    "cue": "Aggressive but no net fault - win the top of the net."
+  },
+  {
+    "id": "fv610",
+    "name": "Turn & Get the Shot",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "defense"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Blocker goes up with the attacker who plays a 'baby line' shot over the hands. (FIVB 6.10)",
+    "steps": [
+      "Blocker turns coming down and plays the ball up before it lands.",
+      "Land with bent knees; get arms under the ball rather than swinging sideways.",
+      "A back player sets the dug ball or plays it over on 2."
+    ],
+    "cue": "Don't quit on the shot over the block - turn and dig it up."
+  },
+  {
+    "id": "fv86",
+    "name": "Old School - No Blocking",
+    "phase": "Competitive",
+    "skills": [
+      "defense",
+      "anticipation"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Normal game, both defenders back, no block. Draw an 8 ft line. (FIVB 8.6)",
+    "steps": [
+      "Attacker must leave the ground behind the 8 ft line to attack.",
+      "Defenders start low and read the attacker's shoulder, approach and the wind.",
+      "Harder: move the line to 6 ft, make it two-touch, or drop to the sand each time the ball crosses. Works as a King/Queen format with 6-8."
+    ],
+    "cue": "Pure reading and court coverage - anticipate, don't react."
+  },
+  {
+    "id": "fv87",
+    "name": "Serve / Dig / Joust",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "defense",
+      "blocking",
+      "conditioning"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Serve and a normal rally, then two coach-fed balls. (FIVB 8.7)",
+    "steps": [
+      "After the rally the coach drives a ball at the receiving team's defender - play it out.",
+      "Then the coach tosses a ball between the blockers to joust - play it out.",
+      "Swap servers and repeat; score a point for winning all 3 of 3 (or 2 each with 5 balls)."
+    ],
+    "cue": "Side-out, then defend, then joust - stay disciplined when tired."
+  },
+  {
+    "id": "fv88",
+    "name": "Monarch of the Court",
+    "phase": "Competitive",
+    "skills": [
+      "game sense",
+      "side-out"
+    ],
+    "min": 20,
+    "diagram": "king",
+    "setup": "Points side vs challenger side; 3+ teams. (FIVB 8.8)",
+    "steps": [
+      "Challengers serve; win the rally to cross to the points side.",
+      "Points side wins the rally = a point and stays.",
+      "Choose your rules: missed serves score or not; moving up scores or not; points side allowed 2 errors before out."
+    ],
+    "cue": "A cleaner King-of-the-Court - set the serving rule and let it run."
+  },
+  {
+    "id": "fv89",
+    "name": "Serve / Free / Down (wash)",
+    "phase": "Competitive",
+    "skills": [
+      "transition",
+      "side-out"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "Three-ball wash starting with a serve. (FIVB 8.9)",
+    "steps": [
+      "Ball 1: serve and rally. Ball 2: winner receives a down ball. Ball 3: then a free ball.",
+      "Win all 3 = a big point; split 2:1 = a wash (replay).",
+      "If a team wins none of the 3, the opponent also gets a big point. Optionally play sets of 5."
+    ],
+    "cue": "String together side-out and transition - reward the full sequence."
+  },
+  {
+    "id": "fv810",
+    "name": "Baseball",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "game sense"
+    ],
+    "min": 18,
+    "diagram": "court",
+    "setup": "Receiving team = batters, serving team = pitchers; extra teams wait. (FIVB 8.10)",
+    "steps": [
+      "Win a rally = one base; missed serve = a walk (one base); ace = strikeout + switch.",
+      "Lose a rally on receive = a strikeout; 4 rallies won = a home run = a run.",
+      "3 strikeouts and teams switch serve/receive; play set innings, most runs wins."
+    ],
+    "cue": "Fun frame, serious side-out reps - keep the pressure of the count."
+  },
+  {
+    "id": "fv811",
+    "name": "Modified 1-on-1 (2/3 touch)",
+    "phase": "Technical",
+    "skills": [
+      "ball control",
+      "all-round"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "1v1 on a modified court (long-thin or short-fat). (FIVB 8.11)",
+    "steps": [
+      "Coach tosses in; play out the rally using exactly 2 or 3 touches each.",
+      "Winner of the rally scores; play to a set score, then switch sides.",
+      "Harder: serve to start; coach feeds an extra ball to the rally winner for a bonus point."
+    ],
+    "cue": "Maximal touches on every skill - get back to base after each play."
+  },
+  {
+    "id": "fv813",
+    "name": "Over on 1",
+    "phase": "Competitive",
+    "skills": [
+      "attack accuracy",
+      "conditioning"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Pick a target spot (e.g. deep corner). (FIVB 8.13)",
+    "steps": [
+      "Server serves, then moves to the target spot to defend.",
+      "Receivers must attack into the chosen spot; miss it and the server scores.",
+      "The dug ball is sent straight back over to play out; with advanced players use soft shots so rallies last."
+    ],
+    "cue": "Attack a spot on a normal approach - turn the ball with the wrist."
+  },
+  {
+    "id": "fv814",
+    "name": "Standing Shot Game",
+    "phase": "Competitive",
+    "skills": [
+      "shot play",
+      "vision"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Normal game, no jumping allowed. (FIVB 8.14)",
+    "steps": [
+      "Play out points using only standing shots - take a look at the defence before every contact.",
+      "Option: double points for any ball that lands untouched, to reward commitment.",
+      "Option: setter calls a specific shot to force communication."
+    ],
+    "cue": "Eyes up, feet under the ball, place it away from the defender."
+  },
+  {
+    "id": "nt1",
+    "name": "Manchette-Game (bump + reset)",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "footwork"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Pairs/threes over a short space. (from your notes)",
+    "steps": [
+      "Keep the ball up with forearm passes only.",
+      "After every contact, sprint to touch the net post or baseline, then recover into the rally.",
+      "Progress: two touches (bump-set), then one-arm only."
+    ],
+    "cue": "Emergency control under fatigue - platform first, feet always moving."
+  },
+  {
+    "id": "nt2",
+    "name": "Bagger-Massaker (Dig Massacre)",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "defense"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Forearm-only game across the net in a tight space; each player/pair has 3-4 lives. (from your notes)",
+    "steps": [
+      "Rally with forearm passes only - no hands.",
+      "Lose a rally = lose a life; when you're out you drop to the 'loser court'.",
+      "Last one standing wins; shrink the space (3 m) to force control."
+    ],
+    "cue": "Everything is a dig - keep it alive, no hands."
+  },
+  {
+    "id": "nt3",
+    "name": "Norweger (Norwegian game)",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "game sense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "5v5 or 4v4 across a beach court, no jumping, two touches per side. (from your notes)",
+    "steps": [
+      "Start cooperative: two touches together, chase long rallies.",
+      "Switch to competitive two-touch points.",
+      "Change sides at a set score; add defense line/cut/hard-dia constraints."
+    ],
+    "cue": "Big-group, low-intensity activation that still competes."
+  },
+  {
+    "id": "nt4",
+    "name": "Reaction pepper (pass = bump)",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "reaction"
+    ],
+    "min": 5,
+    "diagram": "court",
+    "setup": "Pairs, one ball. (from your notes)",
+    "steps": [
+      "Call the opposite: 'pass' means bump, 'bump/manchette' means hand-set.",
+      "Hold the sequence and keep the ball alive.",
+      "Speed the calls up as they settle in."
+    ],
+    "cue": "Forces a read before every contact - no autopilot."
+  },
+  {
+    "id": "nt5",
+    "name": "6 Guns pepper",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Pairs, one ball, continuous. (from your notes)",
+    "steps": [
+      "Cycle fast pepper (low, quick balls).",
+      "Then handcuffed (contact in front only), then one-arm only.",
+      "Keep it unbroken through all three."
+    ],
+    "cue": "Widen the control range - quick hands, quiet platform."
+  },
+  {
+    "id": "nt6",
+    "name": "3 m bump control",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Pairs in a 3 m space, in front of then behind the 3 m line. (from your notes)",
+    "steps": [
+      "Forearm-pass only in the tight space.",
+      "Then two touches (bump-bump) working behind the line.",
+      "Stay controlled - short and precise."
+    ],
+    "cue": "Tiny space, perfect platform - control before power."
+  },
+  {
+    "id": "nt7",
+    "name": "Nähmaschine reception footwork",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "footwork"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "Feeder at the net, receiver on the baseline; fast 'sewing-machine' feet. (from your notes)",
+    "steps": [
+      "Shuffle in with quick small steps and pass the fed ball to target.",
+      "Recover and repeat; 2 series each.",
+      "Start facing front, then work stepping back off a deep ball."
+    ],
+    "cue": "Fast feet to a stopped, balanced platform."
+  },
+  {
+    "id": "nt8",
+    "name": "Core & knee stability circuit",
+    "phase": "Warm-up",
+    "skills": [
+      "physical",
+      "injury prevention"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "In threes, own space. (from your notes)",
+    "steps": [
+      "Leg-axis / knee stability 10 each side; shoulder stability 15x.",
+      "Plank with leg circles.",
+      "Single-leg jumps: front, back, right, left."
+    ],
+    "cue": "Prime the joints beach punishes - ankles, knees, shoulders."
+  },
+  {
+    "id": "nt9",
+    "name": "Sand coordination squares",
+    "phase": "Warm-up",
+    "skills": [
+      "movement",
+      "footwork"
+    ],
+    "min": 6,
+    "diagram": "court",
+    "setup": "A 4-square grid in the sand; a feeder tosses. (from your notes)",
+    "steps": [
+      "Move to the next square on each ball, one-touch pass to target.",
+      "Second round: two touches per square.",
+      "Mix in lunges, star-walks and coordination circles around a ball."
+    ],
+    "cue": "Balance and change of direction in deep sand."
+  },
+  {
+    "id": "nt10",
+    "name": "3v3 King Court warm-up",
+    "phase": "Warm-up",
+    "skills": [
+      "game sense",
+      "ball control"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "3 per side, King-Court rotation. (from your notes)",
+    "steps": [
+      "Exactly one touch per player, so the side must play all three.",
+      "Switch sides over the net after each ball.",
+      "Win to stay/advance, lose and rotate."
+    ],
+    "cue": "Light, touch-everyone activation with a competitive edge."
+  },
+  {
+    "id": "nt11",
+    "name": "Einspielen - 2v2 over the net",
+    "phase": "Technical",
+    "skills": [
+      "ball control",
+      "attack",
+      "blocking"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "2v2 over the net, both courts. (from your notes)",
+    "steps": [
+      "Controlled three-touch rallies over the net.",
+      "Rotate front/back each ball; add a block jump and a line shot.",
+      "Touch the baseline after each attack, then recover."
+    ],
+    "cue": "Game-tempo warm-up - clean touches, real approaches."
+  },
+  {
+    "id": "nt12",
+    "name": "Line & Diagonal hitting (rotation)",
+    "phase": "Technical",
+    "skills": [
+      "attack"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Groups of 3-4, one setter; work line then cross. (from your notes)",
+    "steps": [
+      "Pass/toss to the setter and attack line.",
+      "Next round attack diagonal; after each attack move into the setting role.",
+      "Swap the group every 2 attacks."
+    ],
+    "cue": "Repeat the approach and finish in both directions."
+  },
+  {
+    "id": "nt13",
+    "name": "Einschlagen - attack vs block & defense",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "blocking",
+      "defense",
+      "transition"
+    ],
+    "min": 14,
+    "diagram": "court",
+    "setup": "Two teams work at once: one serves, the other blocks + defends; rotate the attacking side. (from your notes)",
+    "steps": [
+      "Serve, reception, set, then a controlled attack against a real block and defender.",
+      "The defender digs and sets a return attack (side change).",
+      "Change sides after 2x6 reps; add a service before running to block."
+    ],
+    "cue": "The core beach rep - full side-out and transition against resistance."
+  },
+  {
+    "id": "nt14",
+    "name": "Block & pull (Block lösen)",
+    "phase": "Technical",
+    "skills": [
+      "blocking",
+      "defense"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "One player at the net, 2v2 or 3v3. (from your notes)",
+    "steps": [
+      "Every second ball the net player either blocks or pulls off to defend.",
+      "Partner covers the rest of the court.",
+      "Read the set early to decide block vs pull; work an easy serve to the left, then the right."
+    ],
+    "cue": "Commit to block or pull early - no half-measures at the net."
+  },
+  {
+    "id": "nt15",
+    "name": "Out-of-system setting",
+    "phase": "Technical",
+    "skills": [
+      "setting",
+      "transition"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "3-4 per court; a high ball is thrown deep to a back corner. (from your notes)",
+    "steps": [
+      "A player chases the off-net ball and delivers a hittable set.",
+      "Partner attacks it, or catches for a control focus.",
+      "Rotate through; work both back corners."
+    ],
+    "cue": "Turn a bad ball into a hittable set - the shot that wins beach."
+  },
+  {
+    "id": "nt16",
+    "name": "Square passing with rotation",
+    "phase": "Technical",
+    "skills": [
+      "passing"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Four players on the corners of a square (add a runner). (from your notes)",
+    "steps": [
+      "Pass to the next corner and follow your ball to that spot.",
+      "Keep it continuous; then reverse direction.",
+      "Aim ~20 clean passes as a group."
+    ],
+    "cue": "Platform to target, then move - passing on the go."
+  },
+  {
+    "id": "nt17",
+    "name": "Reception-set rotation (catch & rotate)",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "serve"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Server, receiver, target (setter) per court. (from your notes)",
+    "steps": [
+      "Serve, reception to the target, target catches.",
+      "Rotate server -> receiver -> target.",
+      "10-20 balls each side; keep the target consistent."
+    ],
+    "cue": "Clean first contact to a consistent target every time."
+  },
+  {
+    "id": "nt18",
+    "name": "Serve to 4 zones",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "accuracy"
+    ],
+    "min": 8,
+    "diagram": "targets",
+    "setup": "Full serving, own ball. (from your notes)",
+    "steps": [
+      "Mark four quadrants: short left, short right, deep left, deep right. Serve 2 balls to each.",
+      "Chase your ball and reset quickly.",
+      "Progress: float then jump serve to each zone."
+    ],
+    "cue": "Land every serve on a called spot."
+  },
+  {
+    "id": "nt19",
+    "name": "Serve & targeted reception (line vs cut)",
+    "phase": "Technical",
+    "skills": [
+      "serve",
+      "passing"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Two teams, one serving on each court; one fixed receiver. (from your notes)",
+    "steps": [
+      "20 serves, 10 at the same passer.",
+      "The passer plays 10 receptions that set up a line shot, then 10 that set up a cut.",
+      "Then swap serving/receiving roles."
+    ],
+    "cue": "Pressure serving plus reception that sets up a specific shot."
+  },
+  {
+    "id": "nt20",
+    "name": "Auto-smash & play out",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "transition"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Pairs across the net. (from your notes)",
+    "steps": [
+      "Self-toss and attack over the net, then play the rally out.",
+      "10 balls line, 10 cross.",
+      "Add a blocker or defender to force real reads."
+    ],
+    "cue": "Attack, then compete - finish and defend."
+  },
+  {
+    "id": "nt21",
+    "name": "Correction-step attack",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "footwork"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Feeder near the net. (from your notes)",
+    "steps": [
+      "3 approach jumps to feel the last adjusting step (left/right/front/back).",
+      "Then approach and spike a fed ball.",
+      "Coach checks the footprints for a straight take-off."
+    ],
+    "cue": "The last correction step puts you behind the ball."
+  },
+  {
+    "id": "nt22",
+    "name": "Back-set + line attack",
+    "phase": "Technical",
+    "skills": [
+      "setting",
+      "attack"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Threes: passer, setter, attacker at the pin. (from your notes)",
+    "steps": [
+      "Pass to the setter, who back-sets to the pin.",
+      "Attacker finishes line; then rotate.",
+      "Square the shoulders and deliver the back-set high."
+    ],
+    "cue": "Hide the direction, set it high to the pin."
+  },
+  {
+    "id": "nt23",
+    "name": "Cut & line shot (continuous)",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot control"
+    ],
+    "min": 8,
+    "diagram": "court",
+    "setup": "Pairs/threes, auto-fed salt & pepper. (from your notes)",
+    "steps": [
+      "Alternate controlled cut shots and line shots, continuously.",
+      "Keep the ball in play throughout.",
+      "Add a defender to read and place away from."
+    ],
+    "cue": "Soft hands, sharp placement - repeatable shots."
+  },
+  {
+    "id": "nt24",
+    "name": "Standshot & defense with 2nd ball",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "Coach with two balls at the net. (from your notes)",
+    "steps": [
+      "Player plays a standing attack, then immediately a 2nd ball.",
+      "Next round: dig the first ball, then a 2nd defensive ball.",
+      "Rapid back-to-back reps, then rotate."
+    ],
+    "cue": "Reset fast - two live actions in a row."
+  },
+  {
+    "id": "nt25",
+    "name": "18:15 Sideout game",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "defense"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "2v2; one team serves; start 18:15, play to 21. (from your notes)",
+    "steps": [
+      "Serve vs side-out from a tight score.",
+      "Switch serve/defense roles every 2 balls; same player receives.",
+      "Variation: only second-ball attacks, or jump on every attack."
+    ],
+    "cue": "Close-score side-out pressure from the first ball."
+  },
+  {
+    "id": "nt26",
+    "name": "Speed sideout (15:12 to 21)",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "conditioning"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Teams rotate on one court; start 15:12 to 21. (from your notes)",
+    "steps": [
+      "Fast feeds, minimal downtime.",
+      "The side that wins the point rotates; a team may blow max 3 side-outs before a penalty.",
+      "Variation: the first attack must be on 2."
+    ],
+    "cue": "Relentless tempo - hold side-out quality as it speeds up."
+  },
+  {
+    "id": "nt27",
+    "name": "Seilziehen / Tug-of-War (+/-)",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "transition"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "Two teams head-to-head with coach free-balls and a shared counter. (from your notes)",
+    "steps": [
+      "Win a rally and the counter moves your way.",
+      "Reach +3 / +4 to win the round - but a win must be confirmed with one more side-out.",
+      "Loser switches out with a waiting team."
+    ],
+    "cue": "Momentum game - win the confirming ball, don't let it swing back."
+  },
+  {
+    "id": "nt28",
+    "name": "Survivor 4v2",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "4 attackers vs 2 defenders. (from your notes)",
+    "steps": [
+      "Attackers must play on 3 (full pass-set-attack).",
+      "Defenders survive and score by digging and covering.",
+      "Rotate attackers through the two defenders."
+    ],
+    "cue": "Outnumbered defense - read, communicate, cover."
+  },
+  {
+    "id": "nt29",
+    "name": "7 Sideouts (shot progression)",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "shot selection"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "The same receiver takes 7 side-outs in a row. (from your notes)",
+    "steps": [
+      "Attack line first, then cut, then open/free choice, then play the rally out.",
+      "Team keeps a target of clean side-outs.",
+      "Rotate the receiver after the set of 7."
+    ],
+    "cue": "Don't speculate - execute the called shot, then compete."
+  },
+  {
+    "id": "nt30",
+    "name": "Mini-sets to 7 with handicap",
+    "phase": "Competitive",
+    "skills": [
+      "pressure",
+      "game sense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "2v2, short sets to 7. (from your notes)",
+    "steps": [
+      "Give the weaker pairing a 1-2 point handicap (start 14:14, 16:14, etc.).",
+      "Winner stays, loser rotates.",
+      "Adjust the handicap so sets stay tight."
+    ],
+    "cue": "Level the match so every point matters."
+  },
+  {
+    "id": "nt31",
+    "name": "Standshot King of the Court",
+    "phase": "Competitive",
+    "skills": [
+      "game sense",
+      "shot play"
+    ],
+    "min": 15,
+    "diagram": "court",
+    "setup": "2v2 King-Court, standing shots only. (from your notes)",
+    "steps": [
+      "Minimum two touches; a teammate touch is required between contacts 1 and 2.",
+      "Win to move up, lose and rotate.",
+      "No jumping - placement and teamwork only."
+    ],
+    "cue": "Win with shots and communication, not power."
+  },
+  {
+    "id": "nt32",
+    "name": "King Court with confirmation",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "game sense"
+    ],
+    "min": 18,
+    "diagram": "court",
+    "setup": "Standard King-Court across the court. (from your notes)",
+    "steps": [
+      "Win a rally to move up as usual.",
+      "But you must confirm it by winning the next side-out to bank the point / stay.",
+      "Miss the confirm and you don't advance."
+    ],
+    "cue": "Back-to-back balls - prove the point before it counts."
+  },
+  {
+    "id": "nt33",
+    "name": "Side-out / defense big-point chain",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "defense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "2v2, one team feeds. (from your notes)",
+    "steps": [
+      "Win a side-out, then win a defensive rally = one big point.",
+      "Keep chaining big points until an error.",
+      "Then swap sides and repeat."
+    ],
+    "cue": "String side-out and transition together without a mistake."
+  },
+  {
+    "id": "nt34",
+    "name": "Team + extra attacker (continuous)",
+    "phase": "Competitive",
+    "skills": [
+      "attack",
+      "transition"
+    ],
+    "min": 10,
+    "diagram": "court",
+    "setup": "A full team plus one extra 'attacker' who stays in. (from your notes)",
+    "steps": [
+      "Continuous rallies feeding the extra attacker 10 balls.",
+      "Then rotate the attacker in.",
+      "Keep the flow going - minimal resets."
+    ],
+    "cue": "High-volume attacking reps under game flow."
+  },
+  {
+    "id": "new1",
+    "name": "Four-pass setting decisions",
+    "phase": "Technical",
+    "skills": [
+      "setting",
+      "out of system"
+    ],
+    "min": 10,
+    "diagram": "setting",
+    "setup": "3 per group: feeder deep, moving setter, target 1–2 m off the net.",
+    "steps": [
+      "Feed a comfortable pass, then vary it tight, deep or wide.",
+      "Setter chooses a hand set or bump set to the target; target catches.",
+      "Score one for a catchable set with space from the net. Rotate every 5 feeds."
+    ],
+    "cue": "Arrive balanced; choose the contact you can control.",
+    "level": "Intermediate",
+    "progression": "Easier: predictable tosses. Harder: target attacks into the opposite court.",
+    "source": "https://www.fivb.com/wp-content/uploads/2024/03/FIVB_Beachvolley_Drill-Book_EN.pdf",
+    "sourceLabel": "Coaching adaptation · FIVB drill book, 4.7"
+  },
+  {
+    "id": "new2",
+    "name": "Serve, receive, set, catch",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "setting",
+      "communication"
+    ],
+    "min": 10,
+    "diagram": "receive",
+    "setup": "3 per group: server behind one end line, receiver and setting target opposite.",
+    "steps": [
+      "Serve or toss over the net. Receiver calls early and passes to partner.",
+      "Partner sets; original receiver moves to catch at an attacking point off the net.",
+      "Count 5 catchable sequences together, then rotate roles."
+    ],
+    "cue": "Pass, connect, then move again.",
+    "level": "Beginner",
+    "progression": "Easier: closer toss. Harder: attack instead of catch.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new3",
+    "name": "Seam ownership challenge",
+    "phase": "Technical",
+    "skills": [
+      "passing",
+      "communication",
+      "serve receive"
+    ],
+    "min": 10,
+    "diagram": "seam",
+    "setup": "4 per court: server and collector opposite two receivers.",
+    "steps": [
+      "Receivers agree who owns the seam before each serve.",
+      "Server alternates seam, short and deep serves; receivers call before contact.",
+      "A controlled pass plus an early call earns one; swap pairs after 6 serves."
+    ],
+    "cue": "Decide together before the serve.",
+    "level": "Beginner",
+    "progression": "Easier: toss from inside court. Harder: vary serving position.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new4",
+    "name": "Dig, set, send",
+    "phase": "Technical",
+    "skills": [
+      "defense",
+      "setting",
+      "transition"
+    ],
+    "min": 10,
+    "diagram": "digset",
+    "setup": "Feeder on one side; defender and partner on the other. Extra players collect.",
+    "steps": [
+      "Feeder sends a controlled standing attack to the defender.",
+      "Partner moves to set the dig; defender sends a controlled third contact over.",
+      "Reset after each sequence and rotate all roles after 5 feeds."
+    ],
+    "cue": "Make the dig high enough for your partner.",
+    "level": "Intermediate",
+    "progression": "Easier: feed a free ball. Harder: unpredictable standing shots.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new5",
+    "name": "Cooperative three-contact streak",
+    "phase": "Warm-up",
+    "skills": [
+      "ball control",
+      "communication"
+    ],
+    "min": 8,
+    "diagram": "cooperative",
+    "setup": "2v2 across the net; extras replace a pair every 90 seconds.",
+    "steps": [
+      "Start with an easy toss and use pass, set, controlled third contact.",
+      "Both teams count consecutive net crossings together; aim for 6.",
+      "On an error restart the count with an easy ball. Change partners next round."
+    ],
+    "cue": "Send a ball the other pair can play.",
+    "level": "Beginner",
+    "progression": "Easier: allow a catch on contact two. Harder: standing shots to space.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new6",
+    "name": "Side-out plus transition confirmation",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "transition",
+      "pressure"
+    ],
+    "min": 14,
+    "diagram": "court",
+    "setup": "2v2 per court; waiting team feeds the second ball and collects.",
+    "steps": [
+      "Play a serve rally. Receiving team must win it to unlock a confirmation ball.",
+      "Immediately feed an easy ball to that team; winning this rally earns one big point.",
+      "After two rally sequences rotate a waiting team in; first to 5 big points wins."
+    ],
+    "cue": "Reset quickly after the first rally.",
+    "level": "Intermediate",
+    "progression": "Easier: a controlled feed instead of serve. Harder: a down ball for confirmation.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new7",
+    "name": "See the space: line or cut",
+    "phase": "Technical",
+    "skills": [
+      "attack",
+      "shot selection",
+      "vision"
+    ],
+    "min": 10,
+    "diagram": "shot",
+    "setup": "Feeder and attacker below the net; one defender above it. Spare players collect.",
+    "steps": [
+      "Feeder tosses a hittable ball off the net; defender chooses line or cross-court early.",
+      "Attacker looks before contact and plays a controlled shot toward the open area.",
+      "Play one ball at a time; rotate attacker → defender → feeder after 5 balls."
+    ],
+    "cue": "See space before choosing your shot.",
+    "level": "Intermediate",
+    "progression": "Easier: standing shots. Harder: defender moves later.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  },
+  {
+    "id": "new8",
+    "name": "Finish at 18–18",
+    "phase": "Competitive",
+    "skills": [
+      "side-out",
+      "pressure",
+      "game sense"
+    ],
+    "min": 12,
+    "diagram": "court",
+    "setup": "2v2 per court; waiting pairs enter at the end of each mini-set.",
+    "steps": [
+      "Start at 18–18; normal rally scoring to 21, win by two.",
+      "Switch sides after each combined 7 points, counting from 36.",
+      "After the mini-set rotate the waiting pair in and alternate the first serving team."
+    ],
+    "cue": "Choose one serving plan and commit to it.",
+    "level": "All levels",
+    "progression": "Easier: start 6–6, play to 9. Harder: each pair names a tactical goal.",
+    "source": "https://usavolleyball.org/resources-for-coaches/lesson-plans/",
+    "sourceLabel": "Coaching adaptation · USA Volleyball game-based principles"
+  }
 ];
 const SEED_PLAN=[
   {id:'p1',name:'Standard 90 (1.5h)',players:14,courts:2,blocks:[
@@ -331,11 +2162,149 @@ const SEED_PLAN=[
   ]}
 ];
 
+const EXTRA_PLANS=[
+  {
+    "id": "np1",
+    "name": "Notes - Beach 8 (attack & defense)",
+    "players": 8,
+    "courts": 2,
+    "blocks": [
+      {
+        "exId": "nt8",
+        "min": 8
+      },
+      {
+        "exId": "nt1",
+        "min": 6
+      },
+      {
+        "exId": "nt17",
+        "min": 8
+      },
+      {
+        "exId": "nt18",
+        "min": 8
+      },
+      {
+        "exId": "nt12",
+        "min": 10
+      },
+      {
+        "exId": "nt13",
+        "min": 14
+      },
+      {
+        "exId": "nt25",
+        "min": 15
+      },
+      {
+        "exId": "cp4",
+        "min": 18
+      },
+      {
+        "exId": "cd1",
+        "min": 5
+      }
+    ]
+  },
+  {
+    "id": "np2",
+    "name": "Notes - Beach 12 (6+6)",
+    "players": 12,
+    "courts": 2,
+    "blocks": [
+      {
+        "exId": "nt8",
+        "min": 8
+      },
+      {
+        "exId": "nt6",
+        "min": 6
+      },
+      {
+        "exId": "nt11",
+        "min": 8
+      },
+      {
+        "exId": "nt14",
+        "min": 10
+      },
+      {
+        "exId": "nt13",
+        "min": 12
+      },
+      {
+        "exId": "nt33",
+        "min": 12
+      },
+      {
+        "exId": "nt31",
+        "min": 15
+      },
+      {
+        "exId": "cp4",
+        "min": 20
+      },
+      {
+        "exId": "cd1",
+        "min": 5
+      }
+    ]
+  },
+  {
+    "id": "setting90",
+    "name": "90 min · Setting & playful side-out",
+    "players": 14,
+    "courts": 2,
+    "blocks": [
+      {
+        "exId": "wm1",
+        "min": 5
+      },
+      {
+        "exId": "new5",
+        "min": 8
+      },
+      {
+        "exId": "new2",
+        "min": 10
+      },
+      {
+        "exId": "tc3",
+        "min": 10
+      },
+      {
+        "exId": "new3",
+        "min": 10
+      },
+      {
+        "exId": "new7",
+        "min": 10
+      },
+      {
+        "exId": "new6",
+        "min": 14
+      },
+      {
+        "exId": "cp4",
+        "min": 18
+      },
+      {
+        "exId": "cd1",
+        "min": 5
+      }
+    ]
+  }
+];
+SEED_PLAN.push(...EXTRA_PLANS);
 /* ============ state ============ */
 let LIB = store.get('bvt.lib') || SEED_LIB.map(x=>({...x}));
 let PLANS = store.get('bvt.plans') || SEED_PLAN.map(p=>({...p,blocks:p.blocks.map(b=>({...b}))}));
+if(!Array.isArray(LIB)||!LIB.length)LIB=structuredClone(SEED_LIB);
+if(!Array.isArray(PLANS)||!PLANS.length)PLANS=structuredClone(SEED_PLAN);
 let activePlan = store.get('bvt.active') || PLANS[0].id;
-let libFilter = 'All';
+let libFilter = 'All', libSearch = '';
+document.getElementById('libSearch').oninput=e=>{libSearch=e.target.value.toLowerCase().trim();renderLib();};
 let editingId = null;
 const saveLib=()=>store.set('bvt.lib',LIB);
 const savePlans=()=>{store.set('bvt.plans',PLANS);store.set('bvt.active',activePlan);};
@@ -350,7 +2319,7 @@ PLANS.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;}
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const courtLabel=i=>String.fromCharCode(65+i);
 function distribute(players,courts){
-  players=clamp(players|0,0,60); courts=clamp(courts|0,1,6);
+  players=clamp(players|0,0,40); courts=clamp(courts|0,1,6);
   const pairs=Math.floor(players/2), odd=players%2;
   const base=Math.floor(pairs/courts); let rem=pairs%courts;
   const per=[]; for(let i=0;i<courts;i++){per.push(base+(rem>0?1:0)); if(rem>0)rem--;}
@@ -363,41 +2332,48 @@ function distText(players,courts){
   let s=`<b>${players}</b> players → <b>${d.pairs}</b> pairs · ${parts.join(' · ')}`;
   const hints=[];
   if(d.odd) hints.push('1 player left over — make one trio, or rotate that player in each round.');
-  if(Math.min(...d.per)<3) hints.push('Courts with under 3 teams: run 2v2 winner-stays instead of King of the Court.');
+  if(Math.min(...d.per)<3) hints.push('Use a court with at least 2 pairs for 2v2. With 2 pairs, play a fixed matchup; with 3+, rotate waiting teams.');
   if(hints.length) s+=`<span class="hint">${hints.join('<br>')}</span>`;
   return s;
 }
-function renderRunSquad(){const p=plan();document.getElementById('runSquad').innerHTML=`<div class="dist" style="margin-top:14px">${distText(p.players,p.courts)}</div>`;}
+function renderRunSquad(){const p=runConfig||plan();document.getElementById('runSquad').innerHTML=`<div class="dist" style="margin-top:14px">${distText(p.players,p.courts)}</div>`;}
 
 /* ============ diagrams ============ */
-function courtSVG(inner){return `<svg class="court" viewBox="0 0 220 360" role="img"><rect x="0" y="0" width="220" height="360" rx="12" fill="#E7D6B0"/><rect x="40" y="40" width="140" height="280" fill="none" stroke="#fff" stroke-width="3"/><line x1="40" y1="180" x2="180" y2="180" stroke="#10302E" stroke-width="2.5" stroke-dasharray="7 6"/>${inner}</svg>`;}
-function dot(x,y,l,c){const f=c==='b'?'#E1930B':'#14746B';return `<circle cx="${x}" cy="${y}" r="12" fill="${f}" stroke="#fff" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="13" fill="#fff">${l}</text>`;}
+// 16 × 8 m court: each half is square. No indoor attack/centre lines.
+function courtSVG(inner,title){return `<svg class="court" viewBox="0 0 220 380" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><rect width="220" height="380" rx="12" fill="#E7D6B0"/><rect x="40" y="40" width="140" height="280" fill="none" stroke="#fff" stroke-width="3"/><line x1="32" y1="180" x2="188" y2="180" stroke="#10302E" stroke-width="3"/><text x="110" y="24" text-anchor="middle" font-size="11" fill="#10302E">8 m</text><text x="190" y="175" font-size="10" fill="#10302E">net</text>${inner}</svg>`;}
+function dot(x,y,l,c){const f=c==='b'?'#A66000':'#14746B';return `<circle cx="${x}" cy="${y}" r="12" fill="${f}" stroke="#fff" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="11" fill="#fff">${l}</text>`;}
 function arrow(x1,y1,x2,y2,t){const s=t==='serve'?'#14746B':t==='move'?'#10302E':'#E4572E';const d=t==='move'?'stroke-dasharray="2 5"':t==='ball'?'stroke-dasharray="7 5"':'';return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${s}" stroke-width="2.6" ${d} marker-end="url(#${t})"/>`;}
-function zone(x,y,w,h){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(228,87,46,.16)" stroke="#E4572E" stroke-width="1.6" stroke-dasharray="4 3"/>`;}
+function zone(x,y,w,h){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#E4572E" fill-opacity=".16" stroke="#E4572E" stroke-width="1.6" stroke-dasharray="4 3"/>`;}
+const pair=dot(80,290,'P','a')+dot(140,220,'P','a');
+const receive=dot(80,347,'S','a')+dot(80,85,'R','b')+dot(145,155,'T','b')+arrow(80,332,80,103,'serve')+arrow(91,98,132,143,'ball');
+const setting=dot(80,280,'F','a')+dot(95,215,'S','a')+dot(155,210,'T','a')+arrow(82,263,91,232,'ball')+arrow(110,213,138,211,'ball');
 const DIAGRAMS={
-  court: courtSVG(dot(78,250,'A','a')+dot(150,250,'A','a')+dot(78,110,'B','b')+dot(150,110,'B','b')),
-  warmup: courtSVG(dot(80,300,'A','a')+dot(140,300,'A','a')+dot(80,60,'B','b')+dot(140,60,'B','b')+arrow(80,285,80,150,'ball')+arrow(140,150,140,285,'ball')),
-  serve: courtSVG(dot(70,312,'S','a')+dot(150,312,'S','a')+dot(70,70,'P','b')+dot(150,70,'P','b')+arrow(70,300,70,92,'serve')+arrow(150,300,150,92,'serve')+zone(52,52,36,30)+zone(132,52,36,30)),
-  sideout: courtSVG(zone(44,286,34,30)+zone(142,286,34,30)+zone(90,196,40,22)+zone(44,44,34,30)+zone(142,44,34,30)+zone(90,142,40,22)+dot(78,250,'A','a')+dot(150,250,'A','a')+dot(78,110,'B','b')+dot(150,110,'B','b')+arrow(150,238,60,300,'ball')),
-  servevs: courtSVG(zone(40,180,10,140)+zone(170,180,10,140)+dot(110,312,'S','a')+dot(78,110,'R','b')+dot(150,110,'R','b')+arrow(110,300,90,150,'serve')+arrow(90,150,55,300,'ball')),
-  kotc: courtSVG(`<rect x="40" y="180" width="140" height="140" fill="rgba(20,116,107,.14)"/><text x="110" y="205" text-anchor="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="15" fill="#0d5a52">KING SIDE</text>`+dot(78,250,'K','a')+dot(150,250,'K','a')+dot(78,110,'C','b')+dot(150,110,'C','b')+arrow(150,110,150,60,'move')+arrow(60,300,110,150,'serve')),
-  cool: courtSVG(dot(90,200,'A','a')+dot(130,200,'A','a'))
+ partner:courtSVG(pair+arrow(88,274,132,236,'ball')+arrow(124,223,74,275,'ball'),'Same-side partner passing: P = partners'),
+ pepper:courtSVG(pair+arrow(88,274,132,236,'ball')+arrow(124,223,74,275,'ball'),'Same-side pepper: partners exchange controlled contacts'),
+ triple:courtSVG(dot(110,290,'1','a')+dot(110,235,'2','a')+dot(110,195,'3','a')+arrow(100,274,100,250,'ball')+arrow(120,221,120,206,'ball'),'Three players on the same side: feed to middle, set to third'),
+ triangle:courtSVG(dot(75,290,'1','a')+dot(145,290,'2','a')+dot(110,215,'3','a')+arrow(90,290,128,290,'ball')+arrow(141,274,119,233,'ball')+arrow(100,232,82,274,'ball'),'Three-player same-side triangle'),
+ receive:courtSVG(receive,'Serve from beyond end line to receiver, then pass to target'),
+ setting:courtSVG(setting,'Feeder to setter to target on the same side'),
+ partnerserve:courtSVG(dot(80,260,'S','a')+dot(80,95,'P','b')+arrow(80,242,80,113,'serve'),'Short-distance partner serving; move back gradually'),
+ shortdeep:courtSVG(dot(110,230,'F','a')+dot(110,115,'P','b')+zone(90,145,40,25)+zone(90,48,40,25)+arrow(103,214,103,157,'ball')+arrow(120,213,120,75,'ball'),'Feeder sends alternating short and deep balls across the net'),
+ targets:courtSVG(zone(42,42,68,68)+zone(110,42,68,68)+zone(42,110,68,68)+zone(110,110,68,68)+dot(110,347,'S','a')+arrow(110,331,65,66,'serve'),'Server beyond baseline aims at four quadrants opposite'),
+ zones:courtSVG(zone(42,42,34,30)+zone(144,42,34,30)+zone(90,151,40,25)+dot(80,270,'P','a')+dot(150,210,'A','a')+dot(80,110,'D','b')+dot(150,110,'D','b')+arrow(148,194,61,60,'ball'),'Attack crosses net toward opposite short or deep zones'),
+ corridors:courtSVG(zone(40,180,17.5,140)+zone(162.5,180,17.5,140)+dot(110,347,'S','a')+dot(150,280,'D','a')+dot(80,90,'R','b')+dot(145,150,'A','b')+arrow(110,331,81,108,'serve')+arrow(91,103,132,138,'ball')+arrow(145,167,49,298,'ball'),'Serve, pass and attack into opposite 1 m-wide sideline strips'),
+ secondball:courtSVG(receive+dot(150,275,'D','a')+arrow(145,172,63,280,'ball'),'Receiver passes to partner, who attacks on the second contact'),
+ king:courtSVG(`<rect x="42" y="182" width="136" height="136" fill="#14746B" fill-opacity=".12"/><text x="110" y="310" text-anchor="middle" font-size="10">SCORING SIDE</text>`+dot(80,260,'K','a')+dot(150,260,'K','a')+dot(80,95,'C','b')+dot(150,20,'S','b')+arrow(150,36,85,240,'serve'),'Scoring pair receives from challengers; rotate after a completed rally'),
+ seam:courtSVG(dot(110,347,'S','a')+dot(75,100,'R','b')+dot(145,100,'R','b')+zone(100,45,20,100)+arrow(110,331,110,120,'serve'),'Two receivers agree responsibility for the seam'),
+ digset:courtSVG(dot(110,110,'F','b')+dot(75,270,'D','a')+dot(150,220,'S','a')+arrow(110,127,80,251,'ball')+arrow(90,259,135,232,'ball')+arrow(137,210,88,209,'ball')+arrow(80,197,75,95,'ball'),'Feed across net, dig to partner, set and send third contact over'),
+ cooperative:courtSVG(dot(75,100,'P','b')+dot(145,155,'S','b')+dot(75,270,'P','a')+dot(145,210,'S','a')+arrow(84,255,133,220,'ball')+arrow(132,200,90,201,'ball')+arrow(75,195,75,120,'ball'),'Cooperative 2v2; pass, set and controlled third contact across net'),
+ shot:courtSVG(dot(80,275,'F','a')+dot(145,215,'A','a')+dot(65,115,'D','b')+zone(145,45,32,30)+zone(43,145,35,30)+arrow(92,261,132,229,'ball')+arrow(147,197,160,75,'ball'),'Feeder tosses to attacker; attack open space across net')
 };
-const LEGEND=`<div class="legend"><span><i class="k" style="background:#14746B"></i>Team A</span><span><i class="k" style="background:#E1930B"></i>Team B</span><span><i class="k" style="background:#14746B"></i>serve</span><span><i class="k" style="background:#E4572E"></i>ball / zone</span></div>`;
-// A diagram is only shown when the drill opts into a real, matching preset.
-// 'court' is the generic filler, so it (and anything unknown/missing) is auto-hidden until we generate proper per-drill diagrams.
-const GENERIC_DIAGRAMS=['court',''];
-function diagramFor(e){
-  const key=e&&e.diagram;
-  if(!key || GENERIC_DIAGRAMS.includes(key) || !DIAGRAMS[key] || key==='court') return '';
-  return DIAGRAMS[key];
-}
+const LEGEND=`<div class="legend"><span>Letters = roles in caption</span><span>Solid teal → serve</span><span>Dashed coral → ball</span><span>Coral box = target</span></div>`;
+function diagramFor(e){const diagram=DIAGRAMS[e&&e.diagram];return diagram?`<figure style="margin:10px 0">${diagram}<figcaption class="muted" style="text-align:center;font-size:12px">${diagram.match(/<title>(.*?)<\/title>/)[1]}</figcaption></figure>`:'';}
 
 /* ============ LIBRARY render ============ */
 const PHASES=['All','★','Warm-up','Technical','Competitive','Cool-down'];
 function renderFilters(){
   const f=document.getElementById('libFilters');
-  f.innerHTML=PHASES.map(p=>`<button class="fchip${p===libFilter?' active':''}" data-f="${p}">${p}</button>`).join('');
+  f.innerHTML=PHASES.map(p=>`<button class="fchip${p===libFilter?' active':''}" data-f="${p}" aria-pressed="${p===libFilter}">${p}</button>`).join('');
   f.querySelectorAll('.fchip').forEach(c=>c.onclick=()=>{libFilter=c.dataset.f;renderFilters();renderLib();});
 }
 let libOpenId=null;
@@ -407,6 +2383,8 @@ function renderLib(){
   document.getElementById('libCount').textContent=`${LIB.length} exercises · ${favCount} favourite${favCount!==1?'s':''} · tap a name for details`;
   const list=document.getElementById('libList');
   let items=LIB.filter(e=> libFilter==='All' ? true : libFilter==='★' ? e.fav : e.phase===libFilter);
+  items=items.filter(e=>[e.name,e.setup,...e.skills].join(' ').toLowerCase().includes(libSearch));
+  document.getElementById('libCount').textContent=`${items.length} of ${LIB.length} exercises · ${favCount} favourites`;
   // favourites first, then keep existing order
   items=items.map((e,i)=>({e,i})).sort((a,b)=>(b.e.fav?1:0)-(a.e.fav?1:0)||a.i-b.i).map(x=>x.e);
   if(!items.length){list.innerHTML=`<div class="empty">${libFilter==='★'?'No favourites yet — tap the ☆ on any exercise.':'No exercises here yet.'}</div>`;return;}
@@ -417,7 +2395,7 @@ function renderLib(){
     <div class="card"><div class="ex">
       <span class="pill ${PHASE_CLASS[e.phase]}">${e.phase.slice(0,4)}</span>
       <div class="body">
-        <h3 data-toggle="${e.id}" style="cursor:pointer">${esc(e.name)} <span style="color:var(--ink-soft);font-size:13px">${open?'▲':'▼'}</span></h3>
+        <h3 role="button" tabindex="0" aria-expanded="${open}" data-toggle="${e.id}" style="cursor:pointer">${esc(e.name)} <span style="color:var(--ink-soft);font-size:13px">${open?'▲':'▼'}</span></h3>
         <div class="tags"><span class="tag">${e.min} min</span>${(e.skills||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
         ${open?`
         <div style="margin-top:11px">
@@ -425,7 +2403,7 @@ function renderLib(){
           ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
           <h4 class="sub" style="margin-top:0">Steps</h4>
           <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
-          ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+          ${extraDetails(e)}${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
         </div>`:''}
         <div class="acts">
           <button class="mini ${e.fav?'fav on':'fav'}" data-fav="${e.id}" aria-pressed="${!!e.fav}" title="Favourite">${e.fav?'★':'☆'}</button>
@@ -440,10 +2418,12 @@ function renderLib(){
   list.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>toggleFav(b.dataset.fav));
   list.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addToPlan(b.dataset.add));
   list.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEditor(b.dataset.edit));
-  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(confirm('Delete this exercise?')){LIB=LIB.filter(x=>x.id!==b.dataset.del);saveLib();renderLib();}});
+  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{if(PLANS.some(p=>p.blocks.some(x=>x.exId===b.dataset.del))){toast('Remove this exercise from sessions before deleting it.');return;}if(confirm('Delete this exercise?')){LIB=LIB.filter(x=>x.id!==b.dataset.del);saveLib();renderLib();}});
 }
+function extraDetails(e){return `${e.level?`<p class="muted">Level: ${esc(e.level)}</p>`:''}${e.progression?`<p class="muted">${esc(e.progression)}</p>`:''}${e.source&&/^https:\/\//.test(e.source)?`<p class="muted"><a href="${esc(e.source)}" target="_blank" rel="noopener noreferrer">${esc(e.sourceLabel||'Source')}</a></p>`:''}`;}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
+const [edName,edPhase,edSkills,edMin,edSetup,edSteps,edCue,edDiagram]=['edName','edPhase','edSkills','edMin','edSetup','edSteps','edCue','edDiagram'].map(id=>document.getElementById(id));
 /* ============ editor ============ */
 function openEditor(id){
   editingId=id||null;
@@ -459,10 +2439,10 @@ function closeEditor(){document.getElementById('editor').style.display='none';ed
 document.getElementById('newEx').onclick=()=>openEditor(null);
 document.getElementById('edCancel').onclick=closeEditor;
 document.getElementById('edSave').onclick=()=>{
-  const obj={
+  const obj={...(editingId?exById(editingId):{}),
     id:editingId||uid(), name:edName.value.trim()||'Untitled', phase:edPhase.value,
     skills:edSkills.value.split(',').map(s=>s.trim()).filter(Boolean),
-    min:Math.max(1,parseInt(edMin.value)||10), setup:edSetup.value.trim(),
+    min:clamp(parseInt(edMin.value)||10,1,60), setup:edSetup.value.trim(),
     steps:edSteps.value.split('\n').map(s=>s.trim()).filter(Boolean),
     cue:edCue.value.trim(), diagram:edDiagram.value
   };
@@ -470,24 +2450,38 @@ document.getElementById('edSave').onclick=()=>{
   saveLib(); closeEditor(); renderLib(); toast('Saved');
 };
 
+function validateBackup(d){
+  const id=v=>typeof v==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(v);
+  const text=v=>typeof v==='string'&&v.length<=10000;
+  const minutes=v=>Number.isInteger(v)&&v>=1&&v<=60;
+  if(!d||typeof d!=='object'||(!Array.isArray(d.library)&&!Array.isArray(d.plans)))throw Error('Expected library or plans');
+  for(const list of [d.library||[],d.plans||[]])if(new Set(list.map(x=>x&&x.id)).size!==list.length)throw Error('Duplicate IDs');
+  for(const e of d.library||[])if(!e||!id(e.id)||!text(e.name)||!['Warm-up','Technical','Competitive','Cool-down'].includes(e.phase)||!minutes(e.min)||!Array.isArray(e.skills)||!e.skills.every(text)||!Array.isArray(e.steps)||!e.steps.every(text)||['setup','cue','diagram','source','sourceLabel','level','progression'].some(k=>e[k]!=null&&!text(e[k])))throw Error('Invalid exercise');
+  for(const p of d.plans||[])if(!p||!id(p.id)||!text(p.name)||!Array.isArray(p.blocks)||p.blocks.some(b=>!b||!id(b.exId)||!minutes(b.min))||(p.players!=null&&(!Number.isInteger(p.players)||p.players<2||p.players>40))||(p.courts!=null&&(!Number.isInteger(p.courts)||p.courts<1||p.courts>6)))throw Error('Invalid session');
+  return d;
+}
 /* ============ import / export ============ */
 document.getElementById('exportBtn').onclick=()=>{
   const blob=new Blob([JSON.stringify({library:LIB,plans:PLANS},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='beach-trainer.json';a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='beach-trainer.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 };
 document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
 document.getElementById('importFile').onchange=ev=>{
   const file=ev.target.files[0];if(!file)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);
+  r.onload=()=>{try{const d=validateBackup(JSON.parse(r.result));
     const incoming=Array.isArray(d.library)?d.library:[];
     const incomingPlans=Array.isArray(d.plans)?d.plans:[];
     const merge=incoming.length && LIB.length ? confirm('OK = MERGE these into your current library.\nCancel = REPLACE your whole library.') : false;
-    if(merge){const by={};LIB.forEach(e=>by[e.id]=e);incoming.forEach(e=>by[e.id]=e);LIB=Object.values(by);}
+    if(!merge&&incoming.length&&LIB.length&&!confirm('Replace your library? Existing exercises with the same IDs will be overwritten. Export a backup first if needed.')){toast('Import cancelled');ev.target.value='';return;}
+    const futureIds=new Set((merge?LIB.concat(incoming):incoming.length?incoming:LIB).map(e=>e.id));
+    if([...PLANS,...incomingPlans].some(p=>p.blocks.some(b=>!futureIds.has(b.exId))))throw Error('Import would leave sessions with missing exercises. Merge a complete backup instead.');
+    pause();runBlocks=[];completed=false;paint();renderDetail();
+    if(merge){LIB=Array.from(new Map([...LIB,...incoming].map(e=>[e.id,e])).values());}
     else if(incoming.length){LIB=incoming;}
     if(incomingPlans.length){
-      const byP={};PLANS.forEach(p=>byP[p.id]=p);
-      incomingPlans.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;byP[p.id]=p;});
-      PLANS=Object.values(byP);
+      const byP=new Map(PLANS.map(p=>[p.id,p]));
+      incomingPlans.forEach(p=>{if(p.players==null)p.players=14;if(p.courts==null)p.courts=2;byP.set(p.id,p);});
+      PLANS=Array.from(byP.values());
       activePlan=incomingPlans[incomingPlans.length-1].id; // jump to the last plan brought in, so it's visible immediately
     }
     saveLib();savePlans();renderAll();
@@ -495,7 +2489,7 @@ document.getElementById('importFile').onchange=ev=>{
     if(incoming.length) bits.push((merge?'merged ':'loaded ')+incoming.length+' exercise'+(incoming.length!==1?'s':''));
     if(incomingPlans.length) bits.push('added '+incomingPlans.length+' session'+(incomingPlans.length!==1?'s':'')+': '+incomingPlans.map(p=>p.name).join(', '));
     toast(bits.length?bits.join(' · '):'Nothing to import — check the file');
-  }catch(e){toast('Could not read that file');}
+  }catch(e){toast('Import cancelled: '+e.message);}
   ev.target.value='';};
   r.readAsText(file);
 };
@@ -506,6 +2500,13 @@ function renderPlanSwitch(){
   s.innerHTML=PLANS.map(p=>`<option value="${p.id}"${p.id===activePlan?' selected':''}>${esc(p.name)}</option>`).join('');
 }
 let planOpenIdx=null;
+function printSession(){
+  const p=plan();
+  const old=document.getElementById('printDetails');if(old)old.remove();
+  const el=document.createElement('div');el.id='printDetails';
+  el.innerHTML=p.blocks.map(b=>{const e=exById(b.exId);return e?`<section><h2>${esc(e.name)} · ${b.min} min</h2><p>${esc(e.setup)}</p><ol>${e.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol><p><b>Coach cue:</b> ${esc(e.cue)}</p></section>`:'';}).join('');
+  document.getElementById('v-plan').append(el);window.print();el.remove();
+}
 function renderPlan(){
   renderPlanSwitch();
   const p=plan();
@@ -519,7 +2520,7 @@ function renderPlan(){
       const dia=diagramFor(e);
       return `<div class="blk">
         <div class="grab"><button data-up="${i}" ${i===0?'disabled style=opacity:.25':''}>▲</button><button data-down="${i}" ${i===p.blocks.length-1?'disabled style=opacity:.25':''}>▼</button></div>
-        <div class="nm" data-toggle="${i}" style="cursor:pointer"><b>${esc(e.name)} <span style="color:var(--ink-soft);font-size:11px">${open?'▲':'▼'}</span></b><span>${e.phase}</span></div>
+        <div class="nm" role="button" tabindex="0" aria-expanded="${open}" data-toggle="${i}" style="cursor:pointer"><b>${esc(e.name)} <span style="color:var(--ink-soft);font-size:11px">${open?'▲':'▼'}</span></b><span>${e.phase} · ${b.min} min</span></div>
         <input class="min" type="number" min="1" max="60" value="${b.min}" data-min="${i}" aria-label="minutes">
         <button class="x" data-rm="${i}" aria-label="remove">✕</button>
       </div>
@@ -528,14 +2529,14 @@ function renderPlan(){
         ${dia?`<div style="max-width:190px;margin:0 0 8px">${dia}</div>`:''}
         <h4 class="sub" style="margin-top:0">Steps</h4>
         <ol class="play">${(e.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
-        ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+        ${extraDetails(e)}${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
       </div>`:''}`;
     }).join('')+`</div>`;
     host.querySelectorAll('[data-toggle]').forEach(h=>h.onclick=()=>{const i=+h.dataset.toggle;planOpenIdx=planOpenIdx===i?null:i;renderPlan();});
     host.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>{const i=+x.dataset.up;[p.blocks[i-1],p.blocks[i]]=[p.blocks[i],p.blocks[i-1]];planOpenIdx=null;savePlans();renderPlan();});
     host.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>{const i=+x.dataset.down;[p.blocks[i+1],p.blocks[i]]=[p.blocks[i],p.blocks[i+1]];planOpenIdx=null;savePlans();renderPlan();});
     host.querySelectorAll('[data-rm]').forEach(x=>x.onclick=()=>{p.blocks.splice(+x.dataset.rm,1);planOpenIdx=null;savePlans();renderPlan();});
-    host.querySelectorAll('[data-min]').forEach(x=>x.onchange=()=>{p.blocks[+x.dataset.min].min=Math.max(1,parseInt(x.value)||1);savePlans();renderPlan();});
+    host.querySelectorAll('[data-min]').forEach(x=>x.onchange=()=>{p.blocks[+x.dataset.min].min=clamp(parseInt(x.value)||1,1,60);savePlans();renderPlan();});
   }
   const total=p.blocks.reduce((s,b)=>s+(+b.min||0),0);
   document.getElementById('planTotal').textContent=total+' min';
@@ -545,7 +2546,7 @@ function renderPlan(){
 }
 document.getElementById('planName').oninput=e=>{plan().name=e.target.value;savePlans();renderPlanSwitch();};
 document.getElementById('planSwitch').onchange=e=>{activePlan=e.target.value;savePlans();renderPlan();};
-document.getElementById('cfgPlayers').oninput=e=>{plan().players=clamp(parseInt(e.target.value)||0,0,60);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
+document.getElementById('cfgPlayers').oninput=e=>{plan().players=clamp(parseInt(e.target.value)||2,2,40);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
 document.getElementById('cfgCourts').oninput=e=>{plan().courts=clamp(parseInt(e.target.value)||1,1,6);savePlans();document.getElementById('distLine').innerHTML=distText(plan().players,plan().courts);};
 document.getElementById('newPlan').onclick=()=>{const p={id:uid(),name:'New session',players:14,courts:2,blocks:[]};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();};
 document.getElementById('dupPlan').onclick=()=>{const s=plan();const p={id:uid(),name:s.name+' copy',players:s.players,courts:s.courts,blocks:s.blocks.map(b=>({...b}))};PLANS.push(p);activePlan=p.id;savePlans();renderPlan();toast('Duplicated');};
@@ -553,8 +2554,8 @@ document.getElementById('delPlan').onclick=()=>{if(PLANS.length<2){toast('Keep a
 function addToPlan(exId){const e=exById(exId);plan().blocks.push({exId,min:e.min});savePlans();renderPlan();toast(e.name+' added');}
 
 /* ============ RUN / timer ============ */
-let runBlocks=[],idx=0,remaining=0,running=false,tick=null,sound=true,actx=null;
-function buildRun(){runBlocks=plan().blocks.map(b=>({ex:exById(b.exId),min:b.min})).filter(b=>b.ex);}
+let runConfig=null,runBlocks=[],idx=0,remaining=0,running=false,tick=null,sound=store.get('bvt.sound')!==false,actx=null,deadline=0,completed=false;
+function buildRun(){runConfig={name:plan().name,players:plan().players,courts:plan().courts};runBlocks=plan().blocks.map(b=>({ex:exById(b.exId)?structuredClone(exById(b.exId)):null,min:b.min})).filter(b=>b.ex);}
 function beep(f,d,w){if(!sound)return;try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime+(w||0);const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.start(t);o.stop(t+d+.02);}catch(e){}}
 function chime(){beep(660,.16,0);beep(660,.16,.22);beep(990,.28,.44);}
 const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
@@ -569,31 +2570,59 @@ function renderDetail(){
     ${dia?dia+LEGEND:''}
     <h4 class="sub">How it runs</h4>
     <ol class="play">${e.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
-    ${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
+    ${extraDetails(e)}${e.cue?`<div class="cue"><span class="ic">Cue</span><p>${esc(e.cue)}</p></div>`:''}
   </div><div class="upnext">${nx}</div>`;
 }
 function paint(){
-  if(!runBlocks.length)return;
+  if(!runBlocks.length){document.getElementById('clock').textContent='0:00';document.getElementById('nowBlock').textContent='No session loaded';document.getElementById('nowIdx').textContent='Start a session from Plan';document.getElementById('progress').style.width='0%';return;}
   document.getElementById('clock').textContent=fmt(remaining);
   document.getElementById('nowBlock').textContent=runBlocks[idx].ex.name;
   document.getElementById('nowIdx').textContent='Block '+(idx+1)+' of '+runBlocks.length;
   const total=runBlocks[idx].min*60;
   document.getElementById('progress').style.width=((total-remaining)/total*100)+'%';
 }
-function goTo(i){if(!runBlocks.length)return;idx=Math.max(0,Math.min(runBlocks.length-1,i));remaining=runBlocks[idx].min*60;renderDetail();paint();}
-function step(){remaining--;if(remaining===10)beep(880,.18,0);if(remaining<=0){chime();if(idx<runBlocks.length-1){idx++;remaining=runBlocks[idx].min*60;renderDetail();}else{pause();remaining=0;}}paint();}
-function play(){if(!runBlocks.length)return;running=true;const b=document.getElementById('playBtn');b.textContent='Pause';b.classList.add('on');if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();tick=setInterval(step,1000);}
-function pause(){running=false;const b=document.getElementById('playBtn');b.textContent='Resume';b.classList.remove('on');clearInterval(tick);}
+function goTo(i){if(!runBlocks.length)return;idx=Math.max(0,Math.min(runBlocks.length-1,i));remaining=runBlocks[idx].min*60;deadline=Date.now()+remaining*1000;completed=false;renderDetail();paint();}
+function step(){
+  if(!running)return;
+  const before=remaining;
+  remaining=Math.max(0,Math.ceil((deadline-Date.now())/1000));
+  if(before>10&&remaining<=10&&remaining>0)beep(880,.18,0);
+  let changed=false;
+  while(deadline<=Date.now()){
+    if(idx>=runBlocks.length-1){pause(false);remaining=0;completed=true;document.getElementById('playBtn').textContent='Restart';toast('Session complete!');chime();paint();return;}
+    idx++;deadline+=runBlocks[idx].min*60000;changed=true;
+  }
+  remaining=Math.max(0,Math.ceil((deadline-Date.now())/1000));
+  if(changed){chime();renderDetail();}paint();
+}
+let wakeLock=null;
+async function keepAwake(){try{if(running&&document.visibilityState==='visible'&&navigator.wakeLock)wakeLock=await navigator.wakeLock.request('screen');}catch{}}
+function play(){
+  if(running||!runBlocks.length)return;
+  if(completed){completed=false;goTo(0);}
+  running=true;deadline=Date.now()+remaining*1000;
+  const b=document.getElementById('playBtn');b.textContent='Pause';b.classList.add('on');
+  try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();}catch{}
+  tick=setInterval(step,250);keepAwake();
+}
+function pause(sync=true){
+  if(sync&&running)step();
+  running=false;clearInterval(tick);
+  const b=document.getElementById('playBtn');b.textContent=completed?'Restart':'Resume';b.classList.remove('on');
+  if(wakeLock){wakeLock.release().catch(()=>{});wakeLock=null;}
+}
+document.addEventListener('visibilitychange',()=>{if(running){step();keepAwake();}});
 document.getElementById('playBtn').onclick=()=>running?pause():play();
-document.getElementById('skipBtn').onclick=()=>goTo(idx+1);
+document.getElementById('skipBtn').onclick=()=>{if(idx===runBlocks.length-1){pause();remaining=0;completed=true;document.getElementById('playBtn').textContent='Restart';paint();}else goTo(idx+1);};
 document.getElementById('prevBtn').onclick=()=>goTo(idx-1);
 document.getElementById('resetBtn').onclick=()=>{pause();document.getElementById('playBtn').textContent='Start';goTo(0);};
-document.getElementById('soundBtn').onclick=()=>{sound=!sound;const b=document.getElementById('soundBtn');b.textContent=sound?'🔊':'🔈';b.setAttribute('aria-pressed',sound);};
-document.getElementById('startBtn').onclick=()=>{buildRun();if(!runBlocks.length){toast('Add exercises first');return;}pause();document.getElementById('playBtn').textContent='Start';idx=0;remaining=runBlocks[0].min*60;renderRunSquad();renderDetail();paint();switchTab('run');};
+document.getElementById('soundBtn').onclick=()=>{sound=!sound;store.set('bvt.sound',sound);const b=document.getElementById('soundBtn');b.textContent=sound?'🔊':'🔈';b.setAttribute('aria-pressed',sound);};
+document.getElementById('startBtn').onclick=()=>{if(running&&!confirm('Restart with the selected session? The current timer progress will be reset.'))return;pause();buildRun();if(!runBlocks.length){toast('Add exercises first');return;}pause();document.getElementById('playBtn').textContent='Start';idx=0;completed=false;remaining=runBlocks[0].min*60;renderRunSquad();renderDetail();paint();switchTab('run');play();};
 
 /* ============ tabs ============ */
-function switchTab(t){document.body.dataset.view=t;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));if(t==='run')renderRunSquad();window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
+function switchTab(t){document.body.dataset.view=t;document.querySelectorAll('.tab').forEach(x=>{x.classList.toggle('active',x.dataset.tab===t);if(x.dataset.tab===t)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});if(t==='run'){if(!runBlocks.length){buildRun();goTo(0);paint();renderDetail();}renderRunSquad();}window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
 document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>switchTab(x.dataset.tab));
+document.addEventListener('keydown',e=>{if(e.target.matches('[data-toggle]') && ['Enter',' '].includes(e.key)){e.preventDefault();e.target.click();}});
 
 /* ============ init ============ */
 function renderAll(){renderFilters();renderLib();renderPlan();}
@@ -601,19 +2630,25 @@ function renderAll(){renderFilters();renderLib();renderPlan();}
 /* Auto-load the canonical library.json (falls back to the embedded seed when
    it can't be fetched, e.g. when opened directly via file://). A library the
    user has edited and saved locally always takes precedence. */
+const CONTENT_PATCHES={"wm1": {"diagram": ["warmup", "court"]}, "wm2": {"diagram": ["warmup", "pepper"]}, "tc1": {"diagram": ["serve", "receive"], "setup": ["Serve straight to your partner in lanes - as many lanes per court as fit, so nobody waits.", "Groups of 3: one server behind the baseline, one receiver opposite, one target 1–2 m off the net. Use separate lanes for controlled serves; use the full court for zone serving."]}, "tc2": {"diagram": ["servevs", "secondball"], "steps": [["Receiver passes high off a hard serve.", "Attacker plays the 2nd ball to the open side - hard hit if on, else shot / poke / free.", "Rally must finish within two contacts."], ["Serve to the receiver, who passes high toward their partner.", "The partner attacks the second contact if the ball is playable; otherwise send a controlled free ball.", "Each side has a maximum of two contacts; continue the rally until the ball is dead."]]}, "tc3": {"diagram": ["court", "setting"], "setup": ["Pairs, one feeder near the net.", "Groups of 3 on one side: feeder deep, setter moving from reception base, target near the sideline and 1–2 m off the net."], "steps": [["Feeder simulates a reception near the net.", "Setter runs in and delivers a lateral set to the pin.", "Focus: body square to target, high contact, full extension."], ["Feeder tosses a simulated pass toward the setter near the net.", "Setter moves under the ball and sets along the net toward the target, who catches.", "Rotate feeder → setter → target after 5 balls. Progress to a controlled attack over the net."]]}, "cp1": {"diagram": ["sideout", "zones"], "steps": [["You only score by landing an attack in a marked zone: deep corners + short.", "First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.", "Everything else is a wash - next team rotates in after each finished attack."], ["You only score by landing an attack in a marked zone: deep corners + short.", "First-ball side-out into a zone = point; dig-and-hit into a zone in transition = point.", "Outside a zone = no point. Rotate the waiting team in after the rally ends; never enter while a ball is live."]]}, "cp2": {"diagram": ["servevs", "corridors"], "steps": [["Serving team scores +2 for an ace.", "Receiving team must attack into the corridor 1 m inside each sideline: +1 in, -1 out.", "First to 8 wins the round, then swap who serves; winner holds court."], ["Serving team scores +2 for an ace.", "Receiving team attacks into either marked 1 m-wide sideline strip: +1 inside the strip, −1 for an attack outside it. Play the rally out before rotating.", "First to 8 wins the round, then swap who serves; winner holds court."]]}, "cp3": {"diagram": ["kotc", "court"]}, "cp4": {"diagram": ["kotc", "king"], "steps": [["King side scores by winning; challenger side wins to move up. Loser out, next in serves.", "Beach rules: no open-hand tips, no sideways hand-set over.", "Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side."], ["King side scores by winning; challenger side wins to move up. Loser out, next in serves.", "No open-hand finger tips. An intentional overhand pass attack must travel perpendicular to the shoulders; an attempted set to a partner is the exception.", "Rotate a variant every ~8 min: serve-only entry / block = double / cut-or-poke only on king side."]]}, "cd1": {"diagram": ["cool", "court"]}, "bab1": {"diagram": ["warmup", "partner"]}, "bab2": {"diagram": ["court", "triple"]}, "bab3": {"diagram": ["court", "triangle"]}, "bab4": {"diagram": ["serve", "receive"], "steps": [["P1 sends 10 balls to P2, who passes to the target; target catches and feeds P1.", "Use 2-3 balls; rotate after 10. Aim under 20 s for 10 good passes at this level.", "Progress: serve instead of throw, move back to full court, then jump serve; work float or topspin."], ["P1 sends 10 balls to P2, who passes to the target; target catches and feeds P1.", "Use 2–3 balls; rotate after 10 controlled receptions. Allow the target time to return each ball safely.", "Progress: serve instead of throw, move back to full court, then jump serve; work float or topspin."]]}, "bab5": {"diagram": ["serve", "court"]}, "bab6": {"diagram": ["warmup", "shortdeep"]}, "bab7": {"diagram": ["warmup", "court"]}, "bab8": {"diagram": ["serve", "receive"]}, "bab10": {"diagram": ["warmup", "court"]}, "bab11": {"diagram": ["warmup", "court"]}, "bab12": {"diagram": ["warmup", "court"]}, "bab14": {"diagram": ["serve", "partnerserve"]}, "bab15": {"diagram": ["serve", "court"]}, "bab16": {"diagram": ["serve", "court"]}, "bab17": {"diagram": ["serve", "court"]}, "bab24": {"diagram": ["sideout", "court"]}, "bab26": {"diagram": ["sideout", "court"]}, "bab27": {"diagram": ["sideout", "court"]}, "bab28": {"diagram": ["sideout", "court"]}, "bab29": {"diagram": ["kotc", "court"]}, "bab30": {"diagram": ["kotc", "court"]}, "bab31": {"diagram": ["kotc", "court"]}, "bab33": {"diagram": ["kotc", "court"]}, "bab36": {"diagram": ["kotc", "court"]}, "bab37": {"diagram": ["kotc", "court"]}, "fv88": {"diagram": ["kotc", "king"]}, "fv89": {"diagram": ["kotc", "court"]}, "fv810": {"diagram": ["kotc", "court"]}, "fv813": {"diagram": ["servevs", "court"]}, "nt1": {"diagram": ["warmup", "court"]}, "nt2": {"diagram": ["kotc", "court"]}, "nt3": {"diagram": ["kotc", "court"]}, "nt4": {"diagram": ["warmup", "court"]}, "nt5": {"diagram": ["warmup", "court"]}, "nt6": {"diagram": ["warmup", "court"]}, "nt7": {"diagram": ["serve", "court"]}, "nt10": {"diagram": ["kotc", "court"]}, "nt17": {"diagram": ["serve", "court"]}, "nt18": {"diagram": ["serve", "targets"], "steps": [["Serve 2 to each zone: left, front, right, deep.", "Chase your ball and reset quickly.", "Progress: float then jump serve to each zone."], ["Mark four quadrants: short left, short right, deep left, deep right. Serve 2 balls to each.", "Chase your ball and reset quickly.", "Progress: float then jump serve to each zone."]]}, "nt19": {"diagram": ["serve", "court"]}, "nt25": {"diagram": ["servevs", "court"]}, "nt26": {"diagram": ["servevs", "court"]}, "nt27": {"diagram": ["servevs", "court"]}, "nt29": {"diagram": ["servevs", "court"]}, "nt31": {"diagram": ["kotc", "court"]}, "nt32": {"diagram": ["kotc", "court"]}};
 async function loadLibrary(){
-  if(store.get('bvt.lib')) return;           // keep the user's saved/edited library
-  try{
-    const res=await fetch('library.json',{cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    const lib=Array.isArray(data)?data:data.library;
-    if(Array.isArray(lib)&&lib.length){LIB=lib;renderAll();}
-  }catch(e){/* fall back to SEED_LIB already held in LIB */}
+  if(!store.get('bvt.content.v2')){
+    for(const e of LIB){for(const [key,[before,after]] of Object.entries(CONTENT_PATCHES[e.id]||{})){
+      // Upgrade untouched built-ins; leave personal wording, favourites and custom diagrams alone.
+      if(JSON.stringify(e[key])===JSON.stringify(before))e[key]=structuredClone(after);
+    }}
+    for(const e of SEED_LIB.filter(e=>/^new[1-8]$/.test(e.id)))if(!LIB.some(x=>x.id===e.id))LIB.push(structuredClone(e));
+    for(const p of EXTRA_PLANS)if(!PLANS.some(x=>x.id===p.id)&&p.blocks.every(b=>exById(b.exId)))PLANS.push(structuredClone(p));
+    saveLib();savePlans();store.set('bvt.content.v2',true);
+  }
+  renderAll();
 }
 
 renderAll();
 loadLibrary();
+document.getElementById('soundBtn').textContent=sound?'🔊':'🔈';
+document.getElementById('soundBtn').setAttribute('aria-pressed',sound);
+document.querySelector('[data-tab="plan"]').setAttribute('aria-current','page');
 </script>
 </body>
 </html>
